@@ -6,24 +6,10 @@
 //
 import SwiftUI
 
-struct ColorInvertLanguage: ViewModifier {
 
-    @Environment(\.colorScheme) var colorScheme
+struct RectangleButton: View {
 
-    func body(content: Content) -> some View {
-        Group {
-            if colorScheme == .dark {
-                content.colorInvert()
-            } else {
-                content
-            }
-        }
-    }
-}
-
-struct LanguageButton: View {
-
-    @Environment(\.colorScheme) var colorScheme
+    
 
     let id: String
     let callback: (String)->()
@@ -64,7 +50,7 @@ struct LanguageButton: View {
                 Rectangle()
                     .frame(width:60, height: 2)
                     .foregroundColor(self.selectedID == self.id ? .black : .white)
-                    .modifier(ColorInvertLanguage())
+                    
             }
             
         }
@@ -72,9 +58,11 @@ struct LanguageButton: View {
     }
 }
 
-struct LanguageButtonGroup: View {
+struct RectangleButtonGroup: View {
 
     let items : [String]
+    
+    let title : String
 
     @State var selectedId: String = ""
 
@@ -83,11 +71,11 @@ struct LanguageButtonGroup: View {
     var body: some View {
         ScrollView(.horizontal){
             VStack(alignment: .leading){
-                Text("Speak langauge")
+                Text(title)
                     .foregroundColor(.white)
                 HStack {
                     ForEach(0..<items.count) { index in
-                        LanguageButton(self.items[index], callback: self.radioGroupCallback, selectedID: self.selectedId)
+                        RectangleButton(self.items[index], callback: self.radioGroupCallback, selectedID: self.selectedId)
                     }
                 }
             }
@@ -103,7 +91,7 @@ struct LanguageGroup: View {
     var body: some View {
         HStack {
             
-            LanguageButtonGroup(items: ["ENGLISH", "FRENCH", "SPANISH", "日本語", "한국어"], selectedId: "London") { selected in
+            RectangleButtonGroup(items: ["ENGLISH", "FRENCH", "SPANISH", "日本語", "한국어"], title:"Speak Language", selectedId: "London") { selected in
                 print("Selected is: \(selected)")
             }
         }.padding()

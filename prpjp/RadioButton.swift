@@ -84,7 +84,7 @@ struct RadioButtonGroup: View {
                     RadioButton(self.items[index], callback: self.radioGroupCallback, selectedID: self.selectedId)
                 }
             }
-            .padding()
+            
             
         }
         
@@ -103,7 +103,7 @@ struct RadioGroup: View {
             RadioButtonGroup(items: ["192 X 32", "192 X 64", "192 X 128", "384 X 64", "384 X 128"], selectedId: "London") { selected in
                 print("Selected is: \(selected)")
             }
-        }.padding()
+        }
     }
 }
 
