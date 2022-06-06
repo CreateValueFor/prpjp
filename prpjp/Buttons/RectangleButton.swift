@@ -1,13 +1,13 @@
 //
-//  CircleButton.swift
+//  SpeakLanguage.swift
 //  prpjp
 //
-//  Created by 이민기 on 2022/06/03.
+//  Created by 이민기 on 2022/05/31.
 //
 import SwiftUI
 
 
-struct CircleButton: View {
+struct RectangleButton: View {
 
     
 
@@ -38,14 +38,18 @@ struct CircleButton: View {
         Button(action:{
             self.callback(self.id)
         }) {
-            VStack(spacing: 30){
-                Circle()
-                    .strokeBorder(self.selectedID == self.id ? Color.black : Color.white,lineWidth: 1)
-                    .background(Circle().foregroundColor(color))
-                    .frame(width: 30, height: 30)
-                    
-                    
-                
+            VStack( spacing: 0){
+                ZStack{
+                    Rectangle()
+                        .frame(width: 60, height: 30)
+                        .foregroundColor(.gray)
+                    Text(id)
+                        .font(Font.system(size: 12))
+                        .foregroundColor(.white)
+                }
+                Rectangle()
+                    .frame(width:60, height: 2)
+                    .foregroundColor(self.selectedID == self.id ? Color(hex: "#008577") : .white)
                     
             }
             
@@ -54,9 +58,9 @@ struct CircleButton: View {
     }
 }
 
-struct CircleButtonGroup: View {
+struct RectangleButtonGroup: View {
 
-    let items : [PRP_COLOR]
+    let items : [String]
     
     let title : String
 
@@ -71,7 +75,7 @@ struct CircleButtonGroup: View {
                     .foregroundColor(.white)
                 HStack {
                     ForEach(0..<items.count) { index in
-                        CircleButton(self.items[index].rawValue, callback: self.radioGroupCallback, selectedID: self.selectedId, color: items[index].color)
+                        RectangleButton(self.items[index], callback: self.radioGroupCallback, selectedID: self.selectedId)
                     }
                 }
             }
@@ -83,27 +87,22 @@ struct CircleButtonGroup: View {
     }
 }
 
-struct LanguageTestGroup: View {
-    
-    let colors : [PRP_COLOR] = PRP_COLOR.allCases.map{
-        $0
-    }
-    let color : String = PRP_COLOR.BLACK.rawValue
-    
+struct LanguageGroup: View {
     var body: some View {
         HStack {
-            CircleButtonGroup(items: colors, title: "Text color", selectedId: color) { color in
-                print(color)
+            
+            RectangleButtonGroup(items: ["ENGLISH", "FRENCH", "SPANISH", "日本語", "한국어"], title:"Speak Language", selectedId: "London") { selected in
+                print("Selected is: \(selected)")
             }
         }.padding()
     }
 }
 
-struct LanguageTestGroup_Previews: PreviewProvider {
+struct LanguageGroup_Previews: PreviewProvider {
     static var previews: some View {
         Color(.darkGray)
             .overlay(
-                LanguageTestGroup()
+                LanguageGroup()
             )
         
         

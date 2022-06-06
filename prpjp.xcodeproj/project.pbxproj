@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BAFC282F2846466F00899F5A /* prpjpApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC282E2846466F00899F5A /* prpjpApp.swift */; };
+		BA5E1B8D284E1FCD002AB742 /* PressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E1B8C284E1FCD002AB742 /* PressButton.swift */; };
+		BA5E1B90284E2821002AB742 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E1B8F284E2821002AB742 /* ColorExtension.swift */; };
+		BAB5029A284CD7DD0046D988 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB50299284CD7DD0046D988 /* AppDelegate.swift */; };
+		BAB5029C284CD8230046D988 /* prpjp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5029B284CD8230046D988 /* prpjp.swift */; };
 		BAFC28312846466F00899F5A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC28302846466F00899F5A /* ContentView.swift */; };
 		BAFC28332846467100899F5A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAFC28322846467100899F5A /* Assets.xcassets */; };
 		BAFC28362846467100899F5A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAFC28352846467100899F5A /* Preview Assets.xcassets */; };
 		BAFC283D28465DD200899F5A /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC283C28465DD200899F5A /* RadioButton.swift */; };
-		BAFC283F28465E3B00899F5A /* DisplayResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC283E28465E3B00899F5A /* DisplayResolution.swift */; };
 		BAFC28412846633700899F5A /* RectangleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC28402846633700899F5A /* RectangleButton.swift */; };
 		BAFC28432846689B00899F5A /* TranslationButtonGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC28422846689B00899F5A /* TranslationButtonGroup.swift */; };
 		BAFC28452849007C00899F5A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC28442849007C00899F5A /* Constants.swift */; };
@@ -20,13 +22,15 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		BA5E1B8C284E1FCD002AB742 /* PressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressButton.swift; sourceTree = "<group>"; };
+		BA5E1B8F284E2821002AB742 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
+		BAB50299284CD7DD0046D988 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		BAB5029B284CD8230046D988 /* prpjp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prpjp.swift; sourceTree = "<group>"; };
 		BAFC282B2846466F00899F5A /* prpjp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = prpjp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		BAFC282E2846466F00899F5A /* prpjpApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prpjpApp.swift; sourceTree = "<group>"; };
 		BAFC28302846466F00899F5A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BAFC28322846467100899F5A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BAFC28352846467100899F5A /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		BAFC283C28465DD200899F5A /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
-		BAFC283E28465E3B00899F5A /* DisplayResolution.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayResolution.swift; sourceTree = "<group>"; };
 		BAFC28402846633700899F5A /* RectangleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RectangleButton.swift; sourceTree = "<group>"; };
 		BAFC28422846689B00899F5A /* TranslationButtonGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationButtonGroup.swift; sourceTree = "<group>"; };
 		BAFC28442849007C00899F5A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -44,6 +48,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		BA5E1B8E284E233E002AB742 /* Buttons */ = {
+			isa = PBXGroup;
+			children = (
+				BAFC283C28465DD200899F5A /* RadioButton.swift */,
+				BAFC28402846633700899F5A /* RectangleButton.swift */,
+				BA5E1B8C284E1FCD002AB742 /* PressButton.swift */,
+				BAFC284628490BAC00899F5A /* CircleButton.swift */,
+				BAFC28422846689B00899F5A /* TranslationButtonGroup.swift */,
+			);
+			path = Buttons;
+			sourceTree = "<group>";
+		};
 		BAFC28222846466F00899F5A = {
 			isa = PBXGroup;
 			children = (
@@ -63,13 +79,11 @@
 		BAFC282D2846466F00899F5A /* prpjp */ = {
 			isa = PBXGroup;
 			children = (
-				BAFC282E2846466F00899F5A /* prpjpApp.swift */,
 				BAFC28302846466F00899F5A /* ContentView.swift */,
-				BAFC283C28465DD200899F5A /* RadioButton.swift */,
-				BAFC28402846633700899F5A /* RectangleButton.swift */,
-				BAFC284628490BAC00899F5A /* CircleButton.swift */,
-				BAFC28422846689B00899F5A /* TranslationButtonGroup.swift */,
-				BAFC283E28465E3B00899F5A /* DisplayResolution.swift */,
+				BA5E1B8F284E2821002AB742 /* ColorExtension.swift */,
+				BAB50299284CD7DD0046D988 /* AppDelegate.swift */,
+				BAB5029B284CD8230046D988 /* prpjp.swift */,
+				BA5E1B8E284E233E002AB742 /* Buttons */,
 				BAFC28322846467100899F5A /* Assets.xcassets */,
 				BAFC28342846467100899F5A /* Preview Content */,
 				BAFC28442849007C00899F5A /* Constants.swift */,
@@ -155,14 +169,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				BAFC283F28465E3B00899F5A /* DisplayResolution.swift in Sources */,
+				BAB5029A284CD7DD0046D988 /* AppDelegate.swift in Sources */,
 				BAFC283D28465DD200899F5A /* RadioButton.swift in Sources */,
 				BAFC28312846466F00899F5A /* ContentView.swift in Sources */,
 				BAFC284728490BAC00899F5A /* CircleButton.swift in Sources */,
+				BA5E1B8D284E1FCD002AB742 /* PressButton.swift in Sources */,
 				BAFC28412846633700899F5A /* RectangleButton.swift in Sources */,
 				BAFC28452849007C00899F5A /* Constants.swift in Sources */,
-				BAFC282F2846466F00899F5A /* prpjpApp.swift in Sources */,
+				BAB5029C284CD8230046D988 /* prpjp.swift in Sources */,
 				BAFC28432846689B00899F5A /* TranslationButtonGroup.swift in Sources */,
+				BA5E1B90284E2821002AB742 /* ColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -294,9 +310,12 @@
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = prpjp;
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "prpjp speech app";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -323,9 +342,12 @@
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSMicrophoneUsageDescription = prpjp;
+				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "prpjp speech app";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (

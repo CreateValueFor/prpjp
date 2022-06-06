@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-@main
+
 struct prpjpApp: App {
     var body: some Scene {
         WindowGroup {

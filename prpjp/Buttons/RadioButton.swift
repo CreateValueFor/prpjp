@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+
 struct ColorInvert: ViewModifier {
 
     @Environment(\.colorScheme) var colorScheme
@@ -59,7 +60,7 @@ struct RadioButton: View {
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .frame(width: self.size, height: self.size)
-                    .modifier(ColorInvert())
+                    .foregroundColor(self.selectedID == self.id ? Color(hex: "#008577") : .white)
                 Text(id)
                     .font(Font.system(size: textSize))
                 
@@ -113,15 +114,6 @@ struct RadioGroup_Previews: PreviewProvider {
             .overlay(
                 RadioGroup()
             )
-        
-        
-    }
-}
-
-struct ContentViewDark_Previews: PreviewProvider {
-    static var previews: some View {
-        RadioGroup()
-        .environment(\.colorScheme, .dark)
         
         
     }
