@@ -9,13 +9,16 @@ import SwiftUI
 import UIKit
 import Speech
 import AVFoundation
+import Alamofire
+import Network
 
 struct ContentView: View {
-    
     
     @State private var resolution : String = DISPLAY_RESOLUTION.XS.text
     @State private var speakLanguage : String = SPEAK_LANGUAGE.ENGLISH.id
     @State private var translationLanguage : String = TRANSLATION_LANGUAGE.ENGLISH.id
+    @State private var speakLangCode : String = "en"
+    @State private var translateLangCode : String = "en"
     @State private var background : String = PRP_COLOR.BLACK.rawValue
     @State private var textColor : String = PRP_COLOR.BLACK.rawValue
     @State private var fontSize : String = FONT_SIZE.SMALL.rawValue
@@ -27,6 +30,8 @@ struct ContentView: View {
     
     @State private var SpeakBtnPressed : Bool = false;
     @State private var DisplayBtnPressed : Bool = false;
+    
+    
     
     
     
@@ -51,7 +56,53 @@ struct ContentView: View {
     }
     let color : String = PRP_COLOR.BLACK.rawValue
     
-    // STT 서비스 로직
+    
+    // 소켓 연결 로직
+    private let defaultIP: String = "192.168.43.84"
+    @State var connection: NWConnection?
+
+    func someFunc() {
+
+        self.connection = NWConnection(host: "255.255.255.255", port: 6000, using: .udp)
+
+        self.connection?.stateUpdateHandler = { (newState) in
+            switch (newState) {
+            case .ready:
+                print("ready")
+                self.send()
+                self.receive()
+            case .setup:
+                print("setup")
+            case .cancelled:
+                print("cancelled")
+            case .preparing:
+                print("Preparing")
+            default:
+                print("waiting or failed")
+
+            }
+        }
+        self.connection?.start(queue: .global())
+
+    }
+
+    func send() {
+        self.connection?.send(content: "Test message".data(using: String.Encoding.utf8), completion: NWConnection.SendCompletion.contentProcessed(({ (NWError) in
+            print(NWError)
+        })))
+    }
+
+    func receive() {
+        self.connection?.receiveMessage { (data, context, isComplete, error) in
+            print("Got it")
+            print(data)
+        }
+    }
+    
+    
+    
+    
+    // STT service logic
     @State private var speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "ko-KR"))
     
     @State private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
@@ -92,7 +143,12 @@ struct ContentView: View {
                 
                 if result != nil {
                     
+                    
+                    
                     print(result?.bestTranscription.formattedString)
+                    translate(text : (result?.bestTranscription.formattedString)!
+                              as String
+                    )
                     
                     isFinal = (result?.isFinal)!
                 }
@@ -138,6 +194,32 @@ struct ContentView: View {
             }
         }
     
+    // 번역 로직
+    
+    private let TRANSLATE_PATH : String = "http://ec2-3-133-11-183.us-east-2.compute.amazonaws.com:8080/translate"
+    
+    func translate (text : String) {
+        
+        let parameters: [String: Any] = [
+            "msg": text,
+            "inputLang" : speakLangCode,
+            "outputLang" : translateLangCode
+            
+        ]
+        
+        AF.request(TRANSLATE_PATH, method: .post, parameters: parameters,encoding: URLEncoding.httpBody).responseJSON { response in
+            switch response.result {
+              case .success:
+                if let data = try! response.result.get() as? [String: Any] {
+                  print(data)
+                }
+              case .failure(let error):
+                print("Error: \(error)")
+                return
+              }
+        }
+    }
+    
     
     
     var body: some View {
@@ -158,9 +240,40 @@ struct ContentView: View {
                         
                         RectangleButtonGroup(items: speakLanguages, title: "Speak language", selectedId: speakLanguage) { speakLanguage in
                             print(speakLanguage)
+                            switch speakLanguage {
+                            case "ENGLISH":
+                                speakLangCode = "en"
+                            case "FRENCH":
+                                speakLangCode = "fr"
+                            case "SPANISH":
+                                speakLangCode = "es"
+                            case "日本語":
+                                speakLangCode = "ja"
+                            case "한국어":
+                                speakLangCode = "ko"
+                            default:
+                                print(speakLanguage)
+                            }
                         }
                         RectangleButtonGroup(items: translationLanguages, title: "Translation language", selectedId: translationLanguage) { translation in
+                            
                             print(translation)
+                            switch translation {
+                            case "ENGLISH":
+                                translateLangCode = "en"
+                            case "FRENCH":
+                                translateLangCode = "fr"
+                            case "SPANISH":
+                                translateLangCode = "es"
+                            case "日本語":
+                                translateLangCode = "ja"
+                            case "한국어":
+                                translateLangCode = "ko"
+                            default:
+                                print(translateLangCode)
+                            }
+                        
+                            
                         }
                         CircleButtonGroup(items: colors, title: "Background", selectedId: background) { color in
                             print(color)
@@ -195,6 +308,7 @@ struct ContentView: View {
                     }, isPressed: SpeakBtnPressed, disabled: isSpeakBtnDisabled)
                     PressButton("DISPLAY", callback: { isDisplay in
                         print(isDisplay)
+                        translate(text: text)
                         if(isDisplay){
                             let synthesizeer = AVSpeechSynthesizer()
                             let utterance = AVSpeechUtterance(string: text)

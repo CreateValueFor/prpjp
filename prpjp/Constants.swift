@@ -71,6 +71,21 @@ enum SPEAK_LANGUAGE : String, CaseIterable {
     case 日本語
     case 한국어
     
+    var code: String {
+        switch self {
+        case .ENGLISH :
+            return "en"
+        case .FRENCH:
+            return "fr"
+        case .SPANISH :
+            return "es"
+        case .日本語:
+            return "ja"
+        case .한국어:
+            return "ko"
+        }
+    }
+    
     var id: String{
         return self.rawValue
     }
@@ -82,6 +97,21 @@ enum TRANSLATION_LANGUAGE : String,CaseIterable {
     case SPANISH
     case 日本語
     case 한국어
+    
+    var code: String {
+        switch self {
+        case .ENGLISH :
+            return "en"
+        case .FRENCH:
+            return "fr"
+        case .SPANISH :
+            return "es"
+        case .日本語:
+            return "ja"
+        case .한국어:
+            return "ko"
+        }
+    }
     
     var id: String{
         return self.rawValue
