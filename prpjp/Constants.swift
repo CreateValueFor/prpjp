@@ -31,7 +31,7 @@ enum DISPLAY_RESOLUTION :CaseIterable{
         }
     }
     
-    var width : Int {
+    var width : CGFloat {
         switch self {
         case .XS:
             return 192
@@ -46,7 +46,7 @@ enum DISPLAY_RESOLUTION :CaseIterable{
         }
     }
     
-    var height : Int {
+    var height : CGFloat {
         switch self {
         case .XS:
             return 32

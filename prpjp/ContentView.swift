@@ -37,7 +37,11 @@ struct ContentView: View {
     
     
     
-    @State private var resolution : String = DISPLAY_RESOLUTION.XS.text
+    @State private var resolution : DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
+    @State private var mirrorWidth : CGFloat =  DISPLAY_RESOLUTION.XS.width
+    @State private var mirrorHeight : CGFloat =  DISPLAY_RESOLUTION.XS.height / 2
+    
+    
     @State private var speakLanguage : String = SPEAK_LANGUAGE.ENGLISH.id
     @State private var translationLanguage : String = TRANSLATION_LANGUAGE.ENGLISH.id
     @State private var speakLangCode : String = "en"
@@ -74,8 +78,8 @@ struct ContentView: View {
     
     
     
-    let resolutions: [String] = DISPLAY_RESOLUTION.allCases.map{
-        $0.text
+    let resolutions: [DISPLAY_RESOLUTION] = DISPLAY_RESOLUTION.allCases.map{
+        $0
     }
     let speakLanguages : [String] = SPEAK_LANGUAGE.allCases.map{
         $0.id
@@ -202,7 +206,7 @@ struct ContentView: View {
         let backgroundData = backgroundData(type: "com.example.flexibledisplaypanel.socket.data.Background.Color", colorType: background)
         let locationData = locationData(first: 0, second: 0)
         
-        let data = data(text: text, background: backgroundData, textColor: color, fontSize: fontSize, fontStyle: fontStyleBold, displaySize: resolution, location: locationData, isReverse: false)
+        let data = data(text: text, background: backgroundData, textColor: color, fontSize: fontSize, fontStyle: fontStyleBold, displaySize: resolution.text, location: locationData, isReverse: false)
         
         
         do {
@@ -376,8 +380,11 @@ struct ContentView: View {
                     HStack (alignment: .top){
                         ScrollView(.vertical){
                             VStack(alignment: .leading) {
-                                RadioButtonGroup(items: resolutions, selectedId: resolution) { text in
-                                    print(text)
+                                RadioButtonGroup(items: resolutions, selectedId: resolution) { resol in
+                                    print(resol)
+                                    mirrorHeight = resol.height / 2
+                                    mirrorWidth = resol.width
+                                    
                                 }
                                 TextField("", text: $text)
                                     .padding()
@@ -388,7 +395,6 @@ struct ContentView: View {
                                     })
                                 
                                 RectangleButtonGroup(items: speakLanguages, title: "Speak language", selectedId: speakLanguage) { speakLanguage in
-                                    print(speakLanguage)
                                     switch speakLanguage {
                                     case "ENGLISH":
                                         speakLangCode = "en"
@@ -405,8 +411,6 @@ struct ContentView: View {
                                     }
                                 }
                                 RectangleButtonGroup(items: translationLanguages, title: "Translation language", selectedId: translationLanguage) { translation in
-                                    
-                                    print(translation)
                                     switch translation {
                                     case "ENGLISH":
                                         translateLangCode = "en"
@@ -425,7 +429,6 @@ struct ContentView: View {
                                     
                                 }
                                 CircleButtonGroup(items: colors, title: "Background", selectedId: background) { color in
-                                    print(color)
                                     backgroundValue = colorConverter(color: color)
                                 }
                                 CircleButtonGroup(items: colors, title: "Text color", selectedId: textColor) { color in
@@ -444,13 +447,9 @@ struct ContentView: View {
                                     default :
                                         fontSizeValue = 8
                                     }
-                                    print(fontSize)
                                 }
-//                                RectangleButtonGroup(items: fontStyles, title: "Font style", selectedId: fontStyle) { fontStyle in
-//                                    print(fontStyle)
-//                                }
                                 FontStyleGroup(title: "Font style", isBold: fontStyleBold, isItalic: fontStyleItalic) { id, isSelected in
-                                    print(id, isSelected)
+                                    
                                     if(isSelected){
                                         switch id {
                                         case "ITALIC":
@@ -510,30 +509,38 @@ struct ContentView: View {
                         }
                         
                     }
-                        .padding(EdgeInsets(top: 80, leading: 30, bottom: 0, trailing: 30))
+                        .padding(EdgeInsets(top: 80, leading: 30, bottom: 0, trailing: 60))
                     // ZStack 분기점
-                    VStack(alignment: .trailing){
-                        ZStack{
-                            if fontStyleItalic == "ITALIC" {
-                                Text(finalText)
-                                    .foregroundColor(textColorValue)
-                                    .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
-                                    .italic()
-                            }else {
-                                Text(finalText)
-                                    .foregroundColor(textColorValue)
-                                    .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
+                    
+                        VStack(alignment: .trailing){
+                            ZStack(alignment: .topLeading){
+                                if fontStyleItalic == "ITALIC" {
+                                    Text(finalText)
+                                        .foregroundColor(textColorValue)
+                                        .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
+                                        .italic()
+                                        
+                                        
+                                }else {
+                                    Text(finalText)
+                                        .foregroundColor(textColorValue)
+                                        .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
+                                        
+                                }
+                                
                                     
                             }
-                            
-                                
+    //                        .padding(EdgeInsets(top: 10, leading: proxy.safeAreaInsets.leading, bottom: 10, trailing: 0))
                         }
-//                        .padding(EdgeInsets(top: 10, leading: proxy.safeAreaInsets.leading, bottom: 10, trailing: 0))
-                    }
-                    
-                        .frame(width: 100, height: 40)
-                        .background(backgroundValue)
-                        .position(x: proxy.safeAreaInsets.leading + 5, y: proxy.safeAreaInsets.top + 20)
+                        
+                        
+                            .frame(width: mirrorWidth, height: mirrorHeight)
+                            .background(backgroundValue)
+                            
+                
+                   
+                        
+                        
                         
                         
                 }
@@ -541,6 +548,8 @@ struct ContentView: View {
                 
                 
             )
+            .edgesIgnoringSafeArea([.leading,.trailing,.top,.bottom])
+            .padding(.leading, proxy.safeAreaInsets.leading / 2)
             .onAppear{
                 print("Content loaded")
                 // How to use
