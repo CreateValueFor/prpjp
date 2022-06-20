@@ -10,6 +10,7 @@
 		BA5E1B8D284E1FCD002AB742 /* PressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E1B8C284E1FCD002AB742 /* PressButton.swift */; };
 		BA5E1B90284E2821002AB742 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E1B8F284E2821002AB742 /* ColorExtension.swift */; };
 		BA5E1B96284E4B31002AB742 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E1B95284E4B31002AB742 /* SocketManager.swift */; };
+		BA8242F4285DC449000F909A /* NetWorkPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8242F3285DC449000F909A /* NetWorkPermission.swift */; };
 		BAAB51222850F66D00B5540F /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAB51212850F66D00B5540F /* Request.swift */; };
 		BAB5029A284CD7DD0046D988 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB50299284CD7DD0046D988 /* AppDelegate.swift */; };
 		BAB5029C284CD8230046D988 /* prpjp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5029B284CD8230046D988 /* prpjp.swift */; };
@@ -30,6 +31,7 @@
 		BA5E1B8C284E1FCD002AB742 /* PressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressButton.swift; sourceTree = "<group>"; };
 		BA5E1B8F284E2821002AB742 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		BA5E1B95284E4B31002AB742 /* SocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
+		BA8242F3285DC449000F909A /* NetWorkPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetWorkPermission.swift; sourceTree = "<group>"; };
 		BAAB51202850F60A00B5540F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BAAB51212850F66D00B5540F /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		BAB50299284CD7DD0046D988 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				BAFC28342846467100899F5A /* Preview Content */,
 				BAFC28442849007C00899F5A /* Constants.swift */,
 				BAAB51212850F66D00B5540F /* Request.swift */,
+				BA8242F3285DC449000F909A /* NetWorkPermission.swift */,
 			);
 			path = prpjp;
 			sourceTree = "<group>";
@@ -251,6 +254,7 @@
 				BAFC28312846466F00899F5A /* ContentView.swift in Sources */,
 				BAFC284728490BAC00899F5A /* CircleButton.swift in Sources */,
 				BA5E1B96284E4B31002AB742 /* SocketManager.swift in Sources */,
+				BA8242F4285DC449000F909A /* NetWorkPermission.swift in Sources */,
 				BA5E1B8D284E1FCD002AB742 /* PressButton.swift in Sources */,
 				BAFC28412846633700899F5A /* RectangleButton.swift in Sources */,
 				BAFC28452849007C00899F5A /* Constants.swift in Sources */,
@@ -390,6 +394,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = prpjp/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = prpjp;
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "prpjp speech app";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -425,6 +430,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = prpjp/Info.plist;
+				INFOPLIST_KEY_NSLocalNetworkUsageDescription = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = prpjp;
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "prpjp speech app";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

@@ -87,12 +87,66 @@ struct RectangleButtonGroup: View {
     }
 }
 
+struct FontStyleGroup : View {
+    let title : String
+    
+    @State var isBold: String = ""
+    @State var isItalic: String = ""
+    
+    let callback: (String, Bool) -> ()
+    
+    var body : some View {
+        VStack(alignment: .leading){
+            Text(title)
+                .foregroundColor(.white)
+            HStack{
+                RectangleButton("BOLD", callback: self.boldCallback, selectedID: self.isBold)
+                RectangleButton("ITALIC", callback: self.italicCallback, selectedID: self.isItalic)
+            }
+        }
+    }
+    
+    func boldCallback(id: String) {
+        let isSelected = !(isBold == id)
+        if isSelected {
+            print("체크해야함")
+            isBold = "BOLD"
+        }else {
+            print("체크해제")
+            isBold = ""
+        }
+
+        callback(id, isSelected)
+        
+    }
+    
+    func italicCallback(id: String) {
+        let isSelected = !(isItalic == id)
+        if isSelected {
+            print("체크해야함")
+            isItalic = "ITALIC"
+        }else {
+            print("체크해제")
+            isItalic = ""
+        }
+        
+//        isItalic = isSelected ? "" : isItalic
+        callback(id, isSelected)
+    }
+    
+    
+}
+
+
 struct LanguageGroup: View {
     var body: some View {
-        HStack {
+        VStack(alignment: .leading) {
             
             RectangleButtonGroup(items: ["ENGLISH", "FRENCH", "SPANISH", "日本語", "한국어"], title:"Speak Language", selectedId: "London") { selected in
                 print("Selected is: \(selected)")
+            }
+            FontStyleGroup(title: "Font style") { a, b in
+                print(a,b)
             }
         }.padding()
     }

@@ -175,14 +175,14 @@ enum FONT_SIZE : String ,CaseIterable{
     case MEDIUM
     case LARGE
     
-    var size: Int{
+    var size: CGFloat{
         switch self {
         case .LARGE:
-            return 32
-        case .MEDIUM:
-            return 24
-        case .SMALL:
             return 16
+        case .MEDIUM:
+            return 12
+        case .SMALL:
+            return 10
         }
     }
 }
