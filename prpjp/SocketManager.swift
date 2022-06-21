@@ -24,10 +24,28 @@ class SwiftSockMine {
     func InitSocket(address: String, portNum : Int32){
         self.addr = address
         self.port = portNum
-        print(address)
-        print(portNum)
-        print("소켓 연결 시작")
+        print("소켓 연결 시작 \(address):\(portNum)")
         client = TCPClient(address: address, port: Int32(portNum))
+        switch client?.connect(timeout: 10){
+        case .success :
+            print("소켓 연결 성공")
+            guard let data = client?.read(1024 * 10) else {return print("haha")}
+            print("수신 내용 \(data)" )
+            
+            switch client?.send(string: "{'text':'hello','background':{'type':'com.example.flexibledisplaypanel.socket.data.Background.Color','colorType':'BLUE'},'textColor':'RED','fontSize':'LARGE','fontStyle':'NONE','displaySize':'D192X32','location':{'first':3,'second':0},'isReverse':false})"){
+            case .success:
+                print("전달 성공")
+            case .failure(let error):
+                print("에러 발생 \(error.localizedDescription)")
+            default:
+                print("알 수 없는 에러 발생")
+            }
+        case .failure(let error):
+            print("에러발생 \(error)")
+        default:
+            print("알 수 없는 에러 발생")
+        }
+//        print(client?.read(1024 * 10))
         
         
     }

@@ -128,17 +128,22 @@ struct ContentView: View {
     @State  var udpConnection: NWConnection?
     var backgroundQueueUdpListener = DispatchQueue.main
     var mysock = SwiftSockMine.mInstance
+    
+    func portForEndpoint(_ endpoint: NWEndpoint) -> NWEndpoint.Host? {
+        switch endpoint {
+        case .hostPort(let host, let port):
+            return host
+        default:
+            return nil
+        }
+    }
 
     func findUDP(){
         let params = NWParameters.udp
         udpListener = try? NWListener(using: params, on: 8200)
-        print(udpListener)
         udpListener?.service = NWListener.Service.init(type: "_appname._udp")
         self.udpListener?.stateUpdateHandler = { update in
-              
-            
               switch update {
-              
               case .failed:
                 print("failed")
               default:
@@ -146,11 +151,14 @@ struct ContentView: View {
               }
             }
         
-        
-        
         self.udpListener?.newConnectionHandler = { connection in
-          print("connection")
-            print(connection.endpoint)
+            
+            
+            guard let hostEnum = portForEndpoint(connection.endpoint) else {return }
+            let host = String(describing: hostEnum)
+            print("extracted Host is \(host)")
+            
+            
             connection.receiveMessage { completeContent, contentContext, isComplete, error in
                 guard let data = completeContent,
                       let data2 = contentContext
@@ -159,12 +167,12 @@ struct ContentView: View {
                 
                 
                 if let string = String(bytes: data, encoding: .utf8) {
-                    print(string)
+                    print("sended UDP PACKET is \(string)" )
                     let text = string.components(separatedBy: ":")
                     if text[0] == "Hyuns"{
                         let port = Int32(text[1]) ?? 0
-                        mysock.InitSocket(address: "172.20.10.4", portNum: port)
-                        mysock.sendMessage(msg: "hello")
+                        mysock.InitSocket(address: host, portNum: port)
+                        
                     }
                 } else {
                     print("not a valid UTF-8 sequence")
@@ -183,22 +191,20 @@ struct ContentView: View {
     
     func createConnection(connection: NWConnection) {
        self.udpConnection = connection
-         self.udpConnection?.stateUpdateHandler = { (newState) in
-           switch (newState) {
-           case .ready:
-             print("ready")
-//             self.send()
-//             self.receive()
-           case .setup:
-             print("setup")
-           case .cancelled:
-             print("cancelled")
-           case .preparing:
-             print("Preparing")
-           default:
-             print("waiting or failed")
-           }
-         }
+//         self.udpConnection?.stateUpdateHandler = { (newState) in
+//           switch (newState) {
+//           case .ready:
+//             print("ready")
+//           case .setup:
+//             print("setup")
+//           case .cancelled:
+//             print("cancelled")
+//           case .preparing:
+//             print("Preparing")
+//           default:
+//             print("waiting or failed")
+//           }
+//         }
          self.udpConnection?.start(queue: .global())
     }
 
@@ -235,13 +241,6 @@ struct ContentView: View {
         
             
         }
-
-    func receive() {
-        self.connection?.receiveMessage { (data, context, isComplete, error) in
-            print("Got it")
-            print(data)
-        }
-    }
     
     
     
