@@ -39,20 +39,18 @@ struct PressButton: View {
     
     var body: some View {
         ZStack{
-            Button(action: {}, label: {Text(id)})
+            Button(action: {
+                self.callback(false)
+            }, label: {Text(id)})
                 .frame(width: 150, height: 80)
                 .background(.gray)
                 .foregroundColor(.white)
                 .simultaneousGesture(
-                    DragGesture(minimumDistance: 0)
-                        .onChanged({ _ in
-                            self.callback(true)
-                            
-                        })
-                        .onEnded({ _ in
-                            self.callback(false)
-                        })
-                )
+                    LongPressGesture(minimumDuration: 0.1).onEnded({ _ in
+                        self.callback(true)
+                    })
+                ) 
+            
                 .disabled(disabled)
         }
     }

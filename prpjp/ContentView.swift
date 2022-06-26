@@ -32,6 +32,14 @@ struct locationData  : Codable {
     var second : Int
 }
 
+struct translateResposne : Decodable {
+    var result : String
+    var bytes : Int
+    
+}
+
+
+
 struct ContentView: View {
     
     
@@ -66,6 +74,9 @@ struct ContentView: View {
     
     @State private var finalText : String = "Placeholder"
     @State private var text : String = ""
+    @State private var xLocation : CGFloat = 3
+    @State private var yLocation : CGFloat = 0
+    
     @State private var isSpeakBtnDisabled : Bool = false
     @State private var isDisplayBtnDisabled : Bool = false
     
@@ -182,31 +193,15 @@ struct ContentView: View {
             }
             
         
-            createConnection(connection: connection)
+//            createConnection(connection: connection)
+            self.udpConnection = connection
+            self.udpConnection?.start(queue: .global())
             
           self.udpListener?.cancel()
         }
         udpListener?.start(queue: self.backgroundQueueUdpListener)
     }
     
-    func createConnection(connection: NWConnection) {
-       self.udpConnection = connection
-//         self.udpConnection?.stateUpdateHandler = { (newState) in
-//           switch (newState) {
-//           case .ready:
-//             print("ready")
-//           case .setup:
-//             print("setup")
-//           case .cancelled:
-//             print("cancelled")
-//           case .preparing:
-//             print("Preparing")
-//           default:
-//             print("waiting or failed")
-//           }
-//         }
-         self.udpConnection?.start(queue: .global())
-    }
 
     func send() {
         let backgroundData = backgroundData(type: "com.example.flexibledisplaypanel.socket.data.Background.Color", colorType: background)
@@ -234,19 +229,37 @@ struct ContentView: View {
         }catch{
             print(error)
         }
-        
-        
-        
-        
-        
-            
         }
     
-    
-    
+    // TTS Logic
+    func startTTS(){
+        let synthesizeer = AVSpeechSynthesizer()
+        let utterance = AVSpeechUtterance(string: text)
+        
+        var speechText : String?
+        switch translateLangCode {
+        case "ENGLISH":
+            speechText = "en_US"
+        case "FRENCH":
+            speechText = "fr_FR"
+        case "SPANISH":
+            speechText = "es"
+        case "日本語":
+            speechText = "ja_JP"
+        case "한국어":
+            speechText = "ko_KR"
+        default:
+            print(speechText)
+        }
+        utterance.voice = AVSpeechSynthesisVoice(language: speechText)
+        
+        utterance.rate = 0.4
+        synthesizeer.speak(utterance)
+        send()
+    }
     
     // STT service logic
-    @State private var speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "ko-KR"))
+    @State private var speechRecognizer = SFSpeechRecognizer(locale: Locale.init(identifier: "en_US"))
     
     @State private var recognitionRequest: SFSpeechAudioBufferRecognitionRequest?
     @State private var recognitionTask: SFSpeechRecognitionTask?
@@ -255,7 +268,7 @@ struct ContentView: View {
     
     
     func startRecording() {
-            
+            print("음성 녹음 시작")
             if recognitionTask != nil {
                 recognitionTask?.cancel()
                 recognitionTask = nil
@@ -281,14 +294,10 @@ struct ContentView: View {
             recognitionRequest.shouldReportPartialResults = true
             
             recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest, resultHandler: { (result, error) in
-                
                 var isFinal = false
+                print(result?.bestTranscription.formattedString)
                 
                 if result != nil {
-                    
-                    
-                    
-                    print(result?.bestTranscription.formattedString)
                     translate(text : (result?.bestTranscription.formattedString)!
                               as String
                     )
@@ -352,21 +361,14 @@ struct ContentView: View {
             
         ]
         
-        AF.request(TRANSLATE_PATH, method: .post, parameters: parameters,encoding: URLEncoding.httpBody).responseJSON { response in
-            switch response.result {
-              case .success:
-                print("번역 성공")
-                if let data = try! response.result.get() as? [String : String] {
-                  
-                    guard let translatedText = data["result"] else {return}
-                    self.text = translatedText
-                    
-                }
-              case .failure(let error):
-                print("Error: \(error)")
-                return
-              }
-        }
+        AF.request(TRANSLATE_PATH, method: .post, parameters: parameters,encoding: URLEncoding.httpBody)
+            .validate()
+            .responseDecodable(of: translateResposne.self){
+                resposne in
+                
+                guard let trText =  resposne.value?.result else {return}
+                self.text = trText
+            }
     }
     
     
@@ -380,9 +382,10 @@ struct ContentView: View {
                         ScrollView(.vertical){
                             VStack(alignment: .leading) {
                                 RadioButtonGroup(items: resolutions, selectedId: resolution) { resol in
-                                    print(resol)
                                     mirrorHeight = resol.height / 2
                                     mirrorWidth = resol.width
+                                    xLocation = resol.xLocation
+                                    yLocation = resol.yLocation
                                     
                                 }
                                 TextField("", text: $text)
@@ -392,19 +395,24 @@ struct ContentView: View {
                                     .overlay(VStack{
                                         Divider().offset(x: 0, y: 12)
                                     })
-                                
                                 RectangleButtonGroup(items: speakLanguages, title: "Speak language", selectedId: speakLanguage) { speakLanguage in
                                     switch speakLanguage {
                                     case "ENGLISH":
                                         speakLangCode = "en"
+                                        speechRecognizer =
+                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.ENGLISH.lang)
                                     case "FRENCH":
                                         speakLangCode = "fr"
+                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.FRENCH.lang)
                                     case "SPANISH":
                                         speakLangCode = "es"
+                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.SPANISH.lang)
                                     case "日本語":
                                         speakLangCode = "ja"
+                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.日本語.lang)
                                     case "한국어":
                                         speakLangCode = "ko"
+                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.한국어.lang)
                                     default:
                                         print(speakLanguage)
                                     }
@@ -479,7 +487,13 @@ struct ContentView: View {
                         }
                         VStack(alignment: .trailing){
                             PressButton("SPEAK", callback: { isSpeak in
+                                print("함수실행 실행인자\(isSpeak)")
                                 if(isSpeak){
+                                    if audioEngine.isRunning{
+                                        audioEngine.stop()
+                                        recognitionRequest?.endAudio()
+                                        isSpeakBtnDisabled = true
+                                    }
                                     startRecording()
                                 }else{
                                     if audioEngine.isRunning{
@@ -496,12 +510,7 @@ struct ContentView: View {
                                 finalText = text
                                 translate(text: text)
                                 if(isDisplay){
-                                    let synthesizeer = AVSpeechSynthesizer()
-                                    let utterance = AVSpeechUtterance(string: text)
-                                    utterance.voice = AVSpeechSynthesisVoice(language: "ko-KR")
-                                    utterance.rate = 0.4
-                                    synthesizeer.speak(utterance)
-                                    send()
+                                    startTTS()
                                     
                                 }
                             }, isPressed: DisplayBtnPressed, disabled: isDisplayBtnDisabled)
@@ -535,6 +544,7 @@ struct ContentView: View {
                         
                             .frame(width: mirrorWidth, height: mirrorHeight)
                             .background(backgroundValue)
+                            .padding(EdgeInsets(top: yLocation, leading: xLocation, bottom: 0, trailing: 0))
                             
                 
                    

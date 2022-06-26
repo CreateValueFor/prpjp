@@ -9,12 +9,14 @@ import Foundation
 import SwiftUI
 
 
+
 enum DISPLAY_RESOLUTION :CaseIterable{
     case XS
     case SM
     case MD
     case LG
     case XL
+    case SXL
     
     var text : String {
         switch self {
@@ -28,6 +30,8 @@ enum DISPLAY_RESOLUTION :CaseIterable{
             return "384 X 64"
         case .XL:
             return "384 X 128"
+        case .SXL:
+            return "360 X 28"
         }
     }
     
@@ -43,6 +47,8 @@ enum DISPLAY_RESOLUTION :CaseIterable{
             return 384
         case .XL:
             return 384
+        case .SXL:
+            return 360
         }
     }
     
@@ -58,6 +64,42 @@ enum DISPLAY_RESOLUTION :CaseIterable{
             return 64
         case .XL:
             return 128
+        case .SXL:
+            return 28
+        }
+    }
+    
+    var xLocation : CGFloat {
+        switch self {
+        case .XS:
+            return 0
+        case .SM :
+            return 3
+        case .MD:
+            return 3
+        case .LG:
+            return 3
+        case .XL:
+            return 3
+        case .SXL:
+            return 0
+        }
+    }
+    
+    var yLocation : CGFloat {
+        switch self {
+        case .XS:
+            return 151
+        case .SM :
+            return 0
+        case .MD:
+            return 0
+        case .LG:
+            return 0
+        case .XL:
+            return 0
+        case .SXL:
+            return 0
         }
     }
     
@@ -83,6 +125,21 @@ enum SPEAK_LANGUAGE : String, CaseIterable {
             return "ja"
         case .한국어:
             return "ko"
+        }
+    }
+    
+    var lang : Locale {
+        switch self {
+        case .ENGLISH :
+            return Locale(identifier:  "en_US")
+        case .FRENCH:
+            return Locale(identifier:  "fr_FR")
+        case .SPANISH :
+            return Locale(identifier:  "es")
+        case .日本語:
+            return Locale(identifier:  "ja_JP")
+        case .한국어:
+            return Locale(identifier:  "ko_KR")
         }
     }
     
