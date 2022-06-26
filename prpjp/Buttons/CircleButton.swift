@@ -65,7 +65,7 @@ struct CircleButtonGroup: View {
     let callback: (String) -> ()
 
     var body: some View {
-        ScrollView(.horizontal){
+        HStack{
             VStack(alignment: .leading){
                 Text(title)
                     .foregroundColor(.white)

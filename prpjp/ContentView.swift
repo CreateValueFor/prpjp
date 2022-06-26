@@ -12,6 +12,8 @@ import AVFoundation
 import Alamofire
 import Network
 
+
+
 struct data : Codable{
     var text : String
     var background : backgroundData
@@ -82,6 +84,10 @@ struct ContentView: View {
     
     @State private var SpeakBtnPressed : Bool = false;
     @State private var DisplayBtnPressed : Bool = false;
+    
+    //image
+    @State var isShowPicker: Bool = false
+        @State var image: Image? = Image("placeholder")
     
     
     // safe area inset
@@ -435,9 +441,34 @@ struct ContentView: View {
                                 
                                     
                                 }
-                                CircleButtonGroup(items: colors, title: "Background", selectedId: background) { color in
-                                    backgroundValue = colorConverter(color: color)
+                                HStack(alignment: .bottom, spacing: 20){
+                                    CircleButtonGroup(items: colors, title: "Background", selectedId: background) { color in
+                                        image = Image("placeholder")
+                                        backgroundValue = colorConverter(color: color)
+                                    }
+                                    
+                                    ZStack {
+                                        
+                                        VStack {
+                                                        
+                                                        Button(action: {
+                                                            withAnimation {
+                                                                self.isShowPicker.toggle()
+                                                            }
+                                                        }) {
+
+                                                            Text("IMAGE").font(Font.system(size: 12))
+                                                                .foregroundColor(.white)
+                                                        }.foregroundColor(.white)
+                                                .frame(width: 60, height: 30)
+                                                .background(.gray)
+                                                    }
+                                                }
+                                                .sheet(isPresented: $isShowPicker) {
+                                                    ImagePicker(image: self.$image)
+                                                }
                                 }
+                                
                                 CircleButtonGroup(items: colors, title: "Text color", selectedId: textColor) { color in
                                     textColorValue = colorConverter(color: color)
                                     
@@ -455,6 +486,7 @@ struct ContentView: View {
                                         fontSizeValue = 8
                                     }
                                 }
+                                
                                 FontStyleGroup(title: "Font style", isBold: fontStyleBold, isItalic: fontStyleItalic) { id, isSelected in
                                     
                                     if(isSelected){
@@ -523,13 +555,24 @@ struct ContentView: View {
                         VStack(alignment: .trailing){
                             ZStack(alignment: .topLeading){
                                 if fontStyleItalic == "ITALIC" {
+                                    
+                                    image?
+                                        .resizable()
+//                                        .scaledToFill()
+                                        .frame(width: mirrorWidth, height: mirrorHeight)
                                     Text(finalText)
                                         .foregroundColor(textColorValue)
                                         .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
                                         .italic()
                                         
                                         
+                                        
                                 }else {
+                                    
+                                    image?
+                                        .resizable()
+//                                        .scaledToFill()
+                                        .frame(width: mirrorWidth, height: mirrorHeight)
                                     Text(finalText)
                                         .foregroundColor(textColorValue)
                                         .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )

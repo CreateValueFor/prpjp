@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BA54A4FF2868C6A400F0D354 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */; };
+		BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA54A5002868CD5F00F0D354 /* ImagePicker.swift */; };
 		BA5E1B8D284E1FCD002AB742 /* PressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E1B8C284E1FCD002AB742 /* PressButton.swift */; };
 		BA5E1B90284E2821002AB742 /* ColorExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E1B8F284E2821002AB742 /* ColorExtension.swift */; };
 		BA5E1B96284E4B31002AB742 /* SocketManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E1B95284E4B31002AB742 /* SocketManager.swift */; };
@@ -30,6 +31,7 @@
 		29588CBB10066F5A27EDC45A /* Pods_prpjp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_prpjp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5724131929B4E040FCD003F /* Pods-prpjp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prpjp.release.xcconfig"; path = "Target Support Files/Pods-prpjp/Pods-prpjp.release.xcconfig"; sourceTree = "<group>"; };
 		BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
+		BA54A5002868CD5F00F0D354 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BA5E1B8C284E1FCD002AB742 /* PressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressButton.swift; sourceTree = "<group>"; };
 		BA5E1B8F284E2821002AB742 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		BA5E1B95284E4B31002AB742 /* SocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 			children = (
 				BAAB51202850F60A00B5540F /* Info.plist */,
 				BAFC28302846466F00899F5A /* ContentView.swift */,
+				BA54A5002868CD5F00F0D354 /* ImagePicker.swift */,
 				BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */,
 				BA5E1B95284E4B31002AB742 /* SocketManager.swift */,
 				BA5E1B8F284E2821002AB742 /* ColorExtension.swift */,
@@ -263,6 +266,7 @@
 				BAFC28412846633700899F5A /* RectangleButton.swift in Sources */,
 				BAFC28452849007C00899F5A /* Constants.swift in Sources */,
 				BAB5029C284CD8230046D988 /* prpjp.swift in Sources */,
+				BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */,
 				BAFC28432846689B00899F5A /* TranslationButtonGroup.swift in Sources */,
 				BA5E1B90284E2821002AB742 /* ColorExtension.swift in Sources */,
 			);
