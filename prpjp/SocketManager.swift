@@ -45,7 +45,7 @@ class SwiftSockMine {
         default:
             print("알 수 없는 에러 발생")
         }
-//        print(client?.read(1024 * 10))
+        //        print(client?.read(1024 * 10))
         
         
     }

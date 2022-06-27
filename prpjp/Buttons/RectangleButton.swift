@@ -141,7 +141,6 @@ struct FontStyleGroup : View {
 struct LanguageGroup: View {
     var body: some View {
         VStack(alignment: .leading) {
-            
             RectangleButtonGroup(items: ["ENGLISH", "FRENCH", "SPANISH", "日本語", "한국어"], title:"Speak Language", selectedId: "London") { selected in
                 print("Selected is: \(selected)")
             }

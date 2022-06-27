@@ -87,7 +87,7 @@ struct ContentView: View {
     
     //image
     @State var isShowPicker: Bool = false
-        @State var image: Image? = Image("placeholder")
+    @State var image: Image? = Image("placeholder")
     
     
     // safe area inset
@@ -154,19 +154,19 @@ struct ContentView: View {
             return nil
         }
     }
-
+    
     func findUDP(){
         let params = NWParameters.udp
         udpListener = try? NWListener(using: params, on: 8200)
         udpListener?.service = NWListener.Service.init(type: "_appname._udp")
         self.udpListener?.stateUpdateHandler = { update in
-              switch update {
-              case .failed:
+            switch update {
+            case .failed:
                 print("failed")
-              default:
+            default:
                 print("default update")
-              }
             }
+        }
         
         self.udpListener?.newConnectionHandler = { connection in
             
@@ -179,9 +179,8 @@ struct ContentView: View {
             connection.receiveMessage { completeContent, contentContext, isComplete, error in
                 guard let data = completeContent,
                       let data2 = contentContext
-                
-                    else {return}
-                
+                        
+                else {return}
                 
                 if let string = String(bytes: data, encoding: .utf8) {
                     print("sended UDP PACKET is \(string)" )
@@ -198,17 +197,17 @@ struct ContentView: View {
                 
             }
             
-        
-//            createConnection(connection: connection)
+            
+            //            createConnection(connection: connection)
             self.udpConnection = connection
             self.udpConnection?.start(queue: .global())
             
-          self.udpListener?.cancel()
+            self.udpListener?.cancel()
         }
         udpListener?.start(queue: self.backgroundQueueUdpListener)
     }
     
-
+    
     func send() {
         let backgroundData = backgroundData(type: "com.example.flexibledisplaypanel.socket.data.Background.Color", colorType: background)
         let locationData = locationData(first: 0, second: 0)
@@ -219,23 +218,23 @@ struct ContentView: View {
         do {
             let jsonData = try JSONEncoder().encode(data)
             
-//            let jsonString = String(data: jsonData, encoding: .utf8)!
+            //            let jsonString = String(data: jsonData, encoding: .utf8)!
             mysock.sendMessage(msg: "hello")
-//            connection!.send(content: jsonData, completion: .contentProcessed({ sendError in
-//                if let error = sendError {
-//                    NSLog("Unable to process and send the data: \(error)")
-//                } else {
-//                    NSLog("Data has been sent")
-//                    connection!.receiveMessage { (data, context, isComplete, error) in
-//                        guard let myData = data else { return }
-//                        NSLog("Received message: " + String(decoding: myData, as: UTF8.self))
-//                    }
-//                }
-//            }))
+            //            connection!.send(content: jsonData, completion: .contentProcessed({ sendError in
+            //                if let error = sendError {
+            //                    NSLog("Unable to process and send the data: \(error)")
+            //                } else {
+            //                    NSLog("Data has been sent")
+            //                    connection!.receiveMessage { (data, context, isComplete, error) in
+            //                        guard let myData = data else { return }
+            //                        NSLog("Received message: " + String(decoding: myData, as: UTF8.self))
+            //                    }
+            //                }
+            //            }))
         }catch{
             print(error)
         }
-        }
+    }
     
     // TTS Logic
     func startTTS(){
@@ -274,113 +273,90 @@ struct ContentView: View {
     
     
     func startRecording() {
-            print("음성 녹음 시작")
-            if recognitionTask != nil {
-                recognitionTask?.cancel()
-                recognitionTask = nil
-            }
+        print("음성 녹음 시작")
+        if recognitionTask != nil {
+            recognitionTask?.cancel()
+            recognitionTask = nil
+        }
+        
+        let audioSession = AVAudioSession.sharedInstance()
+        do {
+            try audioSession.setCategory(AVAudioSession.Category.record)
+            try audioSession.setMode(AVAudioSession.Mode.measurement)
+            try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
+        } catch {
+            print("audioSession properties weren't set because of an error.")
+        }
+        
+        recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
+        
+        let inputNode = audioEngine.inputNode
+        
+        guard let recognitionRequest = recognitionRequest else {
+            fatalError("Unable to create an SFSpeechAudioBufferRecognitionRequest object")
+        }
+        
+        recognitionRequest.shouldReportPartialResults = true
+        
+        recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest, resultHandler: { (result, error) in
+            var isFinal = false
+            print(result?.bestTranscription.formattedString)
             
-            let audioSession = AVAudioSession.sharedInstance()
-            do {
-                try audioSession.setCategory(AVAudioSession.Category.record)
-                try audioSession.setMode(AVAudioSession.Mode.measurement)
-                try audioSession.setActive(true, options: .notifyOthersOnDeactivation)
-            } catch {
-                print("audioSession properties weren't set because of an error.")
-            }
-            
-            recognitionRequest = SFSpeechAudioBufferRecognitionRequest()
-            
-            let inputNode = audioEngine.inputNode
-            
-            guard let recognitionRequest = recognitionRequest else {
-                fatalError("Unable to create an SFSpeechAudioBufferRecognitionRequest object")
-            }
-            
-            recognitionRequest.shouldReportPartialResults = true
-            
-            recognitionTask = speechRecognizer?.recognitionTask(with: recognitionRequest, resultHandler: { (result, error) in
-                var isFinal = false
-                print(result?.bestTranscription.formattedString)
+            if result != nil {
+                let text = (result?.bestTranscription.formattedString)! as String
+                //                    translate(text : (result?.bestTranscription.formattedString)!
+                //                              as String)
+                Translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: text)
                 
-                if result != nil {
-                    translate(text : (result?.bestTranscription.formattedString)!
-                              as String
-                    )
-                    
-                    isFinal = (result?.isFinal)!
-                }
                 
-                if error != nil || isFinal {
-                    self.audioEngine.stop()
-                    inputNode.removeTap(onBus: 0)
-                    
-                    self.recognitionRequest = nil
-                    self.recognitionTask = nil
-                }
-            })
-            
-            let recordingFormat = inputNode.outputFormat(forBus: 0)
-            inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, when) in
-                self.recognitionRequest?.append(buffer)
+                isFinal = (result?.isFinal)!
             }
             
-            audioEngine.prepare()
-            
-            do {
-                try audioEngine.start()
-            } catch {
-                print("audioEngine couldn't start because of an error.")
+            if error != nil || isFinal {
+                self.audioEngine.stop()
+                inputNode.removeTap(onBus: 0)
+                
+                self.recognitionRequest = nil
+                self.recognitionTask = nil
             }
-            
+        })
+        
+        let recordingFormat = inputNode.outputFormat(forBus: 0)
+        inputNode.installTap(onBus: 0, bufferSize: 1024, format: recordingFormat) { (buffer, when) in
+            self.recognitionRequest?.append(buffer)
+        }
+        
+        audioEngine.prepare()
+        
+        do {
+            try audioEngine.start()
+        } catch {
+            print("audioEngine couldn't start because of an error.")
+        }
+        
         print("Say something, I'm listening!")
-            
-            
-        }
         
         
-       
-        func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
-            if available {
-                isSpeakBtnDisabled = false
-                print("인식 가능")
-                
-            } else {
-                isSpeakBtnDisabled = true
-                print("인식 불가")
-                
-            }
-        }
-    
-    // 번역 로직
-    
-    private let TRANSLATE_PATH : String = "http://ec2-3-133-11-183.us-east-2.compute.amazonaws.com:8080/translate"
-    
-    func translate (text : String) {
-        print("번역 시작")
-        print("번역 옵션 \(speakLangCode) \(translateLangCode)")
-        
-        let parameters: [String: Any] = [
-            "msg": text,
-            "inputLang" : speakLangCode,
-            "outputLang" : translateLangCode
-            
-        ]
-        
-        AF.request(TRANSLATE_PATH, method: .post, parameters: parameters,encoding: URLEncoding.httpBody)
-            .validate()
-            .responseDecodable(of: translateResposne.self){
-                resposne in
-                
-                guard let trText =  resposne.value?.result else {return}
-                self.text = trText
-            }
     }
     
     
     
+    func speechRecognizer(_ speechRecognizer: SFSpeechRecognizer, availabilityDidChange available: Bool) {
+        if available {
+            isSpeakBtnDisabled = false
+            print("인식 가능")
+            
+        } else {
+            isSpeakBtnDisabled = true
+            print("인식 불가")
+            
+        }
+    }
+    
+    // 번역 로직
+    
     var body: some View {
-        GeometryReader{
+        GeometryReader {
             proxy in
             Color(hex: "#333333").overlay(
                 ZStack(alignment: .topLeading) {
@@ -438,7 +414,7 @@ struct ContentView: View {
                                     default:
                                         print(translateLangCode)
                                     }
-                                
+                                    
                                     
                                 }
                                 HStack(alignment: .bottom, spacing: 20){
@@ -450,23 +426,23 @@ struct ContentView: View {
                                     ZStack {
                                         
                                         VStack {
-                                                        
-                                                        Button(action: {
-                                                            withAnimation {
-                                                                self.isShowPicker.toggle()
-                                                            }
-                                                        }) {
-
-                                                            Text("IMAGE").font(Font.system(size: 12))
-                                                                .foregroundColor(.white)
-                                                        }.foregroundColor(.white)
+                                            
+                                            Button(action: {
+                                                withAnimation {
+                                                    self.isShowPicker.toggle()
+                                                }
+                                            }) {
+                                                
+                                                Text("IMAGE").font(Font.system(size: 12))
+                                                    .foregroundColor(.white)
+                                            }.foregroundColor(.white)
                                                 .frame(width: 60, height: 30)
                                                 .background(.gray)
-                                                    }
-                                                }
-                                                .sheet(isPresented: $isShowPicker) {
-                                                    ImagePicker(image: self.$image)
-                                                }
+                                        }
+                                    }
+                                    .sheet(isPresented: $isShowPicker) {
+                                        ImagePicker(image: self.$image)
+                                    }
                                 }
                                 
                                 CircleButtonGroup(items: colors, title: "Text color", selectedId: textColor) { color in
@@ -520,19 +496,15 @@ struct ContentView: View {
                         VStack(alignment: .trailing){
                             PressButton("SPEAK", callback: { isSpeak in
                                 print("함수실행 실행인자\(isSpeak)")
+                                if audioEngine.isRunning{
+                                    audioEngine.stop()
+                                    recognitionRequest?.endAudio()
+                                    isSpeakBtnDisabled = false
+                                }
                                 if(isSpeak){
-                                    if audioEngine.isRunning{
-                                        audioEngine.stop()
-                                        recognitionRequest?.endAudio()
-                                        isSpeakBtnDisabled = true
-                                    }
                                     startRecording()
                                 }else{
-                                    if audioEngine.isRunning{
-                                        audioEngine.stop()
-                                        recognitionRequest?.endAudio()
-                                        isSpeakBtnDisabled = true
-                                    }
+                                    
                                     print("말하지 마세요")
                                 }
                                 
@@ -540,7 +512,8 @@ struct ContentView: View {
                             PressButton("DISPLAY", callback: { isDisplay in
                                 print(isDisplay)
                                 finalText = text
-                                translate(text: text)
+                                //                                translate(text: text)
+                                Translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: text)
                                 if(isDisplay){
                                     startTTS()
                                     
@@ -549,67 +522,66 @@ struct ContentView: View {
                         }
                         
                     }
-                        .padding(EdgeInsets(top: 80, leading: 30, bottom: 0, trailing: 60))
+                    .padding(EdgeInsets(top: 80, leading: 30, bottom: 0, trailing: 60))
                     // ZStack 분기점
                     
-                        VStack(alignment: .trailing){
-                            ZStack(alignment: .topLeading){
-                                if fontStyleItalic == "ITALIC" {
-                                    
-                                    image?
-                                        .resizable()
-//                                        .scaledToFill()
-                                        .frame(width: mirrorWidth, height: mirrorHeight)
-                                    Text(finalText)
-                                        .foregroundColor(textColorValue)
-                                        .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
-                                        .italic()
-                                        
-                                        
-                                        
-                                }else {
-                                    
-                                    image?
-                                        .resizable()
-//                                        .scaledToFill()
-                                        .frame(width: mirrorWidth, height: mirrorHeight)
-                                    Text(finalText)
-                                        .foregroundColor(textColorValue)
-                                        .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
-                                        
-                                }
+                    VStack(alignment: .trailing){
+                        ZStack(alignment: .topLeading){
+                            if fontStyleItalic == "ITALIC" {
                                 
-                                    
+                                image?
+                                    .resizable()
+                                //                                        .scaledToFill()
+                                    .frame(width: mirrorWidth, height: mirrorHeight)
+                                Text(finalText)
+                                    .foregroundColor(textColorValue)
+                                    .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
+                                    .italic()
+                                
+                                
+                                
+                            }else {
+                                
+                                image?
+                                    .resizable()
+                                //                                        .scaledToFill()
+                                    .frame(width: mirrorWidth, height: mirrorHeight)
+                                Text(finalText)
+                                    .foregroundColor(textColorValue)
+                                    .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
+                                
                             }
-    //                        .padding(EdgeInsets(top: 10, leading: proxy.safeAreaInsets.leading, bottom: 10, trailing: 0))
-                        }
-                        
-                        
-                            .frame(width: mirrorWidth, height: mirrorHeight)
-                            .background(backgroundValue)
-                            .padding(EdgeInsets(top: yLocation, leading: xLocation, bottom: 0, trailing: 0))
                             
-                
-                   
-                        
-                        
-                        
-                        
-                }
+                            
+                        }
+                        //                        .padding(EdgeInsets(top: 10, leading: proxy.safeAreaInsets.leading, bottom: 10, trailing: 0))
+                    }
                     
+                    
+                    .frame(width: mirrorWidth, height: mirrorHeight)
+                    .background(backgroundValue)
+                    .padding(EdgeInsets(top: yLocation, leading: xLocation, bottom: 0, trailing: 0))
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                }
+                
                 
                 
             )
-            .edgesIgnoringSafeArea([.leading,.trailing,.top,.bottom])
-            .padding(.leading, proxy.safeAreaInsets.leading / 2)
+            .edgesIgnoringSafeArea([.top,.bottom])
             .onAppear{
                 print("Content loaded")
                 // How to use
-
+                
                 LocalNetworkPrivacy().checkAccessState { granted in
                     print(granted)
                 }
-
+                
                 findUDP()
                 
                 

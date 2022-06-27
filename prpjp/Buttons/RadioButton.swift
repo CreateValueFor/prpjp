@@ -9,9 +9,9 @@ import SwiftUI
 
 
 struct ColorInvert: ViewModifier {
-
+    
     @Environment(\.colorScheme) var colorScheme
-
+    
     func body(content: Content) -> some View {
         Group {
             if colorScheme == .dark {
@@ -24,9 +24,9 @@ struct ColorInvert: ViewModifier {
 }
 
 struct RadioButton: View {
-
+    
     @Environment(\.colorScheme) var colorScheme
-
+    
     let item: DISPLAY_RESOLUTION
     let callback: (DISPLAY_RESOLUTION)->()
     let selectedID : DISPLAY_RESOLUTION
@@ -34,7 +34,7 @@ struct RadioButton: View {
     let color: Color
     let textSize: CGFloat
     
-
+    
     init(
         _ item: DISPLAY_RESOLUTION,
         callback: @escaping (DISPLAY_RESOLUTION)->(),
@@ -42,7 +42,7 @@ struct RadioButton: View {
         size: CGFloat = 12,
         color: Color = .white,
         textSize: CGFloat = 12
-        ) {
+    ) {
         self.item = item
         self.size = size
         self.color = color
@@ -50,7 +50,7 @@ struct RadioButton: View {
         self.selectedID = selectedID
         self.callback = callback
     }
-
+    
     var body: some View {
         Button(action:{
             self.callback(self.item)
@@ -72,14 +72,14 @@ struct RadioButton: View {
 }
 
 struct RadioButtonGroup: View {
-
+    
     let items : [DISPLAY_RESOLUTION]
-
-    @State var selectedId: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
-    @State var selectedItem: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
-
+    
+    @State var selectedId: DISPLAY_RESOLUTION = .XS
+    @State var selectedItem: DISPLAY_RESOLUTION = .XS
+    
     let callback: (DISPLAY_RESOLUTION) -> ()
-
+    
     var body: some View {
         ScrollView(.horizontal){
             HStack {
@@ -92,10 +92,10 @@ struct RadioButtonGroup: View {
         }
         
     }
-
+    
     func radioGroupCallback(id: DISPLAY_RESOLUTION) {
         print(id)
-        selectedId = id
+        selectedItem = id
         callback(id)
     }
 }

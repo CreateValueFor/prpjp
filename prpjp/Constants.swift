@@ -107,11 +107,11 @@ enum DISPLAY_RESOLUTION :CaseIterable{
 }
 
 enum SPEAK_LANGUAGE : String, CaseIterable {
-    case ENGLISH
-    case FRENCH
-    case SPANISH
-    case 日本語
-    case 한국어
+    case ENGLISH = "en"
+    case FRENCH = "fr"
+    case SPANISH = "es"
+    case 日本語 = "ja"
+    case 한국어 = "ko"
     
     var code: String {
         switch self {

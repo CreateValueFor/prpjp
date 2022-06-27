@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BA1F6C5E2869B27200A03994 /* Translate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA1F6C5D2869B27200A03994 /* Translate.swift */; };
 		BA54A4FF2868C6A400F0D354 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */; };
 		BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA54A5002868CD5F00F0D354 /* ImagePicker.swift */; };
 		BA5E1B8D284E1FCD002AB742 /* PressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E1B8C284E1FCD002AB742 /* PressButton.swift */; };
@@ -30,13 +31,13 @@
 /* Begin PBXFileReference section */
 		29588CBB10066F5A27EDC45A /* Pods_prpjp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_prpjp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5724131929B4E040FCD003F /* Pods-prpjp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prpjp.release.xcconfig"; path = "Target Support Files/Pods-prpjp/Pods-prpjp.release.xcconfig"; sourceTree = "<group>"; };
+		BA1F6C5D2869B27200A03994 /* Translate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Translate.swift; sourceTree = "<group>"; };
 		BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		BA54A5002868CD5F00F0D354 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BA5E1B8C284E1FCD002AB742 /* PressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressButton.swift; sourceTree = "<group>"; };
 		BA5E1B8F284E2821002AB742 /* ColorExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorExtension.swift; sourceTree = "<group>"; };
 		BA5E1B95284E4B31002AB742 /* SocketManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketManager.swift; sourceTree = "<group>"; };
 		BA8242F3285DC449000F909A /* NetWorkPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetWorkPermission.swift; sourceTree = "<group>"; };
-		BAAB51202850F60A00B5540F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BAAB51212850F66D00B5540F /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		BAB50299284CD7DD0046D988 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BAB5029B284CD8230046D988 /* prpjp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prpjp.swift; sourceTree = "<group>"; };
@@ -114,7 +115,6 @@
 		BAFC282D2846466F00899F5A /* prpjp */ = {
 			isa = PBXGroup;
 			children = (
-				BAAB51202850F60A00B5540F /* Info.plist */,
 				BAFC28302846466F00899F5A /* ContentView.swift */,
 				BA54A5002868CD5F00F0D354 /* ImagePicker.swift */,
 				BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */,
@@ -128,6 +128,7 @@
 				BAFC28442849007C00899F5A /* Constants.swift */,
 				BAAB51212850F66D00B5540F /* Request.swift */,
 				BA8242F3285DC449000F909A /* NetWorkPermission.swift */,
+				BA1F6C5D2869B27200A03994 /* Translate.swift */,
 			);
 			path = prpjp;
 			sourceTree = "<group>";
@@ -262,6 +263,7 @@
 				BA5E1B96284E4B31002AB742 /* SocketManager.swift in Sources */,
 				BA8242F4285DC449000F909A /* NetWorkPermission.swift in Sources */,
 				BA54A4FF2868C6A400F0D354 /* SpeechRecognizer.swift in Sources */,
+				BA1F6C5E2869B27200A03994 /* Translate.swift in Sources */,
 				BA5E1B8D284E1FCD002AB742 /* PressButton.swift in Sources */,
 				BAFC28412846633700899F5A /* RectangleButton.swift in Sources */,
 				BAFC28452849007C00899F5A /* Constants.swift in Sources */,
@@ -401,7 +403,6 @@
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = prpjp/Info.plist;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Audio is recorded to transcribe the meeting. Audio recordings are discarded after transcription.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "prpjp speech app";
@@ -437,7 +438,6 @@
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = prpjp/Info.plist;
 				INFOPLIST_KEY_NSLocalNetworkUsageDescription = YES;
 				INFOPLIST_KEY_NSMicrophoneUsageDescription = "Audio is recorded to transcribe the meeting. Audio recordings are discarded after transcription.";
 				INFOPLIST_KEY_NSSpeechRecognitionUsageDescription = "prpjp speech app";
