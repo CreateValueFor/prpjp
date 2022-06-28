@@ -10,6 +10,28 @@ import SwiftSocket
 
 public typealias Byte = UInt8
 
+
+struct data : Codable{
+    var text : String
+    var background : backgroundData
+    var textColor: String
+    var fontSize : String
+    var fontStyle : String
+    var displaySize : String
+    var location : locationData
+    var isReverse : Bool
+}
+
+struct backgroundData : Codable {
+    var type: String
+    var colorType : String
+}
+struct locationData  : Codable {
+    var first : Int
+    var second : Int
+}
+
+
 class SwiftSockMine {
     static let mInstance = SwiftSockMine()
     private init(){
@@ -48,6 +70,35 @@ class SwiftSockMine {
 //        print(client?.read(1024 * 10))
         
         
+    }
+    
+    
+    func send(text: String, background: String, color :  String, fontSize: String, fontStyleBold : String, resolution : DISPLAY_RESOLUTION ) {
+        let backgroundData = backgroundData(type: "com.example.flexibledisplaypanel.socket.data.Background.Color", colorType: background)
+        let locationData = locationData(first: 0, second: 0)
+        
+        let data = data(text: text, background: backgroundData, textColor: color, fontSize: fontSize, fontStyle: fontStyleBold, displaySize: resolution.text, location: locationData, isReverse: false)
+        
+        
+        do {
+            let jsonData = try JSONEncoder().encode(data)
+            
+            //            let jsonString = String(data: jsonData, encoding: .utf8)!
+            sendMessage(msg: "hello")
+            //            connection!.send(content: jsonData, completion: .contentProcessed({ sendError in
+            //                if let error = sendError {
+            //                    NSLog("Unable to process and send the data: \(error)")
+            //                } else {
+            //                    NSLog("Data has been sent")
+            //                    connection!.receiveMessage { (data, context, isComplete, error) in
+            //                        guard let myData = data else { return }
+            //                        NSLog("Received message: " + String(decoding: myData, as: UTF8.self))
+            //                    }
+            //                }
+            //            }))
+        }catch{
+            print(error)
+        }
     }
     
     func sendMessage(msg:String){

@@ -18,6 +18,8 @@
 		BAAB51222850F66D00B5540F /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAB51212850F66D00B5540F /* Request.swift */; };
 		BAB5029A284CD7DD0046D988 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB50299284CD7DD0046D988 /* AppDelegate.swift */; };
 		BAB5029C284CD8230046D988 /* prpjp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5029B284CD8230046D988 /* prpjp.swift */; };
+		BAD14F0A286B51CA00F0D8F5 /* Translate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD14F09286B51CA00F0D8F5 /* Translate.swift */; };
+		BAD14F0C286B552800F0D8F5 /* UDPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD14F0B286B552800F0D8F5 /* UDPManager.swift */; };
 		BAFC28312846466F00899F5A /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC28302846466F00899F5A /* ContentView.swift */; };
 		BAFC28332846467100899F5A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAFC28322846467100899F5A /* Assets.xcassets */; };
 		BAFC28362846467100899F5A /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BAFC28352846467100899F5A /* Preview Assets.xcassets */; };
@@ -44,6 +46,8 @@
 		BAAB51212850F66D00B5540F /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		BAB50299284CD7DD0046D988 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BAB5029B284CD8230046D988 /* prpjp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prpjp.swift; sourceTree = "<group>"; };
+		BAD14F09286B51CA00F0D8F5 /* Translate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Translate.swift; sourceTree = "<group>"; };
+		BAD14F0B286B552800F0D8F5 /* UDPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPManager.swift; sourceTree = "<group>"; };
 		BAFC282B2846466F00899F5A /* prpjp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = prpjp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BAFC28302846466F00899F5A /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		BAFC28322846467100899F5A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -121,6 +125,8 @@
 			children = (
 				BAAB51202850F60A00B5540F /* Info.plist */,
 				BAFC28302846466F00899F5A /* ContentView.swift */,
+				BAD14F0B286B552800F0D8F5 /* UDPManager.swift */,
+				BAD14F09286B51CA00F0D8F5 /* Translate.swift */,
 				BA48A7392868D766002B8CD7 /* VideoPicker.swift */,
 				BA54A5002868CD5F00F0D354 /* ImagePicker.swift */,
 				BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */,
@@ -274,8 +280,10 @@
 				BAFC28412846633700899F5A /* RectangleButton.swift in Sources */,
 				BAFC28452849007C00899F5A /* Constants.swift in Sources */,
 				BAB5029C284CD8230046D988 /* prpjp.swift in Sources */,
+				BAD14F0A286B51CA00F0D8F5 /* Translate.swift in Sources */,
 				BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */,
 				BAFC28432846689B00899F5A /* TranslationButtonGroup.swift in Sources */,
+				BAD14F0C286B552800F0D8F5 /* UDPManager.swift in Sources */,
 				BA5E1B90284E2821002AB742 /* ColorExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

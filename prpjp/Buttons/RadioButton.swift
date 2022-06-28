@@ -95,7 +95,7 @@ struct RadioButtonGroup: View {
 
     func radioGroupCallback(id: DISPLAY_RESOLUTION) {
         print(id)
-        selectedId = id
+        selectedItem = id
         callback(id)
     }
 }
