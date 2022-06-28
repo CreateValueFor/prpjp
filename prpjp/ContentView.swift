@@ -89,6 +89,10 @@ struct ContentView: View {
     @State var isShowPicker: Bool = false
         @State var image: Image? = Image("placeholder")
     
+    // video
+    @State var videoURL: URL?
+    @State var showVideoPicker : Bool = true
+    
     
     // safe area inset
     
@@ -467,12 +471,34 @@ struct ContentView: View {
                                                 .sheet(isPresented: $isShowPicker) {
                                                     ImagePicker(image: self.$image)
                                                 }
+                                    ZStack {
+                                        
+                                        VStack {
+                                                        
+                                                        Button(action: {
+                                                            withAnimation {
+                                                                self.isShowPicker.toggle()
+                                                            }
+                                                        }) {
+
+                                                            Text("Video").font(Font.system(size: 12))
+                                                                .foregroundColor(.white)
+                                                        }.foregroundColor(.white)
+                                                .frame(width: 60, height: 30)
+                                                .background(.gray)
+                                                    }
+                                                }
+                                                .sheet(isPresented: $isShowPicker) {
+                                                    VideoPicker2(isShown: $showVideoPicker, url: $videoURL)
+                                                }
                                 }
+                                
                                 
                                 CircleButtonGroup(items: colors, title: "Text color", selectedId: textColor) { color in
                                     textColorValue = colorConverter(color: color)
                                     
                                 }
+                                
                                 
                                 RectangleButtonGroup(items: fontSizes, title: "Font size", selectedId: fontSize) { fontSize in
                                     switch fontSize {
