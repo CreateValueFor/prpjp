@@ -31,6 +31,10 @@ struct ContentView: View {
     @State private var mirrorWidth : CGFloat =  DISPLAY_RESOLUTION.XS.width
     @State private var mirrorHeight : CGFloat =  DISPLAY_RESOLUTION.XS.height / 2
     
+    // button info
+    @State private var isBrailMode : Bool = false
+    @State private var isReverseMode : Bool = false
+    @State private var isLock : Bool = false
     
     @State private var speakLanguage : String = SPEAK_LANGUAGE.ENGLISH.id
     @State private var translationLanguage : String = TRANSLATION_LANGUAGE.ENGLISH.id
@@ -56,7 +60,7 @@ struct ContentView: View {
     
     @State private var finalText : String = "Placeholder"
     @StateObject var speechRecognizer = SpeechRecognizer();
-//    var text : String = ""
+    //    var text : String = ""
     @State private var text : String = ""
     @State private var xLocation : CGFloat = DISPLAY_RESOLUTION.XS.xLocation
     @State private var yLocation : CGFloat = DISPLAY_RESOLUTION.XS.yLocation
@@ -74,6 +78,9 @@ struct ContentView: View {
     // video
     @State var videoURL: URL?
     @State var showVideoPicker : Bool = true
+    
+    var TCPPort : Int32 = UDPManager.port
+    var TCPHost : String = UDPManager.host
     
     
     // safe area inset
@@ -168,7 +175,35 @@ struct ContentView: View {
         GeometryReader{
             proxy in
             
-            VStack{
+            VStack(alignment: .trailing){
+                // toggle buttons
+                HStack(alignment: .center, spacing: 10){
+                    
+                    Toggle(isOn: $isBrailMode, label: {
+                        Text("Braile Mode")
+                            .font(Font.system(size: 12))
+                            .foregroundColor(.white)
+                    })
+                    .toggleStyle(SwitchToggleStyle(tint: Color(hex:"#008577")))
+                    //                        .padding(.horizontal, 10)
+                    Toggle(isOn: $isReverseMode, label: {
+                        Text("Reverse Mode")
+                            .font(Font.system(size: 12))
+                            .foregroundColor(.white)
+                    })
+                    .toggleStyle(SwitchToggleStyle(tint: Color(hex:"#008577")))
+                    //                        .padding(.horizontal, 10)
+                    Toggle(isOn: $isLock, label: {
+                        Text("Lock")
+                            .font(Font.system(size: 12))
+                            .foregroundColor(.white)
+                    })
+                    .toggleStyle(SwitchToggleStyle(tint: Color(hex:"#008577")))
+                    //                        .padding(.horizontal, 10)
+                }
+                .frame(width: 450)
+                .padding(10)
+                
                 ZStack(alignment: .topLeading){
                     HStack (alignment: .top){
                         ScrollView(.vertical){
@@ -192,20 +227,20 @@ struct ContentView: View {
                                     switch speakLanguage {
                                     case "ENGLISH":
                                         speakLangCode = "en"
-//                                        speechRecognizer =
-//                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.ENGLISH.lang)
+                                        //                                        speechRecognizer =
+                                        //                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.ENGLISH.lang)
                                     case "FRENCH":
                                         speakLangCode = "fr"
-//                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.FRENCH.lang)
+                                        //                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.FRENCH.lang)
                                     case "SPANISH":
                                         speakLangCode = "es"
-//                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.SPANISH.lang)
+                                        //                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.SPANISH.lang)
                                     case "日本語":
                                         speakLangCode = "ja"
-//                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.日本語.lang)
+                                        //                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.日本語.lang)
                                     case "한국어":
                                         speakLangCode = "ko"
-//                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.한국어.lang)
+                                        //                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.한국어.lang)
                                     default:
                                         print(speakLanguage)
                                     }
@@ -331,8 +366,9 @@ struct ContentView: View {
                                 print("함수실행 실행인자\(isSpeak)")
                                 if(isSpeak){
                                     speechRecognizer.reset()
-                                    text = speechRecognizer.transcript
+                                    
                                     speechRecognizer.transcribe()
+                                    text = speechRecognizer.transcript
                                     
                                 }else{
                                     print(speechRecognizer.transcript)
@@ -345,7 +381,8 @@ struct ContentView: View {
                                 print(isDisplay)
                                 finalText = text
                                 Translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: text)
-//                                translate(text: text)
+                                mysock.send(text: self.text, background: background, color: color, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
+                                //                                translate(text: text)
                                 if(isDisplay){
                                     startTTS()
                                     
@@ -355,7 +392,7 @@ struct ContentView: View {
                         
                     }
                     .padding(EdgeInsets(top: 60, leading: 30, bottom: 0, trailing: 30))
-                    // ZStack 분기점
+                    // mirror state
                     
                     VStack(alignment: .trailing){
                         ZStack(alignment: .topLeading){
@@ -386,47 +423,23 @@ struct ContentView: View {
                             
                         }
                     }
-                    
-                    
                     .frame(width: mirrorWidth, height: mirrorHeight)
                     .background(backgroundValue)
                     .padding(EdgeInsets(top: yLocation, leading: xLocation + 2, bottom: 0, trailing: 0))
-                    
-                    
-                    
-                    
-                    
-                    
-                    
                 }
             }.background(Color(hex: "#333333"))
-            
-            
-            
-            
-            
                 .edgesIgnoringSafeArea([.top,.bottom])
             //            .edgesIgnoringSafeArea([.leading,.trailing,.top,.bottom])
             //            .padding(.leading, proxy.safeAreaInsets.leading / 2)
                 .onAppear{
-                    print("Content loaded")
                     // How to use
-                    
                     LocalNetworkPrivacy().checkAccessState { granted in
                         print(granted)
                     }
-                    
                     UDPManager.findUDP()
-                    
-                    
-                    
+                    mysock.InitSocket(address: TCPHost, portNum: TCPPort)
                 }
         }
-        
-        
-        
-        
-        
     }
     
 }

@@ -9,9 +9,7 @@ import SwiftUI
 
 struct RectangleButton: View {
 
-    
-
-    let id: String
+    let id: String 
     let callback: (String)->()
     let selectedID : String
     let size: CGFloat

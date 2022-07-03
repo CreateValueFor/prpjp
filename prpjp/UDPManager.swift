@@ -14,13 +14,15 @@ class UDPManager {
     static var udpListener : NWListener?
     static var udpConnection: NWConnection?
     static var backgroundQueueUdpListener = DispatchQueue.main
+    static var port : Int32 = 8000
+    static var host : String = "172.20.10.4";
     
-    static func portForEndpoint(_ endpoint: NWEndpoint) -> NWEndpoint.Host? {
+    static func portForEndpoint(_ endpoint: NWEndpoint) -> Array<Any>? {
         switch endpoint {
         case .hostPort(let host, let port):
-            return host
+            return [host,port]
         default:
-            return nil
+            return []
         }
     }
     
@@ -42,8 +44,12 @@ class UDPManager {
             
             
             guard let hostEnum = portForEndpoint(connection.endpoint) else {return }
-            let host = String(describing: hostEnum)
+            
+            let host = String(describing: hostEnum[0])
+            let port = String(describing: hostEnum[1])
             print("extracted Host is \(host)")
+            print("extracted port is \(port)")
+            
             
             
             connection.receiveMessage { completeContent, contentContext, isComplete, error in
@@ -58,6 +64,8 @@ class UDPManager {
                     let text = string.components(separatedBy: ":")
                     if text[0] == "Hyuns"{
                         let port = Int32(text[1]) ?? 0
+                        self.port = port
+                        self.host = string
 //                        mysock.InitSocket(address: host, portNum: port)
                         
                     }

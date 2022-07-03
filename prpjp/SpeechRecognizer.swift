@@ -59,6 +59,7 @@ class SpeechRecognizer: ObservableObject {
     }
     
     func transcribe() {
+        print("번역 시작")
         DispatchQueue(label: "Speech Recognizer Queue", qos: .background).async { [weak self] in
             guard let self = self, let recognizer = self.recognizer, recognizer.isAvailable else {
                 self?.speakError(RecognizerError.recognizerIsUnavailable)
