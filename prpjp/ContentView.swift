@@ -79,8 +79,10 @@ struct ContentView: View {
     @State var videoURL: URL?
     @State var showVideoPicker : Bool = true
     
-    var TCPPort : Int32 = UDPManager.port
-    var TCPHost : String = UDPManager.host
+//    @StateObject var udpManager = UDPManager()
+    
+//    var TCPPort : Int32 = self.udpManager.port
+//    var TCPHost : String = self.udpManager.host
     
     
     // safe area inset
@@ -130,13 +132,6 @@ struct ContentView: View {
     
     
     // 소켓 연결 로직
-    
-    
-    private let defaultIP: String = "192.168.43.84"
-    @State var connection: NWConnection?
-    @State var udpListener : NWListener?
-    @State  var udpConnection: NWConnection?
-    var backgroundQueueUdpListener = DispatchQueue.main
     var mysock = SwiftSockMine.mInstance
     
     
@@ -380,6 +375,7 @@ struct ContentView: View {
                             }, isPressed: SpeakBtnPressed, disabled: isSpeakBtnDisabled)
                             PressButton("DISPLAY", callback: { isDisplay in
                                 print(isDisplay)
+                                
                                 finalText = text
                                 Translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: text)
                                 mysock.send(text: self.text, background: background, color: color, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
@@ -437,8 +433,11 @@ struct ContentView: View {
                     LocalNetworkPrivacy().checkAccessState { granted in
                         print(granted)
                     }
+                    
                     UDPManager.findUDP()
-                    mysock.InitSocket(address: TCPHost, portNum: TCPPort)
+                    
+//                    mysock.InitSocket(address: udpManager.host, portNum: udpManager.port)
+                    
                 }
         }
     }

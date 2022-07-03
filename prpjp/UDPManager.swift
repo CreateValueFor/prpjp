@@ -8,14 +8,14 @@
 import Foundation
 import Network
 
-class UDPManager {
-    private let defaultIP: String = "192.168.43.84"
-    var connection: NWConnection?
+class UDPManager :ObservableObject {
+    
     static var udpListener : NWListener?
     static var udpConnection: NWConnection?
     static var backgroundQueueUdpListener = DispatchQueue.main
     static var port : Int32 = 8000
     static var host : String = "172.20.10.4";
+    var mysock = SwiftSockMine.mInstance
     
     static func portForEndpoint(_ endpoint: NWEndpoint) -> Array<Any>? {
         switch endpoint {
@@ -28,11 +28,16 @@ class UDPManager {
     
     
     static func findUDP() {
+        print("UPD 실행")
         let params = NWParameters.udp
         udpListener = try? NWListener(using: params, on: 8200)
         udpListener?.service = NWListener.Service.init(type: "_appname._udp")
         self.udpListener?.stateUpdateHandler = { update in
             switch update {
+            case .ready:
+                print("ready")
+            case .setup:
+                print("setup")
             case .failed:
                 print("failed")
             default:
@@ -41,6 +46,7 @@ class UDPManager {
         }
         
         self.udpListener?.newConnectionHandler = { connection in
+            print("UPD 연결 성공")
             
             
             guard let hostEnum = portForEndpoint(connection.endpoint) else {return }
@@ -67,6 +73,7 @@ class UDPManager {
                         self.port = port
                         self.host = string
 //                        mysock.InitSocket(address: host, portNum: port)
+                        SwiftSockMine.mInstance.InitSocket(address: host, portNum: port)
                         
                     }
                 } else {
