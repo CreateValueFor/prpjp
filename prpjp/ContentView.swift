@@ -368,11 +368,12 @@ struct ContentView: View {
                                     speechRecognizer.reset()
                                     
                                     speechRecognizer.transcribe()
-                                    text = speechRecognizer.transcript
+                                    
                                     
                                 }else{
                                     print(speechRecognizer.transcript)
                                     speechRecognizer.stopTranscribing()
+                                    text = speechRecognizer.transcript
                                     
                                 }
                                 

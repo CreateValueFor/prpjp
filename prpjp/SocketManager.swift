@@ -77,9 +77,12 @@ class SwiftSockMine {
         do {
             let jsonData = try JSONEncoder().encode(data)
             
-                        let jsonString = String(data: jsonData, encoding: .utf8)!
-//            sendRequest(string: jsonData, using: client!)
-            sendRequest(string: "hello\nasdlfkj", using: client!)
+//            if let jsonData = jsonData, let jsonString = String(data: jsonData, encoding: .utf8){
+//                print(jsonString)
+//            }
+            guard let jsonString = String(data: jsonData, encoding: .utf8) else {return}
+            sendRequest(string: jsonString, using: client!)
+//            sendRequest(string: "hello\nasdlfkj", using: client!)
             //            connection!.send(content: jsonData, completion: .contentProcessed({ sendError in
             //                if let error = sendError {
             //                    NSLog("Unable to process and send the data: \(error)")
