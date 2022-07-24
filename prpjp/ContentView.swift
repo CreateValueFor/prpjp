@@ -434,7 +434,8 @@ struct ContentView: View {
                         print(granted)
                     }
                     
-                    UDPManager.findUDP()
+//                    UDPManager.broadCastUDP()
+                    UDPManager.connectToUDP()
                     
 //                    mysock.InitSocket(address: udpManager.host, portNum: udpManager.port)
                     
