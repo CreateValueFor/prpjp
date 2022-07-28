@@ -30,6 +30,7 @@
 		BAFC28452849007C00899F5A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC28442849007C00899F5A /* Constants.swift */; };
 		BAFC284728490BAC00899F5A /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC284628490BAC00899F5A /* CircleButton.swift */; };
 		C11861C9A3E2F66909B1D9F6 /* Pods_prpjp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29588CBB10066F5A27EDC45A /* Pods_prpjp.framework */; };
+		E38EADA3288EF443005A868C /* PHPVideoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38EADA2288EF443005A868C /* PHPVideoPicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -59,6 +60,7 @@
 		BAFC28422846689B00899F5A /* TranslationButtonGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationButtonGroup.swift; sourceTree = "<group>"; };
 		BAFC28442849007C00899F5A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BAFC284628490BAC00899F5A /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
+		E38EADA2288EF443005A868C /* PHPVideoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPVideoPicker.swift; sourceTree = "<group>"; };
 		F36178F623074501F50612DE /* Pods-prpjp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prpjp.debug.xcconfig"; path = "Target Support Files/Pods-prpjp/Pods-prpjp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -131,6 +133,7 @@
 				BAD14F0B286B552800F0D8F5 /* UDPManager.swift */,
 				BAD14F09286B51CA00F0D8F5 /* Translate.swift */,
 				BA48A7392868D766002B8CD7 /* VideoPicker.swift */,
+				E38EADA2288EF443005A868C /* PHPVideoPicker.swift */,
 				BA9743A12871EAB800125995 /* Assets.xcassets */,
 				BA54A5002868CD5F00F0D354 /* ImagePicker.swift */,
 				BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */,
@@ -285,6 +288,7 @@
 				BAFC28452849007C00899F5A /* Constants.swift in Sources */,
 				BAB5029C284CD8230046D988 /* prpjp.swift in Sources */,
 				BAD14F0A286B51CA00F0D8F5 /* Translate.swift in Sources */,
+				E38EADA3288EF443005A868C /* PHPVideoPicker.swift in Sources */,
 				BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */,
 				BAFC28432846689B00899F5A /* TranslationButtonGroup.swift in Sources */,
 				BAD14F0C286B552800F0D8F5 /* UDPManager.swift in Sources */,
@@ -416,7 +420,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
@@ -438,7 +442,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = alsrl.prpjp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -454,7 +458,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 6;
+				CURRENT_PROJECT_VERSION = 7;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
@@ -476,7 +480,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.0.6;
 				PRODUCT_BUNDLE_IDENTIFIER = alsrl.prpjp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

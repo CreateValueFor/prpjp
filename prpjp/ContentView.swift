@@ -77,7 +77,7 @@ struct ContentView: View {
     
     // video
     @State var videoURL: URL?
-    @State var showVideoPicker : Bool = true
+    @State var showVideoPicker : Bool = false
     
 //    @StateObject var udpManager = UDPManager()
     
@@ -156,7 +156,7 @@ struct ContentView: View {
         case "한국어":
             speechText = "ko_KR"
         default:
-            print(speechText)
+            print(speechText ?? "")
         }
         utterance.voice = AVSpeechSynthesisVoice(language: speechText)
         
@@ -290,7 +290,7 @@ struct ContentView: View {
                                             
                                             Button(action: {
                                                 withAnimation {
-                                                    self.isShowPicker.toggle()
+                                                    self.showVideoPicker.toggle()
                                                 }
                                             }) {
                                                 
@@ -301,8 +301,8 @@ struct ContentView: View {
                                                 .background(.gray)
                                         }
                                     }
-                                    .sheet(isPresented: $isShowPicker) {
-                                        VideoPicker2(isShown: $showVideoPicker, url: $videoURL)
+                                    .sheet(isPresented: $showVideoPicker) {
+                                        PHPVideoPicker(isShown: $showVideoPicker, videoURL: $videoURL)
                                     }
                                 }
                                 
@@ -377,7 +377,7 @@ struct ContentView: View {
                                 print(isDisplay)
                                 
                                 finalText = text
-                                Translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: text)
+                                _ = Translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: text)
                                 mysock.send(text: self.text, background: background, color: color, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
                                 //                                translate(text: text)
                                 if(isDisplay){
@@ -434,10 +434,13 @@ struct ContentView: View {
                         print(granted)
                     }
                     
-//                    UDPManager.broadCastUDP()
-                    UDPManager.connectToUDP()
+                    UDPManager.broadCastUDP()
+                    DispatchQueue.global(qos: .background).async {
+                        mysock.InitSocket(address: "127.0.0.1", portNum: 8000)
+                    }
                     
-//                    mysock.InitSocket(address: udpManager.host, portNum: udpManager.port)
+//                    UDPManager.connectToUDP()
+//                    mysock.InitSocket(address: "127.0.0.1", portNum: 8000)
                     
                 }
         }
