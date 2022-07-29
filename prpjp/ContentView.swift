@@ -11,7 +11,7 @@ import Speech
 import AVFoundation
 import Alamofire
 import Network
-
+import AVKit
 
 
 struct translateResposne : Decodable {
@@ -78,6 +78,7 @@ struct ContentView: View {
     // video
     @State var videoURL: URL?
     @State var showVideoPicker : Bool = false
+    @State var player = AVPlayer()
     
 //    @StateObject var udpManager = UDPManager()
     
@@ -302,6 +303,7 @@ struct ContentView: View {
                                         }
                                     }
                                     .sheet(isPresented: $showVideoPicker) {
+                                        
                                         PHPVideoPicker(isShown: $showVideoPicker, videoURL: $videoURL)
                                     }
                                 }
@@ -382,6 +384,7 @@ struct ContentView: View {
                                 //                                translate(text: text)
                                 if(isDisplay){
                                     startTTS()
+                                    mysock.send(text: text, background: background, color: textColor, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
                                     
                                 }
                             }, isPressed: DisplayBtnPressed, disabled: isDisplayBtnDisabled)
@@ -395,10 +398,23 @@ struct ContentView: View {
                         ZStack(alignment: .topLeading){
                             if fontStyleItalic == "ITALIC" {
                                 
+                                
                                 image?
                                     .resizable()
                                 //                                        .scaledToFill()
                                     .frame(width: mirrorWidth, height: mirrorHeight)
+                                VideoPlayer(player: player)
+                                    .onAppear(){
+                                        if player.currentItem == nil {
+                                            let item = AVPlayerItem(url: videoURL!)
+                                            player.replaceCurrentItem(with: item)
+                                        }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                            player.play()
+                                        }
+                                    }.frame(width: mirrorWidth, height: mirrorHeight)
+                                    
+                                
                                 Text(finalText)
                                     .foregroundColor(textColorValue)
                                     .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
@@ -411,6 +427,19 @@ struct ContentView: View {
                                 image?
                                     .resizable()
                                 //                                        .scaledToFill()
+                                    .frame(width: mirrorWidth, height: mirrorHeight)
+                                VideoPlayer(player: player)
+                                    .onAppear(){
+                                        guard let videoURL = videoURL else {return}
+                                        if player.currentItem == nil {
+                                            let item = AVPlayerItem(url: videoURL)
+                                            player.replaceCurrentItem(with: item)
+                                        }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                            player.play()
+                                        }
+                                    }
+                                    
                                     .frame(width: mirrorWidth, height: mirrorHeight)
                                 Text(finalText)
                                     .foregroundColor(textColorValue)
@@ -436,7 +465,7 @@ struct ContentView: View {
                     
                     UDPManager.broadCastUDP()
                     DispatchQueue.global(qos: .background).async {
-                        mysock.InitSocket(address: "127.0.0.1", portNum: 8000)
+                        mysock.InitSocket(address: "0.0.0.0", portNum: 8000)
                     }
                     
 //                    UDPManager.connectToUDP()

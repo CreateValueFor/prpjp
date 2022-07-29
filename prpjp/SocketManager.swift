@@ -139,6 +139,7 @@ class SwiftSockMine {
     }
     
     func send(text: String, background: String, color :  String, fontSize: String, fontStyleBold : String, resolution : DISPLAY_RESOLUTION ) {
+        print(">>> send function started")
         let backgroundData = backgroundData(type: "com.example.flexibledisplaypanel.socket.data.Background.Color", colorType: background)
         let locationData = locationData(first: 0, second: 0)
         
@@ -147,10 +148,6 @@ class SwiftSockMine {
         
         do {
             let jsonData = try JSONEncoder().encode(data)
-            
-            //            if let jsonData = jsonData, let jsonString = String(data: jsonData, encoding: .utf8){
-            //                print(jsonString)
-            //            }
             guard let jsonString = String(data: jsonData, encoding: .utf8) else {return}
             
             for client in self.acceptClient {
@@ -158,62 +155,10 @@ class SwiftSockMine {
                 print(">>> accept client send result = \(String(describing: result))")
             }
             
-            //            sendRequest(string: "hello\nasdlfkj", using: client!)
-            //            connection!.send(content: jsonData, completion: .contentProcessed({ sendError in
-            //                if let error = sendError {
-            //                    NSLog("Unable to process and send the data: \(error)")
-            //                } else {
-            //                    NSLog("Data has been sent")
-            //                    connection!.receiveMessage { (data, context, isComplete, error) in
-            //                        guard let myData = data else { return }
-            //                        NSLog("Received message: " + String(decoding: myData, as: UTF8.self))
-            //                    }
-            //                }
-            //            }))
         }catch{
             print(error)
         }
     }
-    
-    func sendMessage(msg:String){
-        guard let client = client else {return }
-        
-        switch client.connect(timeout: 10){
-        case .success:
-            appendToTextField(string : "Connected to host \(client.address)")
-            let newMsg : String = msg + "\n\n"
-            
-            if let response = sendRequest(string : newMsg, using: client){
-                appendToTextField(string : "Reponse: \(response)")
-            }
-        case .failure(let error):
-            appendToTextField(string : String(describing: error))
-            
-            
-        }
-    }
-    
-    //    private func sendRequest(string : String, using client : TCPClient)-> String? {
-    //        appendToTextField(string : "Sending data ...")
-    //        switch client.send(string: string){
-    //        case .success:
-    //            print("success: ")
-    //            return readResponse(from : client)
-    //        case .failure(let error):
-    //            print("failure: ")
-    //            appendToTextField(string : String(describing: error))
-    //            return nil
-    //        }
-    //    }
-    //    private func readResponse(from client: TCPClient)-> String? {
-    //        guard let resposne = client.read(1024*10) else {return nil}
-    //        print(resposne)
-    //        return String(bytes: resposne, encoding: .utf8)
-    //    }
-    //    private func appendToTextField(string : String){
-    //        print(string)
-    //    }
-    //
     private func sendRequest(string: String, using client: TCPClient) -> String? {
         appendToTextField(string: "Sending data ... \(string)")
         switch client.send(string: string) {
@@ -222,7 +167,6 @@ class SwiftSockMine {
         case .failure(let error):
             print(error.localizedDescription)
             print("전달 에러 발생")
-            //            appendToTextField(string: String(dexscribing: error))
             return nil
         }
     }

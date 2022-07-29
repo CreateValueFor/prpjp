@@ -53,6 +53,7 @@ struct PHPVideoPicker: UIViewControllerRepresentable {
                 let fileName = "\(Int(Date().timeIntervalSince1970)).\(url.pathExtension)"
                 let newUrl = URL(fileURLWithPath: NSTemporaryDirectory() + fileName)
                 try? FileManager.default.copyItem(at: url, to: newUrl)
+                print(">>> video picker's url is \(newUrl)")
                 self.parent.videoURL = newUrl
             }
         }
