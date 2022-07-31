@@ -23,6 +23,8 @@ struct ContentView: View {
     @State private var resolution: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
     @State private var mirrorWidth: CGFloat =  DISPLAY_RESOLUTION.XS.width
     @State private var mirrorHeight: CGFloat =  DISPLAY_RESOLUTION.XS.height / 2
+    @State private var display: String = "D192X32"
+    
     
     // button info
     @State private var isBrailMode: Bool = false
@@ -33,20 +35,23 @@ struct ContentView: View {
     @State private var translationLanguage: String = TRANSLATION_LANGUAGE.ENGLISH.id
     @State private var speakLangCode: String = "en"
     @State private var translateLangCode: String = "en"
-    @State private var background: String = PRP_COLOR.BLUE.rawValue
-    @State private var backgroundValue: Color = PRP_COLOR.BLUE.color
     
-    @State private var textColor: String = PRP_COLOR.WHITE.rawValue
-    @State private var textColorValue: Color = PRP_COLOR.WHITE.color
     
-    @State private var fontSize: String = FONT_SIZE.SMALL.rawValue
+    @State private var background: PRP_COLOR = PRP_COLOR.BLUE
+    
+    @State private var textColor: PRP_COLOR = PRP_COLOR.WHITE
+    
+    
+    @State private var fontSize: String = "SMALL"
     @State private var fontSizeValue: CGFloat = FONT_SIZE.SMALL.size
     
     
-    @State private var fontStyleBold: String = FONT_STYLE.BOLD.rawValue
-    @State private var fontStyleBoldValue: Font.Weight = Font.Weight.bold
-    
+    @State private var fontStyleBold: String = "NONE"
     @State private var fontStyleItalic: String = ""
+    @State private var fontStyleBoldValue: Font.Weight = Font.Weight.bold
+    @State private var fontStyle: String = "NONE"
+    
+    
     
     
     @State private var IP: String = ""
@@ -67,19 +72,13 @@ struct ContentView: View {
     //image
     @State var isShowPicker: Bool = false
     @State var image: Image? = Image("placeholder")
+    @State var imageUrl : String? = ""
+    @State var uiImageVal : UIImage? = UIImage()
     
     // video
     @State var videoURL: URL?
     @State var showVideoPicker: Bool = false
     @State var player = AVPlayer()
-    
-    //    @StateObject var udpManager = UDPManager()
-    
-    //    var TCPPort : Int32 = self.udpManager.port
-    //    var TCPHost : String = self.udpManager.host
-    
-    
-    // safe area inset
     
     let resolutions: [DISPLAY_RESOLUTION] = DISPLAY_RESOLUTION.allCases.map{
         $0
@@ -147,7 +146,7 @@ struct ContentView: View {
         utterance.rate = 0.4
         synthesizeer.speak(utterance)
 
-        SocketServerManager.shared.send(text: text, background: background, color: color, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
+//        SocketServerManager.shared.send(text: text, background: background, color: color, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
     }
     
     
@@ -193,6 +192,7 @@ struct ContentView: View {
                                     mirrorWidth = resol.width
                                     xLocation = resol.xLocation
                                     yLocation = resol.yLocation
+                                    display = resol.text
                                     
                                 }
                                 TextField("", text: $text)
@@ -246,7 +246,9 @@ struct ContentView: View {
                                 HStack(alignment: .bottom, spacing: 20){
                                     CircleButtonGroup(items: colors, title: "Background", selectedId: background) { color in
                                         image = Image("placeholder")
-                                        backgroundValue = colorConverter(color: color)
+                                        background = color
+                                        
+                                        
                                     }
                                     
                                     ZStack {
@@ -267,7 +269,7 @@ struct ContentView: View {
                                         }
                                     }
                                     .sheet(isPresented: $isShowPicker) {
-                                        ImagePicker(image: self.$image)
+                                        ImagePicker(image: self.$image, imageUrl: self.$imageUrl, uiImageVal: self.$uiImageVal)
                                     }
                                     ZStack {
                                         
@@ -294,7 +296,8 @@ struct ContentView: View {
                                 
                                 
                                 CircleButtonGroup(items: colors, title: "Text color", selectedId: textColor) { color in
-                                    textColorValue = colorConverter(color: color)
+                                    textColor = color
+                                    
                                     
                                 }
                                 
@@ -302,10 +305,13 @@ struct ContentView: View {
                                 RectangleButtonGroup(items: fontSizes, title: "Font size", selectedId: fontSize) { fontSize in
                                     switch fontSize {
                                     case "LARGE":
+                                        self.fontSize = "LARGE"
                                         fontSizeValue = 16
                                     case "MEDIUM":
+                                        self.fontSize = "MEDIUM"
                                         fontSizeValue = 12
                                     case "SMALL":
+                                        self.fontSize = "SMALL"
                                         fontSizeValue = 8
                                     default :
                                         fontSizeValue = 8
@@ -317,9 +323,20 @@ struct ContentView: View {
                                     if(isSelected){
                                         switch id {
                                         case "ITALIC":
+                                            if fontStyleBold == "BOLD"{
+                                                fontStyle = "BOTH"
+                                            }else {
+                                                fontStyle = "ITALIC"
+                                            }
                                             fontStyleItalic = "ITALIC"
                                             
                                         case "BOLD":
+                                            if fontStyleItalic == "ITALIC"{
+                                                fontStyle = "BOTH"
+                                            }else {
+                                                fontStyle = "BOLD"
+                                            }
+                                            
                                             fontStyleBold = "BOLD"
                                             fontStyleBoldValue = Font.Weight.bold
                                         default:
@@ -329,8 +346,20 @@ struct ContentView: View {
                                     }else {
                                         switch id {
                                         case "ITALIC":
+                                            if fontStyleBold == "BOLD"{
+                                                fontStyle = "BOLD"
+                                            }else {
+                                                fontStyle = "NONE"
+                                            }
+                                            
                                             fontStyleItalic = ""
                                         case "BOLD":
+                                            if fontStyleItalic == "ITALIC"{
+                                                fontStyle = "ITALIC"
+                                            }else {
+                                                fontStyle = "NONE"
+                                            }
+                                            
                                             fontStyleBold = ""
                                             fontStyleBoldValue = Font.Weight.medium
                                         default:
@@ -343,6 +372,21 @@ struct ContentView: View {
                             }
                         }
                         VStack(alignment: .trailing){
+                            SpeakButton { start in
+                                print("STT 시작 여부 \(start)" )
+                                if(start){
+                                    speechRecognizer.reset()
+                                    
+                                    speechRecognizer.transcribe()
+                                    
+                                    
+                                }else{
+                                    print(speechRecognizer.transcript)
+                                    speechRecognizer.stopTranscribing()
+                                    text = speechRecognizer.transcript
+                                    
+                                }
+                            }
                             PressButton("SPEAK", callback: { isSpeak in
                                 print("함수실행 실행인자\(isSpeak)")
                                 if(isSpeak){
@@ -364,14 +408,20 @@ struct ContentView: View {
                                 
                                 finalText = text
                                 _ = Translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: text)
-                                SocketServerManager.shared.send(text: self.text, background: background, color: color, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
+                                if(image != nil){
+                                    SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
+                                    SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
+                                }else{
+                                    SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
+                                }
+                                
                                 //                                translate(text: text)
                                 if(isDisplay){
                                     startTTS()
                                     if(image != nil){
-                                        SocketServerManager.shared.send(text: text, background: background, color: textColor, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
+                                        SocketServerManager.shared.send(text: text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: display)
                                     }else{
-                                        SocketServerManager.shared.send(text: text, background: background, color: textColor, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
+                                        SocketServerManager.shared.send(text: text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSizeValue.description, fontStyleBold: fontStyle, resolution: display)
                                     }
 
                                     
@@ -405,7 +455,7 @@ struct ContentView: View {
 //
                                 
                                 Text(finalText)
-                                    .foregroundColor(textColorValue)
+                                    .foregroundColor(textColor.color)
                                     .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
                                     .italic()
                                 
@@ -431,7 +481,7 @@ struct ContentView: View {
 //
 //                                    .frame(width: mirrorWidth, height: mirrorHeight)
                                 Text(finalText)
-                                    .foregroundColor(textColorValue)
+                                    .foregroundColor(textColor.color)
                                     .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
                                 
                             }
@@ -439,7 +489,7 @@ struct ContentView: View {
                         }
                     }
                     .frame(width: mirrorWidth, height: mirrorHeight)
-                    .background(backgroundValue)
+                    .background(background.color)
                     .padding(EdgeInsets(top: yLocation, leading: xLocation + 2, bottom: 0, trailing: 0))
                 }
             }.background(Color(hex: "#333333"))

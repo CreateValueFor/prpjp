@@ -8,6 +8,8 @@
 import Foundation
 import Socket
 import Dispatch
+import UIKit
+import SwiftUI
 
 final public class SocketServerManager {
     
@@ -28,7 +30,7 @@ final public class SocketServerManager {
         server.run()
     }
     
-    func send(text: String, background: String, color :  String, fontSize: String, fontStyleBold : String, resolution : DISPLAY_RESOLUTION) {
+    func send(text: String, background: String, color :  String, fontSize: String, fontStyleBold : String, resolution : String) {
         
         print(">>> send function started")
         let backgroundData = BackgroundData(type: "com.example.flexibledisplaypanel.socket.data.Background.Color",
@@ -40,7 +42,7 @@ final public class SocketServerManager {
                                 textColor: color,
                                 fontSize: fontSize,
                                 fontStyle: fontStyleBold,
-                                displaySize: resolution.text,
+                                displaySize: resolution,
                                 location: locationData,
                                 isReverse: false)
         
@@ -53,6 +55,35 @@ final public class SocketServerManager {
             print(error)
         }
     }
+    
+    func send(text: String, background: UIImage, backgroundPath : String, color :  String, fontSize: String, fontStyleBold : String, resolution : String) {
+        
+        print(">>> send function started")
+        guard let imageArray = background.jpegData(compressionQuality: 1.0) else { return }
+        
+        let backgroundData = BackgroundImageData(type: "com.example.flexibledisplaypanel.socket.data.Background.Image",
+                                                 uriPath: backgroundPath, name : backgroundPath)
+        let locationData = LocationData(first: 0, second: 0)
+        
+        let data = TransferImageData(text: text,
+                                background: backgroundData,
+                                textColor: color,
+                                fontSize: fontSize,
+                                fontStyle: fontStyleBold,
+                                displaySize: resolution,
+                                location: locationData,
+                                isReverse: false)
+        
+        do {
+            let jsonData = try JSONEncoder().encode(data)
+            guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
+            self.server?.sendRequest(string: "3")
+            self.server?.sendRequest(string: jsonString)
+            self.server?.sendRequest(data: imageArray)
+        }catch{
+            print(error)
+        }
+    }
 }
 
 class EchoServer {
@@ -61,8 +92,17 @@ class EchoServer {
         print(connectedSockets)
         let sockets = connectedSockets.enumerated().map { $1.value }
         sockets.forEach {
-            print(string)
+            
             _ = try? $0.write(from: string)
+        }
+    }
+    
+    func sendRequest(data: Data) {
+        print(connectedSockets)
+        let sockets = connectedSockets.enumerated().map { $1.value }
+        sockets.forEach {
+            
+            _ = try? $0.write(from: data)
         }
     }
     

@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		BA48A73A2868D766002B8CD7 /* VideoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48A7392868D766002B8CD7 /* VideoPicker.swift */; };
-		BA48A73C2868DCB0002B8CD7 /* VideoPicker2.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48A73B2868DCB0002B8CD7 /* VideoPicker2.swift */; };
+		BA48A6D42896E3C000E3C672 /* SpeakButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48A6D32896E3C000E3C672 /* SpeakButton.swift */; };
 		BA54A4FF2868C6A400F0D354 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */; };
 		BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA54A5002868CD5F00F0D354 /* ImagePicker.swift */; };
 		BA5E1B8D284E1FCD002AB742 /* PressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E1B8C284E1FCD002AB742 /* PressButton.swift */; };
@@ -40,8 +39,7 @@
 /* Begin PBXFileReference section */
 		29588CBB10066F5A27EDC45A /* Pods_prpjp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_prpjp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A5724131929B4E040FCD003F /* Pods-prpjp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prpjp.release.xcconfig"; path = "Target Support Files/Pods-prpjp/Pods-prpjp.release.xcconfig"; sourceTree = "<group>"; };
-		BA48A7392868D766002B8CD7 /* VideoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPicker.swift; sourceTree = "<group>"; };
-		BA48A73B2868DCB0002B8CD7 /* VideoPicker2.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoPicker2.swift; sourceTree = "<group>"; };
+		BA48A6D32896E3C000E3C672 /* SpeakButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakButton.swift; sourceTree = "<group>"; };
 		BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		BA54A5002868CD5F00F0D354 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		BA5E1B8C284E1FCD002AB742 /* PressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressButton.swift; sourceTree = "<group>"; };
@@ -101,6 +99,15 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		BA48A6D22896D81A00E3C672 /* Picker */ = {
+			isa = PBXGroup;
+			children = (
+				E38EADA2288EF443005A868C /* PHPVideoPicker.swift */,
+				BA54A5002868CD5F00F0D354 /* ImagePicker.swift */,
+			);
+			path = Picker;
+			sourceTree = "<group>";
+		};
 		BA5E1B8E284E233E002AB742 /* Buttons */ = {
 			isa = PBXGroup;
 			children = (
@@ -110,6 +117,7 @@
 				BAFC284628490BAC00899F5A /* CircleButton.swift */,
 				BAFC28422846689B00899F5A /* TranslationButtonGroup.swift */,
 				BAE3F0BB286F281500B0B0C8 /* ToggleButton.swift */,
+				BA48A6D32896E3C000E3C672 /* SpeakButton.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -117,7 +125,6 @@
 		BAFC28222846466F00899F5A = {
 			isa = PBXGroup;
 			children = (
-				BA48A73B2868DCB0002B8CD7 /* VideoPicker2.swift */,
 				BAFC282D2846466F00899F5A /* prpjp */,
 				BAFC282C2846466F00899F5A /* Products */,
 				662CBC3712D3AE6812237EA9 /* Pods */,
@@ -136,20 +143,17 @@
 		BAFC282D2846466F00899F5A /* prpjp */ = {
 			isa = PBXGroup;
 			children = (
+				BAB5029B284CD8230046D988 /* prpjp.swift */,
 				BAB50299284CD7DD0046D988 /* AppDelegate.swift */,
+				BA48A6D22896D81A00E3C672 /* Picker */,
 				E325D6512894A79A007248B0 /* Manager */,
 				E325D64E2894A6D2007248B0 /* Model */,
 				BAAB51202850F60A00B5540F /* Info.plist */,
 				BAFC28302846466F00899F5A /* ContentView.swift */,
-				BAD14F0B286B552800F0D8F5 /* UDPManager.swift */,
 				BAD14F09286B51CA00F0D8F5 /* Translate.swift */,
-				BA48A7392868D766002B8CD7 /* VideoPicker.swift */,
-				E38EADA2288EF443005A868C /* PHPVideoPicker.swift */,
 				BA9743A12871EAB800125995 /* Assets.xcassets */,
-				BA54A5002868CD5F00F0D354 /* ImagePicker.swift */,
 				BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */,
 				BA5E1B8F284E2821002AB742 /* ColorExtension.swift */,
-				BAB5029B284CD8230046D988 /* prpjp.swift */,
 				BA5E1B8E284E233E002AB742 /* Buttons */,
 				BAFC28342846467100899F5A /* Preview Content */,
 				BAFC28442849007C00899F5A /* Constants.swift */,
@@ -180,6 +184,7 @@
 			children = (
 				E325D64C28949F99007248B0 /* SocketServerManager.swift */,
 				BA5E1B95284E4B31002AB742 /* SocketClientManager.swift */,
+				BAD14F0B286B552800F0D8F5 /* UDPManager.swift */,
 			);
 			path = Manager;
 			sourceTree = "<group>";
@@ -308,8 +313,6 @@
 				BAB5029A284CD7DD0046D988 /* AppDelegate.swift in Sources */,
 				E325D64D28949F99007248B0 /* SocketServerManager.swift in Sources */,
 				E325D6502894A6DC007248B0 /* TransferData.swift in Sources */,
-				BA48A73C2868DCB0002B8CD7 /* VideoPicker2.swift in Sources */,
-				BA48A73A2868D766002B8CD7 /* VideoPicker.swift in Sources */,
 				BAAB51222850F66D00B5540F /* Request.swift in Sources */,
 				BAFC283D28465DD200899F5A /* RadioButton.swift in Sources */,
 				BAFC28312846466F00899F5A /* ContentView.swift in Sources */,
@@ -325,6 +328,7 @@
 				BAD14F0A286B51CA00F0D8F5 /* Translate.swift in Sources */,
 				E38EADA3288EF443005A868C /* PHPVideoPicker.swift in Sources */,
 				BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */,
+				BA48A6D42896E3C000E3C672 /* SpeakButton.swift in Sources */,
 				BAFC28432846689B00899F5A /* TranslationButtonGroup.swift in Sources */,
 				BAD14F0C286B552800F0D8F5 /* UDPManager.swift in Sources */,
 				BA5E1B90284E2821002AB742 /* ColorExtension.swift in Sources */,
@@ -455,9 +459,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
-				DEVELOPMENT_TEAM = S25HXBK7F7;
+				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = prpjp/Info.plist;
@@ -477,7 +481,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = alsrl.prpjp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -493,9 +497,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 7;
+				CURRENT_PROJECT_VERSION = 9;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
-				DEVELOPMENT_TEAM = S25HXBK7F7;
+				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = prpjp/Info.plist;
@@ -515,7 +519,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.6;
+				MARKETING_VERSION = 1.0.7;
 				PRODUCT_BUNDLE_IDENTIFIER = alsrl.prpjp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
