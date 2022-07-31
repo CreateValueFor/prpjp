@@ -18,8 +18,6 @@ class UDPManager :ObservableObject {
     static var timeTrigger = true
     static var realTime = Timer()
     
-    var mysock = SwiftSockMine.mInstance
-    
     static func portForEndpoint(_ endpoint: NWEndpoint) -> Array<Any>? {
         switch endpoint {
         case .hostPort(let host, let port):

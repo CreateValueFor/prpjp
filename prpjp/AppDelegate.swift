@@ -8,7 +8,10 @@
 import Foundation
 import UIKit
 
-class MyAppDelegate : NSObject, UIApplicationDelegate{
+class MyAppDelegate : NSObject, UIApplicationDelegate {
+    let serverManager: SocketServerManager = SocketServerManager.shared
+    let clientManager: SocketClientManager = SocketClientManager.shared
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         return true
     }

@@ -14,62 +14,55 @@ import Network
 import AVKit
 
 
-struct translateResposne : Decodable {
-    var result : String
-    var bytes : Int
-    
+struct translateResposne: Decodable {
+    var result: String
+    var bytes: Int
 }
 
-
-
 struct ContentView: View {
-    
-    
-    
-    
-    @State private var resolution : DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
-    @State private var mirrorWidth : CGFloat =  DISPLAY_RESOLUTION.XS.width
-    @State private var mirrorHeight : CGFloat =  DISPLAY_RESOLUTION.XS.height / 2
+    @State private var resolution: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
+    @State private var mirrorWidth: CGFloat =  DISPLAY_RESOLUTION.XS.width
+    @State private var mirrorHeight: CGFloat =  DISPLAY_RESOLUTION.XS.height / 2
     
     // button info
-    @State private var isBrailMode : Bool = false
-    @State private var isReverseMode : Bool = false
-    @State private var isLock : Bool = false
+    @State private var isBrailMode: Bool = false
+    @State private var isReverseMode: Bool = false
+    @State private var isLock: Bool = false
     
-    @State private var speakLanguage : String = SPEAK_LANGUAGE.ENGLISH.id
-    @State private var translationLanguage : String = TRANSLATION_LANGUAGE.ENGLISH.id
-    @State private var speakLangCode : String = "en"
-    @State private var translateLangCode : String = "en"
-    @State private var background : String = PRP_COLOR.BLUE.rawValue
-    @State private var backgroundValue : Color = PRP_COLOR.BLUE.color
+    @State private var speakLanguage: String = SPEAK_LANGUAGE.ENGLISH.id
+    @State private var translationLanguage: String = TRANSLATION_LANGUAGE.ENGLISH.id
+    @State private var speakLangCode: String = "en"
+    @State private var translateLangCode: String = "en"
+    @State private var background: String = PRP_COLOR.BLUE.rawValue
+    @State private var backgroundValue: Color = PRP_COLOR.BLUE.color
     
-    @State private var textColor : String = PRP_COLOR.WHITE.rawValue
-    @State private var textColorValue : Color = PRP_COLOR.WHITE.color
+    @State private var textColor: String = PRP_COLOR.WHITE.rawValue
+    @State private var textColorValue: Color = PRP_COLOR.WHITE.color
     
-    @State private var fontSize : String = FONT_SIZE.SMALL.rawValue
-    @State private var fontSizeValue : CGFloat = FONT_SIZE.SMALL.size
-    
-    
-    @State private var fontStyleBold : String = FONT_STYLE.BOLD.rawValue
-    @State private var fontStyleBoldValue : Font.Weight = Font.Weight.bold
-    
-    @State private var fontStyleItalic : String = ""
+    @State private var fontSize: String = FONT_SIZE.SMALL.rawValue
+    @State private var fontSizeValue: CGFloat = FONT_SIZE.SMALL.size
     
     
-    @State private var IP : String = ""
+    @State private var fontStyleBold: String = FONT_STYLE.BOLD.rawValue
+    @State private var fontStyleBoldValue: Font.Weight = Font.Weight.bold
     
-    @State private var finalText : String = "Placeholder"
+    @State private var fontStyleItalic: String = ""
+    
+    
+    @State private var IP: String = ""
+    
+    @State private var finalText: String = "Placeholder"
     @StateObject var speechRecognizer = SpeechRecognizer();
     //    var text : String = ""
-    @State private var text : String = ""
-    @State private var xLocation : CGFloat = DISPLAY_RESOLUTION.XS.xLocation
-    @State private var yLocation : CGFloat = DISPLAY_RESOLUTION.XS.yLocation
+    @State private var text: String = ""
+    @State private var xLocation: CGFloat = DISPLAY_RESOLUTION.XS.xLocation
+    @State private var yLocation: CGFloat = DISPLAY_RESOLUTION.XS.yLocation
     
-    @State private var isSpeakBtnDisabled : Bool = false
-    @State private var isDisplayBtnDisabled : Bool = false
+    @State private var isSpeakBtnDisabled: Bool = false
+    @State private var isDisplayBtnDisabled: Bool = false
     
-    @State private var SpeakBtnPressed : Bool = false;
-    @State private var DisplayBtnPressed : Bool = false;
+    @State private var SpeakBtnPressed: Bool = false;
+    @State private var DisplayBtnPressed: Bool = false;
     
     //image
     @State var isShowPicker: Bool = false
@@ -77,39 +70,36 @@ struct ContentView: View {
     
     // video
     @State var videoURL: URL?
-    @State var showVideoPicker : Bool = false
+    @State var showVideoPicker: Bool = false
     @State var player = AVPlayer()
     
-//    @StateObject var udpManager = UDPManager()
+    //    @StateObject var udpManager = UDPManager()
     
-//    var TCPPort : Int32 = self.udpManager.port
-//    var TCPHost : String = self.udpManager.host
+    //    var TCPPort : Int32 = self.udpManager.port
+    //    var TCPHost : String = self.udpManager.host
     
     
     // safe area inset
     
-    
-    
-    
     let resolutions: [DISPLAY_RESOLUTION] = DISPLAY_RESOLUTION.allCases.map{
         $0
     }
-    let speakLanguages : [String] = SPEAK_LANGUAGE.allCases.map{
+    let speakLanguages: [String] = SPEAK_LANGUAGE.allCases.map{
         $0.id
     }
-    let translationLanguages : [String] = TRANSLATION_LANGUAGE.allCases.map {
+    let translationLanguages: [String] = TRANSLATION_LANGUAGE.allCases.map {
         $0.id
     }
-    let fontSizes : [String] = FONT_SIZE.allCases.map{
+    let fontSizes: [String] = FONT_SIZE.allCases.map{
         $0.rawValue
     }
-    let fontStyles : [String] = FONT_STYLE.allCases.map{
+    let fontStyles: [String] = FONT_STYLE.allCases.map{
         $0.rawValue
     }
-    let colors : [PRP_COLOR] = PRP_COLOR.allCases.map{
+    let colors: [PRP_COLOR] = PRP_COLOR.allCases.map{
         $0
     }
-    let color : String = PRP_COLOR.BLACK.rawValue
+    let color: String = PRP_COLOR.BLACK.rawValue
     
     
     func colorConverter (color: String) -> Color {
@@ -130,15 +120,8 @@ struct ContentView: View {
             return Color.black
         }
     }
-    
-    
-    // 소켓 연결 로직
-    var mysock = SwiftSockMine.mInstance
-    
-    
-    
-    
-    
+
+
     // TTS Logic
     func startTTS(){
         let synthesizeer = AVSpeechSynthesizer()
@@ -163,7 +146,8 @@ struct ContentView: View {
         
         utterance.rate = 0.4
         synthesizeer.speak(utterance)
-        mysock.send(text: text, background: background, color: color, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
+
+        SocketServerManager.shared.send(text: text, background: background, color: color, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
     }
     
     
@@ -376,15 +360,20 @@ struct ContentView: View {
                                 
                             }, isPressed: SpeakBtnPressed, disabled: isSpeakBtnDisabled)
                             PressButton("DISPLAY", callback: { isDisplay in
-                                print(isDisplay)
+                                
                                 
                                 finalText = text
                                 _ = Translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: text)
-                                mysock.send(text: self.text, background: background, color: color, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
+                                SocketServerManager.shared.send(text: self.text, background: background, color: color, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
                                 //                                translate(text: text)
                                 if(isDisplay){
                                     startTTS()
-                                    mysock.send(text: text, background: background, color: textColor, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
+                                    if(image != nil){
+                                        SocketServerManager.shared.send(text: text, background: background, color: textColor, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
+                                    }else{
+                                        SocketServerManager.shared.send(text: text, background: background, color: textColor, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
+                                    }
+
                                     
                                 }
                             }, isPressed: DisplayBtnPressed, disabled: isDisplayBtnDisabled)
@@ -403,17 +392,17 @@ struct ContentView: View {
                                     .resizable()
                                 //                                        .scaledToFill()
                                     .frame(width: mirrorWidth, height: mirrorHeight)
-                                VideoPlayer(player: player)
-                                    .onAppear(){
-                                        if player.currentItem == nil {
-                                            let item = AVPlayerItem(url: videoURL!)
-                                            player.replaceCurrentItem(with: item)
-                                        }
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                            player.play()
-                                        }
-                                    }.frame(width: mirrorWidth, height: mirrorHeight)
-                                    
+//                                VideoPlayer(player: player)
+//                                    .onAppear(){
+//                                        if player.currentItem == nil {
+//                                            let item = AVPlayerItem(url: videoURL!)
+//                                            player.replaceCurrentItem(with: item)
+//                                        }
+//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                                            player.play()
+//                                        }
+//                                    }.frame(width: mirrorWidth, height: mirrorHeight)
+//
                                 
                                 Text(finalText)
                                     .foregroundColor(textColorValue)
@@ -428,19 +417,19 @@ struct ContentView: View {
                                     .resizable()
                                 //                                        .scaledToFill()
                                     .frame(width: mirrorWidth, height: mirrorHeight)
-                                VideoPlayer(player: player)
-                                    .onAppear(){
-                                        guard let videoURL = videoURL else {return}
-                                        if player.currentItem == nil {
-                                            let item = AVPlayerItem(url: videoURL)
-                                            player.replaceCurrentItem(with: item)
-                                        }
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                            player.play()
-                                        }
-                                    }
-                                    
-                                    .frame(width: mirrorWidth, height: mirrorHeight)
+//                                VideoPlayer(player: player)
+//                                    .onAppear(){
+//                                        guard let videoURL = videoURL else {return}
+//                                        if player.currentItem == nil {
+//                                            let item = AVPlayerItem(url: videoURL)
+//                                            player.replaceCurrentItem(with: item)
+//                                        }
+//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                                            player.play()
+//                                        }
+//                                    }
+//
+//                                    .frame(width: mirrorWidth, height: mirrorHeight)
                                 Text(finalText)
                                     .foregroundColor(textColorValue)
                                     .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
@@ -455,8 +444,6 @@ struct ContentView: View {
                 }
             }.background(Color(hex: "#333333"))
                 .edgesIgnoringSafeArea([.top,.bottom])
-            //            .edgesIgnoringSafeArea([.leading,.trailing,.top,.bottom])
-            //            .padding(.leading, proxy.safeAreaInsets.leading / 2)
                 .onAppear{
                     // How to use
                     LocalNetworkPrivacy().checkAccessState { granted in
@@ -464,13 +451,11 @@ struct ContentView: View {
                     }
                     
                     UDPManager.broadCastUDP()
-                    DispatchQueue.global(qos: .background).async {
-                        mysock.InitSocket(address: "0.0.0.0", portNum: 8000)
-                    }
-                    
-//                    UDPManager.connectToUDP()
-//                    mysock.InitSocket(address: "127.0.0.1", portNum: 8000)
-                    
+#if targetEnvironment(simulator)
+                    SocketServerManager.shared.run()
+#else
+//                    SocketClientManager.shared.run(address: "172.20.10.4", port: 8000)
+#endif
                 }
         }
     }

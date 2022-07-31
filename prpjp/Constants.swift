@@ -21,17 +21,17 @@ enum DISPLAY_RESOLUTION :CaseIterable{
     var text : String {
         switch self {
         case .XS:
-            return "192 X 32"
+            return "D192X32"
         case .SM :
-            return "192 X 64"
+            return "D192X64"
         case .MD:
-            return "192 X 128"
+            return "D192X128"
         case .LG:
-            return "384 X 64"
+            return "D384X64"
         case .XL:
-            return "384 X 128"
+            return "D384X128"
         case .SXL:
-            return "360 X 28"
+            return "D360X28"
         }
     }
     

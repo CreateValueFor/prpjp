@@ -45,11 +45,11 @@ struct PressButton: View {
                 .frame(width: 150, height: 80)
                 .background(.gray)
                 .foregroundColor(.white)
-                .simultaneousGesture(
-                    LongPressGesture(minimumDuration: 0).onEnded({ _ in
-                        self.callback(true)
-                    })
-                ) 
+//                .simultaneousGesture(
+//                    LongPressGesture(minimumDuration: 0).onEnded({ _ in
+//                        self.callback(true)
+//                    })
+//                )
             
                 .disabled(disabled)
         }
