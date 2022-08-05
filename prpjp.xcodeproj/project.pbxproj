@@ -16,6 +16,8 @@
 		BA5E1B96284E4B31002AB742 /* SocketClientManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA5E1B95284E4B31002AB742 /* SocketClientManager.swift */; };
 		BA8242F4285DC449000F909A /* NetWorkPermission.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA8242F3285DC449000F909A /* NetWorkPermission.swift */; };
 		BA9743A22871EAB800125995 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BA9743A12871EAB800125995 /* Assets.xcassets */; };
+		BAA44E42289D6251009B753B /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA44E41289D6251009B753B /* PlayerView.swift */; };
+		BAA44E44289D626A009B753B /* LoopingPlayerUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAA44E43289D626A009B753B /* LoopingPlayerUIView.swift */; };
 		BAAB51222850F66D00B5540F /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAB51212850F66D00B5540F /* Request.swift */; };
 		BAB5029A284CD7DD0046D988 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB50299284CD7DD0046D988 /* AppDelegate.swift */; };
 		BAB5029C284CD8230046D988 /* prpjp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5029B284CD8230046D988 /* prpjp.swift */; };
@@ -46,6 +48,8 @@
 		BA5E1B95284E4B31002AB742 /* SocketClientManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketClientManager.swift; sourceTree = "<group>"; };
 		BA8242F3285DC449000F909A /* NetWorkPermission.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetWorkPermission.swift; sourceTree = "<group>"; };
 		BA9743A12871EAB800125995 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		BAA44E41289D6251009B753B /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		BAA44E43289D626A009B753B /* LoopingPlayerUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoopingPlayerUIView.swift; sourceTree = "<group>"; };
 		BAAB51202850F60A00B5540F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		BAAB51212850F66D00B5540F /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		BAB50299284CD7DD0046D988 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -150,6 +154,8 @@
 				E325D64E2894A6D2007248B0 /* Model */,
 				BAAB51202850F60A00B5540F /* Info.plist */,
 				BAFC28302846466F00899F5A /* ContentView.swift */,
+				BAA44E41289D6251009B753B /* PlayerView.swift */,
+				BAA44E43289D626A009B753B /* LoopingPlayerUIView.swift */,
 				BAD14F09286B51CA00F0D8F5 /* Translate.swift */,
 				BA9743A12871EAB800125995 /* Assets.xcassets */,
 				BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */,
@@ -313,6 +319,7 @@
 				BAB5029A284CD7DD0046D988 /* AppDelegate.swift in Sources */,
 				E325D64D28949F99007248B0 /* SocketServerManager.swift in Sources */,
 				E325D6502894A6DC007248B0 /* TransferData.swift in Sources */,
+				BAA44E42289D6251009B753B /* PlayerView.swift in Sources */,
 				BAAB51222850F66D00B5540F /* Request.swift in Sources */,
 				BAFC283D28465DD200899F5A /* RadioButton.swift in Sources */,
 				BAFC28312846466F00899F5A /* ContentView.swift in Sources */,
@@ -327,6 +334,7 @@
 				BAB5029C284CD8230046D988 /* prpjp.swift in Sources */,
 				BAD14F0A286B51CA00F0D8F5 /* Translate.swift in Sources */,
 				E38EADA3288EF443005A868C /* PHPVideoPicker.swift in Sources */,
+				BAA44E44289D626A009B753B /* LoopingPlayerUIView.swift in Sources */,
 				BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */,
 				BA48A6D42896E3C000E3C672 /* SpeakButton.swift in Sources */,
 				BAFC28432846689B00899F5A /* TranslationButtonGroup.swift in Sources */,
@@ -459,7 +467,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
@@ -497,7 +505,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 18;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;

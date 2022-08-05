@@ -13,6 +13,7 @@ struct PHPVideoPicker: UIViewControllerRepresentable {
     
     @Binding var isShown: Bool
     @Binding var videoURL: URL?
+    @Binding var playerItem : AVPlayerItem?
     
     func makeUIViewController(context: Context) -> PHPickerViewController {
         var config = PHPickerConfiguration()
@@ -55,6 +56,7 @@ struct PHPVideoPicker: UIViewControllerRepresentable {
                 try? FileManager.default.copyItem(at: url, to: newUrl)
                 print(">>> video picker's url is \(newUrl)")
                 self.parent.videoURL = newUrl
+                self.parent.playerItem = AVPlayerItem(url: newUrl)
             }
         }
     }

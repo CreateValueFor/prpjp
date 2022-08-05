@@ -54,13 +54,10 @@ struct ContentView: View {
     @State private var fontStyle: String = "NONE"
     
     
-    
-    
     @State private var IP: String = ""
     
     @State private var finalText: String = "Placeholder"
     @StateObject var speechRecognizer = SpeechRecognizer(locale: "en_US");
-    //    var text : String = ""
     @State private var text: String = ""
     @State private var xLocation: CGFloat = DISPLAY_RESOLUTION.XS.xLocation
     @State private var yLocation: CGFloat = DISPLAY_RESOLUTION.XS.yLocation
@@ -79,9 +76,15 @@ struct ContentView: View {
     @State var uiImageVal : UIImage? = UIImage()
     
     // video
+    @State var playerLooper: AVPlayerLooper! // should be defined in class
+    @State var queuePlayer: AVQueuePlayer!
+    @State var playerItem : AVPlayerItem?
     @State var videoURL: URL?
     @State var showVideoPicker: Bool = false
     @State var player = AVPlayer()
+    
+    // translate
+    @StateObject var translate = Translate()
     
     let resolutions: [DISPLAY_RESOLUTION] = DISPLAY_RESOLUTION.allCases.map{
         $0
@@ -122,8 +125,8 @@ struct ContentView: View {
             return Color.black
         }
     }
-
-
+    
+    
     // TTS Logic
     func startTTS(){
         let synthesizeer = AVSpeechSynthesizer()
@@ -148,8 +151,7 @@ struct ContentView: View {
         
         utterance.rate = 0.4
         synthesizeer.speak(utterance)
-
-//        SocketServerManager.shared.send(text: text, background: background, color: color, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: resolution)
+        
     }
     
     
@@ -157,9 +159,9 @@ struct ContentView: View {
         GeometryReader{
             proxy in
             
-            VStack(alignment: .trailing){
+            ZStack(alignment: .topTrailing){
                 // toggle buttons
-                HStack(alignment: .center, spacing: 10){
+                HStack(alignment: .top, spacing: 10){
                     
                     Toggle(isOn: $isBrailMode, label: {
                         Text("Braile Mode")
@@ -167,26 +169,82 @@ struct ContentView: View {
                             .foregroundColor(.white)
                     })
                     .toggleStyle(SwitchToggleStyle(tint: Color(hex:"#008577")))
-                    //                        .padding(.horizontal, 10)
+                    
                     Toggle(isOn: $isReverseMode, label: {
                         Text("Reverse Mode")
                             .font(Font.system(size: 12))
                             .foregroundColor(.white)
                     })
                     .toggleStyle(SwitchToggleStyle(tint: Color(hex:"#008577")))
-                    //                        .padding(.horizontal, 10)
+                    
                     Toggle(isOn: $isLock, label: {
                         Text("Lock")
                             .font(Font.system(size: 12))
                             .foregroundColor(.white)
                     })
                     .toggleStyle(SwitchToggleStyle(tint: Color(hex:"#008577")))
-                    //                        .padding(.horizontal, 10)
+                    
                 }
                 .frame(width: 450)
                 .padding(10)
+                .zIndex(1)
                 
                 ZStack(alignment: .topLeading){
+                    // mirror state
+                    
+                        VStack(alignment: .trailing){
+                            ZStack(alignment: .leading){
+                                image?
+                                    .resizable()
+                                    .frame(width: mirrorWidth/2, height: mirrorHeight)
+                                if videoURL != nil {
+                                    VideoPlayer(player: player)
+                                        .onAppear{
+                                          if player.currentItem == nil {
+                                                let item = AVPlayerItem(url: videoURL!)
+                                                player.replaceCurrentItem(with: item)
+                                            }
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
+                                                player.play()
+                                            })
+                                        }
+//                                    AVPlayerLooper(player: queuePlayer, templateItem:playerItem!)
+//                                    PlayerView(videoURL: $videoURL)
+//                                    VideoPlayer(player: AVPlayer(url: videoURL!))
+//                                        
+//                                        .frame(width: mirrorWidth/2, height: mirrorHeight)
+//                                        .scaledToFill()
+                                            
+                                }
+                                //                                VideoPlayer(player: player)
+                                //                                    .onAppear(){
+                                //                                        if player.currentItem == nil {
+                                //                                            let item = AVPlayerItem(url: videoURL!)
+                                //                                            player.replaceCurrentItem(with: item)
+                                //                                        }
+                                //                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                //                                            player.play()
+                                //                                        }
+                                //                                    }.frame(width: mirrorWidth, height: mirrorHeight)
+                                if fontStyleItalic == "ITALIC" {
+                                    Text(finalText)
+                                        .foregroundColor(textColor.color)
+                                        .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
+                                        .italic()
+                                }else {
+                                    Text(finalText)
+                                        .foregroundColor(textColor.color)
+                                        .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
+                                }
+                                
+                            }
+                        }
+                        .frame(width: mirrorWidth / 2, height: mirrorHeight )
+                        .background(background.color)
+                        .padding(EdgeInsets(top: yLocation / 4, leading: xLocation + 2, bottom: 0, trailing: 0))
+                    
+                    
+                    // contents
                     HStack (alignment: .top){
                         ScrollView(.vertical){
                             VStack(alignment: .leading) {
@@ -248,7 +306,7 @@ struct ContentView: View {
                                 }
                                 HStack(alignment: .bottom, spacing: 20){
                                     CircleButtonGroup(items: colors, title: "Background", selectedId: background) { color in
-//                                        image = Image("placeholder")
+                                        //                                        image = Image("placeholder")
                                         image = nil
                                         background = color
                                         
@@ -260,6 +318,7 @@ struct ContentView: View {
                                         VStack {
                                             
                                             Button(action: {
+                                                videoURL = nil
                                                 withAnimation {
                                                     self.isShowPicker.toggle()
                                                 }
@@ -280,7 +339,9 @@ struct ContentView: View {
                                         VStack {
                                             
                                             Button(action: {
+                                                image = nil
                                                 withAnimation {
+                                                    
                                                     self.showVideoPicker.toggle()
                                                 }
                                             }) {
@@ -294,7 +355,7 @@ struct ContentView: View {
                                     }
                                     .sheet(isPresented: $showVideoPicker) {
                                         
-                                        PHPVideoPicker(isShown: $showVideoPicker, videoURL: $videoURL)
+                                        PHPVideoPicker(isShown: $showVideoPicker, videoURL: $videoURL, playerItem: $playerItem)
                                     }
                                 }
                                 
@@ -376,14 +437,28 @@ struct ContentView: View {
                             }
                         }
                         VStack(alignment: .trailing){
-
+                            
                             SwiftSpeech.RecordButton()
                                 .swiftSpeechRecordOnHold(locale: STTLocale)
-                                .onRecognizeLatest(update: $text)
+                                .onRecognizeLatest { result in
+                                    if(result.isFinal){
+                                        
+                                        print(result.bestTranscription.formattedString)
+                                    translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: result.bestTranscription.formattedString)
+                                        print("result \(text)")
+                                        
+                                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+                                            self.text = translate.trText
+                                        }
+//
+                                    }
+                                    
+                                } handleError: { error in
+                                    print(error.localizedDescription)
+                                }
 
+                            
                             PressButton("DISPLAY", callback: { isDisplay in
-                                
-                                
                                 finalText = text
                                 if(image != nil){
                                     SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
@@ -395,67 +470,10 @@ struct ContentView: View {
                         }
                         
                     }
-                    .padding(EdgeInsets(top: 60, leading: 30, bottom: 0, trailing: 30))
-                    // mirror state
+                                        .padding(EdgeInsets(top: 80, leading: 00, bottom: 0, trailing: 5))
                     
-                    VStack(alignment: .trailing){
-                        ZStack(alignment: .topLeading){
-                            if fontStyleItalic == "ITALIC" {
-                                
-                                
-                                image?
-                                    .resizable()
-                                //                                        .scaledToFill()
-                                    .frame(width: mirrorWidth, height: mirrorHeight)
-//                                VideoPlayer(player: player)
-//                                    .onAppear(){
-//                                        if player.currentItem == nil {
-//                                            let item = AVPlayerItem(url: videoURL!)
-//                                            player.replaceCurrentItem(with: item)
-//                                        }
-//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                                            player.play()
-//                                        }
-//                                    }.frame(width: mirrorWidth, height: mirrorHeight)
-//
-                                
-                                Text(finalText)
-                                    .foregroundColor(textColor.color)
-                                    .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
-                                    .italic()
-                                
-                                
-                                
-                            }else {
-                                
-                                image?
-                                    .resizable()
-                                //                                        .scaledToFill()
-                                    .frame(width: mirrorWidth, height: mirrorHeight)
-//                                VideoPlayer(player: player)
-//                                    .onAppear(){
-//                                        guard let videoURL = videoURL else {return}
-//                                        if player.currentItem == nil {
-//                                            let item = AVPlayerItem(url: videoURL)
-//                                            player.replaceCurrentItem(with: item)
-//                                        }
-//                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-//                                            player.play()
-//                                        }
-//                                    }
-//
-//                                    .frame(width: mirrorWidth, height: mirrorHeight)
-                                Text(finalText)
-                                    .foregroundColor(textColor.color)
-                                    .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
-                                
-                            }
-                            
-                        }
-                    }
-                    .frame(width: mirrorWidth, height: mirrorHeight)
-                    .background(background.color)
-                    .padding(EdgeInsets(top: yLocation, leading: xLocation + 2, bottom: 0, trailing: 0))
+                    
+                    
                 }
             }.background(Color(hex: "#333333"))
                 .edgesIgnoringSafeArea([.top,.bottom])
@@ -467,12 +485,11 @@ struct ContentView: View {
                     SwiftSpeech.requestSpeechRecognitionAuthorization()
                     
                     UDPManager.broadCastUDP()
-//#if targetEnvironment(simulator)
+                    
                     SocketServerManager.shared.run()
-//#else
-//                    SocketClientManager.shared.run(address: "172.20.10.4", port: 8000)
-//#endif
                 }
+                .zIndex(0)
+            
         }
     }
     
