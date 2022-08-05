@@ -107,10 +107,10 @@ struct FontStyleGroup : View {
     func boldCallback(id: String) {
         let isSelected = !(isBold == id)
         if isSelected {
-            print("체크해야함")
+            
             isBold = "BOLD"
         }else {
-            print("체크해제")
+            
             isBold = ""
         }
 
@@ -121,10 +121,10 @@ struct FontStyleGroup : View {
     func italicCallback(id: String) {
         let isSelected = !(isItalic == id)
         if isSelected {
-            print("체크해야함")
+            
             isItalic = "ITALIC"
         }else {
-            print("체크해제")
+            
             isItalic = ""
         }
         
@@ -141,10 +141,10 @@ struct LanguageGroup: View {
         VStack(alignment: .leading) {
             
             RectangleButtonGroup(items: ["ENGLISH", "FRENCH", "SPANISH", "日本語", "한국어"], title:"Speak Language", selectedId: "London") { selected in
-                print("Selected is: \(selected)")
+                
             }
             FontStyleGroup(title: "Font style") { a, b in
-                print(a,b)
+                
             }
         }.padding()
     }

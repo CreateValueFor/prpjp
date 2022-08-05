@@ -94,7 +94,7 @@ struct RadioButtonGroup: View {
     }
 
     func radioGroupCallback(id: DISPLAY_RESOLUTION) {
-        print(id)
+        
         selectedItem = id
         callback(id)
     }
@@ -105,7 +105,6 @@ struct RadioGroup: View {
         HStack {
             
             RadioButtonGroup(items: [DISPLAY_RESOLUTION.XS, DISPLAY_RESOLUTION.LG, DISPLAY_RESOLUTION.MD, DISPLAY_RESOLUTION.SM, DISPLAY_RESOLUTION.XL], selectedId: DISPLAY_RESOLUTION.XL) { selected in
-                print("Selected is: \(selected.text)")
             }
         }
     }

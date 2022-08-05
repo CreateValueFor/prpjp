@@ -340,6 +340,8 @@ struct ContentView: View {
                                             
                                             Button(action: {
                                                 image = nil
+                                                videoURL = nil
+                                                
                                                 withAnimation {
                                                     
                                                     self.showVideoPicker.toggle()
@@ -443,9 +445,9 @@ struct ContentView: View {
                                 .onRecognizeLatest { result in
                                     if(result.isFinal){
                                         
-                                        print(result.bestTranscription.formattedString)
+                                        
                                     translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: result.bestTranscription.formattedString)
-                                        print("result \(text)")
+                                        
                                         
                                         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
                                             self.text = translate.trText

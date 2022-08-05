@@ -89,7 +89,7 @@ struct TranslationGroup: View {
         HStack {
             
             TranslationButtonGroup(items: ["ENGLISH", "FRENCH", "SPANISH", "日本語", "한국어"], selectedId: "ENGLISH") { selected in
-                print("Selected is: \(selected)")
+                
             }
         }.padding()
     }

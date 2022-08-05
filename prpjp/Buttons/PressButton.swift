@@ -53,7 +53,7 @@ struct PressButton: View {
 struct PressButton_Previews: PreviewProvider {
     static var previews: some View {
         PressButton("SPEAK", callback: { bool in
-            print(bool)
+            
         }, isPressed: true, disabled: true)
     }
 }

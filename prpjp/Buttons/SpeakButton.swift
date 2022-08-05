@@ -43,7 +43,7 @@ struct SpeakButton_Previews: PreviewProvider {
     
     static var previews: some View {
         SpeakButton { start in
-            print(start)
+            
         }
     }
 }
