@@ -407,9 +407,9 @@ struct ContentView: View {
                                 
                                 
                                 finalText = text
+                                SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
                                 _ = Translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: text)
                                 if(image != nil){
-                                    SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
                                     SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
                                 }else{
                                     SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
@@ -501,11 +501,11 @@ struct ContentView: View {
                     }
                     
                     UDPManager.broadCastUDP()
-#if targetEnvironment(simulator)
+//#if targetEnvironment(simulator)
                     SocketServerManager.shared.run()
-#else
+//#else
 //                    SocketClientManager.shared.run(address: "172.20.10.4", port: 8000)
-#endif
+//#endif
                 }
         }
     }

@@ -92,7 +92,7 @@ class EchoServer {
         print(connectedSockets)
         let sockets = connectedSockets.enumerated().map { $1.value }
         sockets.forEach {
-            
+            print(string)
             _ = try? $0.write(from: string)
         }
     }
@@ -100,6 +100,7 @@ class EchoServer {
     func sendRequest(data: Data) {
         print(connectedSockets)
         let sockets = connectedSockets.enumerated().map { $1.value }
+        
         sockets.forEach {
             
             _ = try? $0.write(from: data)
