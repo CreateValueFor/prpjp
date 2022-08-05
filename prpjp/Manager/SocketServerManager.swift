@@ -50,7 +50,10 @@ final public class SocketServerManager {
             let jsonData = try JSONEncoder().encode(data)
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             self.server?.sendRequest(string: "2")
+            
             self.server?.sendRequest(string: jsonString)
+
+            
         }catch{
             print(error)
         }
@@ -59,7 +62,8 @@ final public class SocketServerManager {
     func send(text: String, background: UIImage, backgroundPath : String, color :  String, fontSize: String, fontStyleBold : String, resolution : String) {
         
         print(">>> send function started")
-        guard let imageArray = background.jpegData(compressionQuality: 1.0) else { return }
+        guard let imageArray = background.jpegData(compressionQuality: 0.6) else { return }
+        
         
         let backgroundData = BackgroundImageData(type: "com.example.flexibledisplaypanel.socket.data.Background.Image",
                                                  uriPath: backgroundPath, name : backgroundPath)
@@ -79,7 +83,11 @@ final public class SocketServerManager {
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             self.server?.sendRequest(string: "3")
             self.server?.sendRequest(string: jsonString)
-            self.server?.sendRequest(data: imageArray)
+            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
+              // 1초 후 실행될 부분
+                self.server?.sendRequest(data: imageArray)
+            }
+            
         }catch{
             print(error)
         }
@@ -100,16 +108,14 @@ class EchoServer {
     func sendRequest(data: Data) {
         print(connectedSockets)
         let sockets = connectedSockets.enumerated().map { $1.value }
-        
         sockets.forEach {
-            
             _ = try? $0.write(from: data)
         }
     }
     
     static let quitCommand: String = "QUIT"
     static let shutdownCommand: String = "SHUTDOWN"
-    static let bufferSize = 4096
+    static let bufferSize = 4096 * 1024
     
     let port: Int
     var listenSocket: Socket? = nil

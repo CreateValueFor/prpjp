@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7342F6400E1358D2C87A53A8 /* Pods_prpjp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FD6325AC2FCB0AB4C0B89B5 /* Pods_prpjp.framework */; };
 		BA48A6D42896E3C000E3C672 /* SpeakButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48A6D32896E3C000E3C672 /* SpeakButton.swift */; };
 		BA54A4FF2868C6A400F0D354 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */; };
 		BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA54A5002868CD5F00F0D354 /* ImagePicker.swift */; };
@@ -28,7 +29,6 @@
 		BAFC28432846689B00899F5A /* TranslationButtonGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC28422846689B00899F5A /* TranslationButtonGroup.swift */; };
 		BAFC28452849007C00899F5A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC28442849007C00899F5A /* Constants.swift */; };
 		BAFC284728490BAC00899F5A /* CircleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAFC284628490BAC00899F5A /* CircleButton.swift */; };
-		C11861C9A3E2F66909B1D9F6 /* Pods_prpjp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 29588CBB10066F5A27EDC45A /* Pods_prpjp.framework */; };
 		E325D64928949F74007248B0 /* BlueSocketTestCommonLibrary in Frameworks */ = {isa = PBXBuildFile; productRef = E325D64828949F74007248B0 /* BlueSocketTestCommonLibrary */; };
 		E325D64B28949F74007248B0 /* Socket in Frameworks */ = {isa = PBXBuildFile; productRef = E325D64A28949F74007248B0 /* Socket */; };
 		E325D64D28949F99007248B0 /* SocketServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325D64C28949F99007248B0 /* SocketServerManager.swift */; };
@@ -37,8 +37,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		29588CBB10066F5A27EDC45A /* Pods_prpjp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_prpjp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		A5724131929B4E040FCD003F /* Pods-prpjp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prpjp.release.xcconfig"; path = "Target Support Files/Pods-prpjp/Pods-prpjp.release.xcconfig"; sourceTree = "<group>"; };
+		6FD6325AC2FCB0AB4C0B89B5 /* Pods_prpjp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_prpjp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA48A6D32896E3C000E3C672 /* SpeakButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakButton.swift; sourceTree = "<group>"; };
 		BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		BA54A5002868CD5F00F0D354 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -62,10 +61,11 @@
 		BAFC28422846689B00899F5A /* TranslationButtonGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationButtonGroup.swift; sourceTree = "<group>"; };
 		BAFC28442849007C00899F5A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		BAFC284628490BAC00899F5A /* CircleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleButton.swift; sourceTree = "<group>"; };
+		CA922BBF4840EFB8FA46B24D /* Pods-prpjp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prpjp.release.xcconfig"; path = "Target Support Files/Pods-prpjp/Pods-prpjp.release.xcconfig"; sourceTree = "<group>"; };
 		E325D64C28949F99007248B0 /* SocketServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketServerManager.swift; sourceTree = "<group>"; };
 		E325D64F2894A6DC007248B0 /* TransferData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferData.swift; sourceTree = "<group>"; };
 		E38EADA2288EF443005A868C /* PHPVideoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPVideoPicker.swift; sourceTree = "<group>"; };
-		F36178F623074501F50612DE /* Pods-prpjp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prpjp.debug.xcconfig"; path = "Target Support Files/Pods-prpjp/Pods-prpjp.debug.xcconfig"; sourceTree = "<group>"; };
+		FB2EE305A2FCAFC8B17DCE10 /* Pods-prpjp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prpjp.debug.xcconfig"; path = "Target Support Files/Pods-prpjp/Pods-prpjp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,17 +75,17 @@
 			files = (
 				E325D64B28949F74007248B0 /* Socket in Frameworks */,
 				E325D64928949F74007248B0 /* BlueSocketTestCommonLibrary in Frameworks */,
-				C11861C9A3E2F66909B1D9F6 /* Pods_prpjp.framework in Frameworks */,
+				7342F6400E1358D2C87A53A8 /* Pods_prpjp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		2BF924FDF5AF1BECA50CEACF /* Frameworks */ = {
+		57314206118260329C094556 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				29588CBB10066F5A27EDC45A /* Pods_prpjp.framework */,
+				6FD6325AC2FCB0AB4C0B89B5 /* Pods_prpjp.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -93,8 +93,8 @@
 		662CBC3712D3AE6812237EA9 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				F36178F623074501F50612DE /* Pods-prpjp.debug.xcconfig */,
-				A5724131929B4E040FCD003F /* Pods-prpjp.release.xcconfig */,
+				FB2EE305A2FCAFC8B17DCE10 /* Pods-prpjp.debug.xcconfig */,
+				CA922BBF4840EFB8FA46B24D /* Pods-prpjp.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -128,7 +128,7 @@
 				BAFC282D2846466F00899F5A /* prpjp */,
 				BAFC282C2846466F00899F5A /* Products */,
 				662CBC3712D3AE6812237EA9 /* Pods */,
-				2BF924FDF5AF1BECA50CEACF /* Frameworks */,
+				57314206118260329C094556 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -196,11 +196,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = BAFC28392846467100899F5A /* Build configuration list for PBXNativeTarget "prpjp" */;
 			buildPhases = (
-				5734C8CAD1894A1F48217BE0 /* [CP] Check Pods Manifest.lock */,
+				4B8B14C83DFDAFBE5D4C5C17 /* [CP] Check Pods Manifest.lock */,
 				BAFC28272846466F00899F5A /* Sources */,
 				BAFC28282846466F00899F5A /* Frameworks */,
 				BAFC28292846466F00899F5A /* Resources */,
-				156361EE8C459C2C2B35E518 /* [CP] Embed Pods Frameworks */,
+				704C8670E0DF81BC6855B497 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -264,24 +264,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		156361EE8C459C2C2B35E518 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-prpjp/Pods-prpjp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-prpjp/Pods-prpjp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-prpjp/Pods-prpjp-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		5734C8CAD1894A1F48217BE0 /* [CP] Check Pods Manifest.lock */ = {
+		4B8B14C83DFDAFBE5D4C5C17 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -301,6 +284,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		704C8670E0DF81BC6855B497 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-prpjp/Pods-prpjp-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-prpjp/Pods-prpjp-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-prpjp/Pods-prpjp-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -454,12 +454,12 @@
 		};
 		BAFC283A2846467100899F5A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F36178F623074501F50612DE /* Pods-prpjp.debug.xcconfig */;
+			baseConfigurationReference = FB2EE305A2FCAFC8B17DCE10 /* Pods-prpjp.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
@@ -481,7 +481,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.7;
+				MARKETING_VERSION = 1.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = alsrl.prpjp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -492,12 +492,12 @@
 		};
 		BAFC283B2846467100899F5A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = A5724131929B4E040FCD003F /* Pods-prpjp.release.xcconfig */;
+			baseConfigurationReference = CA922BBF4840EFB8FA46B24D /* Pods-prpjp.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 12;
+				CURRENT_PROJECT_VERSION = 15;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
@@ -519,7 +519,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.7;
+				MARKETING_VERSION = 1.0.8;
 				PRODUCT_BUNDLE_IDENTIFIER = alsrl.prpjp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -32,10 +32,10 @@ class SpeechRecognizer: ObservableObject {
     private var audioEngine: AVAudioEngine?
     private var request: SFSpeechAudioBufferRecognitionRequest?
     private var task: SFSpeechRecognitionTask?
-    private let recognizer: SFSpeechRecognizer?
+    private var recognizer: SFSpeechRecognizer?
     
-    init() {
-        recognizer = SFSpeechRecognizer()
+    init(locale : String) {
+        recognizer = SFSpeechRecognizer(locale: Locale.init(identifier: locale))
         
         Task(priority: .background) {
             do {
@@ -58,8 +58,12 @@ class SpeechRecognizer: ObservableObject {
         reset()
     }
     
+    func setLocale(locale: Locale){
+        recognizer = SFSpeechRecognizer(locale: locale)
+    }
+    
     func transcribe() {
-        print("번역 시작")
+        print(recognizer?.locale)
         DispatchQueue(label: "Speech Recognizer Queue", qos: .background).async { [weak self] in
             guard let self = self, let recognizer = self.recognizer, recognizer.isAvailable else {
                 self?.speakError(RecognizerError.recognizerIsUnavailable)
@@ -120,6 +124,7 @@ class SpeechRecognizer: ObservableObject {
             audioEngine?.stop()
             audioEngine?.inputNode.removeTap(onBus: 0)
         }
+        print(result)
         
         if let result = result {
             speak(result.bestTranscription.formattedString)

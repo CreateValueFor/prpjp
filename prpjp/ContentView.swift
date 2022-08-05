@@ -12,6 +12,7 @@ import AVFoundation
 import Alamofire
 import Network
 import AVKit
+import SwiftSpeech
 
 
 struct translateResposne: Decodable {
@@ -35,6 +36,7 @@ struct ContentView: View {
     @State private var translationLanguage: String = TRANSLATION_LANGUAGE.ENGLISH.id
     @State private var speakLangCode: String = "en"
     @State private var translateLangCode: String = "en"
+    @State private var STTLocale : Locale = Locale(identifier: "en-US")
     
     
     @State private var background: PRP_COLOR = PRP_COLOR.BLUE
@@ -57,7 +59,7 @@ struct ContentView: View {
     @State private var IP: String = ""
     
     @State private var finalText: String = "Placeholder"
-    @StateObject var speechRecognizer = SpeechRecognizer();
+    @StateObject var speechRecognizer = SpeechRecognizer(locale: "en_US");
     //    var text : String = ""
     @State private var text: String = ""
     @State private var xLocation: CGFloat = DISPLAY_RESOLUTION.XS.xLocation
@@ -69,9 +71,10 @@ struct ContentView: View {
     @State private var SpeakBtnPressed: Bool = false;
     @State private var DisplayBtnPressed: Bool = false;
     
+    
     //image
     @State var isShowPicker: Bool = false
-    @State var image: Image? = Image("placeholder")
+    @State var image: Image? = nil
     @State var imageUrl : String? = ""
     @State var uiImageVal : UIImage? = UIImage()
     
@@ -207,20 +210,20 @@ struct ContentView: View {
                                     switch speakLanguage {
                                     case "ENGLISH":
                                         speakLangCode = "en"
-                                        //                                        speechRecognizer =
-                                        //                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.ENGLISH.lang)
+                                        STTLocale = SPEAK_LANGUAGE.ENGLISH.lang
                                     case "FRENCH":
                                         speakLangCode = "fr"
-                                        //                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.FRENCH.lang)
+                                        STTLocale = SPEAK_LANGUAGE.FRENCH.lang
+                                        
                                     case "SPANISH":
                                         speakLangCode = "es"
-                                        //                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.SPANISH.lang)
+                                        STTLocale = SPEAK_LANGUAGE.FRENCH.lang
                                     case "日本語":
                                         speakLangCode = "ja"
-                                        //                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.日本語.lang)
+                                        STTLocale = SPEAK_LANGUAGE.日本語.lang
                                     case "한국어":
                                         speakLangCode = "ko"
-                                        //                                        SFSpeechRecognizer(locale: SPEAK_LANGUAGE.한국어.lang)
+                                        STTLocale = SPEAK_LANGUAGE.한국어.lang
                                     default:
                                         print(speakLanguage)
                                     }
@@ -245,7 +248,8 @@ struct ContentView: View {
                                 }
                                 HStack(alignment: .bottom, spacing: 20){
                                     CircleButtonGroup(items: colors, title: "Background", selectedId: background) { color in
-                                        image = Image("placeholder")
+//                                        image = Image("placeholder")
+                                        image = nil
                                         background = color
                                         
                                         
@@ -372,60 +376,21 @@ struct ContentView: View {
                             }
                         }
                         VStack(alignment: .trailing){
-                            SpeakButton { start in
-                                print("STT 시작 여부 \(start)" )
-                                if(start){
-                                    speechRecognizer.reset()
-                                    
-                                    speechRecognizer.transcribe()
-                                    
-                                    
-                                }else{
-                                    print(speechRecognizer.transcript)
-                                    speechRecognizer.stopTranscribing()
-                                    text = speechRecognizer.transcript
-                                    
-                                }
-                            }
-                            PressButton("SPEAK", callback: { isSpeak in
-                                print("함수실행 실행인자\(isSpeak)")
-                                if(isSpeak){
-                                    speechRecognizer.reset()
-                                    
-                                    speechRecognizer.transcribe()
-                                    
-                                    
-                                }else{
-                                    print(speechRecognizer.transcript)
-                                    speechRecognizer.stopTranscribing()
-                                    text = speechRecognizer.transcript
-                                    
-                                }
-                                
-                            }, isPressed: SpeakBtnPressed, disabled: isSpeakBtnDisabled)
+
+                            SwiftSpeech.RecordButton()
+                                .swiftSpeechRecordOnHold(locale: STTLocale)
+                                .onRecognizeLatest(update: $text)
+
                             PressButton("DISPLAY", callback: { isDisplay in
                                 
                                 
                                 finalText = text
-                                SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
-                                _ = Translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: text)
                                 if(image != nil){
                                     SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
                                 }else{
                                     SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
                                 }
                                 
-                                //                                translate(text: text)
-                                if(isDisplay){
-                                    startTTS()
-                                    if(image != nil){
-                                        SocketServerManager.shared.send(text: text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyleBold, resolution: display)
-                                    }else{
-                                        SocketServerManager.shared.send(text: text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSizeValue.description, fontStyleBold: fontStyle, resolution: display)
-                                    }
-
-                                    
-                                }
                             }, isPressed: DisplayBtnPressed, disabled: isDisplayBtnDisabled)
                         }
                         
@@ -499,6 +464,7 @@ struct ContentView: View {
                     LocalNetworkPrivacy().checkAccessState { granted in
                         print(granted)
                     }
+                    SwiftSpeech.requestSpeechRecognitionAuthorization()
                     
                     UDPManager.broadCastUDP()
 //#if targetEnvironment(simulator)
