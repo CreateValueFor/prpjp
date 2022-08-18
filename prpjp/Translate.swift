@@ -25,12 +25,16 @@ class Translate : ObservableObject {
             "inputLang" : speakLangCode,
             "outputLang" : translateLangCode
         ]
+        print(parameters.description)
+        
         
         AF.request(TRANSLATE_PATH, method: .post, parameters: parameters,encoding: URLEncoding.httpBody)
             .validate()
             .responseDecodable(of: translateResposne.self){ [self]
                 resposne in
+                print(resposne)
                 guard let curText =  resposne.value?.result else {return}
+                print(curText)
                 trText = curText
 //                print(Translate.text)
                 

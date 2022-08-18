@@ -62,7 +62,7 @@ struct RadioButton: View {
                     .aspectRatio(contentMode: .fit)
                     .frame(width: self.size, height: self.size)
                     .foregroundColor(self.selectedID == self.item ? Color(hex: "#008577") : .white)
-                Text(item.text)
+                Text(item.text.replacingOccurrences(of: "D", with: "").replacingOccurrences(of: "X", with: " X "))
                     .font(Font.system(size: textSize))
                 
             }.foregroundColor(self.color)

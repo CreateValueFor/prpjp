@@ -14,6 +14,7 @@ import SwiftUI
 final public class SocketServerManager {
     
     public static let shared = SocketServerManager()
+    public var port: Int = 8000
     
     private var server: EchoServer?
     
@@ -22,11 +23,16 @@ final public class SocketServerManager {
     }
     
     func run() {
-        let port = 8000
-        let server = EchoServer(port: port)
+        let server = EchoServer(port: self.port)
         self.server = server
-        print("Swift Echo Server Sample")
         print("Connect with a command line window by entering 'telnet ::1 \(port)'")
+        server.run()
+    }
+    
+    func rerun(_ port: Int = 8000) {
+        guard let server = self.server else { return }
+        server.shutdownServer()
+        server.port = port
         server.run()
     }
     
@@ -46,12 +52,17 @@ final public class SocketServerManager {
                                 location: locationData,
                                 isReverse: false)
         
+        
+        
         do {
             let jsonData = try JSONEncoder().encode(data)
+            UserDefaults.standard.set(jsonData, forKey: "transfer")
+            print(jsonData)
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             self.server?.sendRequest(string: "2")
             
             self.server?.sendRequest(string: jsonString)
+            
 
             
         }catch{
@@ -63,6 +74,9 @@ final public class SocketServerManager {
         
         print(">>> send function started")
         guard let imageArray = background.jpegData(compressionQuality: 0.6) else { return }
+//        guard let imageArray = background.pngData() else { return }
+        
+        
         
         
         let backgroundData = BackgroundImageData(type: "com.example.flexibledisplaypanel.socket.data.Background.Image",
@@ -78,20 +92,35 @@ final public class SocketServerManager {
                                 location: locationData,
                                 isReverse: false)
         
+        
+        
         do {
             let jsonData = try JSONEncoder().encode(data)
+            UserDefaults.standard.set(jsonData, forKey: "transfer")
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             self.server?.sendRequest(string: "3")
-            self.server?.sendRequest(string: jsonString)
-            DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-              // 1초 후 실행될 부분
+            
+            
+            
+            
+            sleep(1)
+                self.server?.sendRequest(string: jsonString)
+            
+            
+            sleep(1)
+            
+            
                 self.server?.sendRequest(data: imageArray)
-            }
+            
+            sleep(1)
+            self.server?.sendRequest(string: "finish")
+            
             
         }catch{
             print(error)
         }
     }
+    
 }
 
 class EchoServer {
@@ -117,10 +146,17 @@ class EchoServer {
     static let shutdownCommand: String = "SHUTDOWN"
     static let bufferSize = 4096 * 1024
     
-    let port: Int
+    var port: Int
     var listenSocket: Socket? = nil
     var continueRunningValue = true
-    var connectedSockets = [Int32: Socket]()
+    var connectedSockets = [Int32: Socket]() {
+        didSet {
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: .tcpDidChangeConnectedState, object: nil, userInfo: ["isEmpty": self.connectedSockets.isEmpty])
+            }
+        }
+    }
+    
     let socketLockQueue = DispatchQueue(label: "com.kitura.serverSwift.socketLockQueue")
     var continueRunning: Bool {
         set(newValue) {
@@ -148,6 +184,7 @@ class EchoServer {
     }
     
     func run() {
+        self.continueRunningValue = true
         
         let queue = DispatchQueue.global(qos: .userInteractive)
         
@@ -187,9 +224,7 @@ class EchoServer {
                 }
                 
                 if self.continueRunning {
-                    
                     print("Error reported:\n \(socketError.description)")
-                    
                 }
             }
         }
@@ -261,14 +296,14 @@ class EchoServer {
                     readData.count = 0
                     
                 } while shouldKeepRunning
+
+                self.socketLockQueue.sync { [unowned self, socket] in
+                    let value = self.connectedSockets.removeValue(forKey: socket.socketfd)
+                    print("remove value: \(String(describing: value))")
+                }
                 
                 print("Socket: \(socket.remoteHostname):\(socket.remotePort) closed...")
                 socket.close()
-                
-                self.socketLockQueue.sync { [unowned self, socket] in
-                    self.connectedSockets[socket.socketfd] = nil
-                }
-                
             }
             catch let error {
                 guard let socketError = error as? Socket.Error else {
@@ -291,13 +326,13 @@ class EchoServer {
         for socket in connectedSockets.values {
             
             self.socketLockQueue.sync { [unowned self, socket] in
-                self.connectedSockets[socket.socketfd] = nil
+                let value = self.connectedSockets.removeValue(forKey: socket.socketfd)
+                print("remove value: \(String(describing: value))")
                 socket.close()
             }
         }
         
-        DispatchQueue.main.sync {
-            exit(0)
-        }
+        print("Socket count = \(connectedSockets.count)")
+        print("Shutdown complete")
     }
 }

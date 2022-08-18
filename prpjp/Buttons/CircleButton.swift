@@ -42,10 +42,6 @@ struct CircleButton: View {
                     .strokeBorder(self.selectedID == self.item ?  Color(hex: "#008577") : Color.white,lineWidth: 1)
                     .background(Circle().foregroundColor(item.color))
                     .frame(width: 30, height: 30)
-                    
-                    
-                
-                    
             }
             
         }

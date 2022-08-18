@@ -55,9 +55,9 @@ class UDPManager :ObservableObject {
         })))
     }
     
-    static func broadCastUDP() {
+    static func broadCastUDP(port: Int) {
         
-        let messageToUDP = "Hyuns:8000"
+        let messageToUDP = "Hyuns:\(port)"
         let queue = DispatchQueue(label: "connection")
         
         

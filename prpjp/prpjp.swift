@@ -8,8 +8,10 @@
 import Foundation
 import SwiftUI
 
+
 @main
 struct PRPJPApp: App {
+    
     @UIApplicationDelegateAdaptor var delegate : MyAppDelegate
     
     var body: some Scene {

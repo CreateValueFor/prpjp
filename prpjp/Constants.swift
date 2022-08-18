@@ -212,7 +212,7 @@ enum PRP_COLOR :  String, CaseIterable{
     var color: Color{
         switch self {
         case .BLACK:
-            return Color.black
+            return Color(hex: "#333333")
         case .WHITE:
             return Color.white
         case .RED:
@@ -261,4 +261,21 @@ enum FONT_STYLE : String ,CaseIterable{
 
 
 
-
+let resolutions: [DISPLAY_RESOLUTION] = DISPLAY_RESOLUTION.allCases.map{
+    $0
+}
+let speakLanguages: [String] = SPEAK_LANGUAGE.allCases.map{
+    $0.id
+}
+let translationLanguages: [String] = TRANSLATION_LANGUAGE.allCases.map {
+    $0.id
+}
+let fontSizes: [String] = FONT_SIZE.allCases.map{
+    $0.rawValue
+}
+let fontStyles: [String] = FONT_STYLE.allCases.map{
+    $0.rawValue
+}
+let colors: [PRP_COLOR] = PRP_COLOR.allCases.map{
+    $0
+}

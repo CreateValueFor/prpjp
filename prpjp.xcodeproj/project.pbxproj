@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		7342F6400E1358D2C87A53A8 /* Pods_prpjp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FD6325AC2FCB0AB4C0B89B5 /* Pods_prpjp.framework */; };
+		BA26009328AAA93000F4275C /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA26009228AAA93000F4275C /* Location.swift */; };
+		BA26009528AAB33200F4275C /* Connected.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA26009428AAB33200F4275C /* Connected.swift */; };
 		BA48A6D42896E3C000E3C672 /* SpeakButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48A6D32896E3C000E3C672 /* SpeakButton.swift */; };
 		BA54A4FF2868C6A400F0D354 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */; };
 		BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA54A5002868CD5F00F0D354 /* ImagePicker.swift */; };
@@ -35,11 +37,15 @@
 		E325D64B28949F74007248B0 /* Socket in Frameworks */ = {isa = PBXBuildFile; productRef = E325D64A28949F74007248B0 /* Socket */; };
 		E325D64D28949F99007248B0 /* SocketServerManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325D64C28949F99007248B0 /* SocketServerManager.swift */; };
 		E325D6502894A6DC007248B0 /* TransferData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E325D64F2894A6DC007248B0 /* TransferData.swift */; };
+		E3521C8D28ABEED5006AAACF /* Notification.Name+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3521C8C28ABEED5006AAACF /* Notification.Name+.swift */; };
+		E3521C9028AC0044006AAACF /* VideoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3521C8F28AC0044006AAACF /* VideoView.swift */; };
 		E38EADA3288EF443005A868C /* PHPVideoPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = E38EADA2288EF443005A868C /* PHPVideoPicker.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		6FD6325AC2FCB0AB4C0B89B5 /* Pods_prpjp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_prpjp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BA26009228AAA93000F4275C /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
+		BA26009428AAB33200F4275C /* Connected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connected.swift; sourceTree = "<group>"; };
 		BA48A6D32896E3C000E3C672 /* SpeakButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakButton.swift; sourceTree = "<group>"; };
 		BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		BA54A5002868CD5F00F0D354 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -68,6 +74,8 @@
 		CA922BBF4840EFB8FA46B24D /* Pods-prpjp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prpjp.release.xcconfig"; path = "Target Support Files/Pods-prpjp/Pods-prpjp.release.xcconfig"; sourceTree = "<group>"; };
 		E325D64C28949F99007248B0 /* SocketServerManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SocketServerManager.swift; sourceTree = "<group>"; };
 		E325D64F2894A6DC007248B0 /* TransferData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransferData.swift; sourceTree = "<group>"; };
+		E3521C8C28ABEED5006AAACF /* Notification.Name+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Notification.Name+.swift"; sourceTree = "<group>"; };
+		E3521C8F28AC0044006AAACF /* VideoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VideoView.swift; sourceTree = "<group>"; };
 		E38EADA2288EF443005A868C /* PHPVideoPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PHPVideoPicker.swift; sourceTree = "<group>"; };
 		FB2EE305A2FCAFC8B17DCE10 /* Pods-prpjp.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-prpjp.debug.xcconfig"; path = "Target Support Files/Pods-prpjp/Pods-prpjp.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -122,6 +130,8 @@
 				BAFC28422846689B00899F5A /* TranslationButtonGroup.swift */,
 				BAE3F0BB286F281500B0B0C8 /* ToggleButton.swift */,
 				BA48A6D32896E3C000E3C672 /* SpeakButton.swift */,
+				BA26009228AAA93000F4275C /* Location.swift */,
+				BA26009428AAB33200F4275C /* Connected.swift */,
 			);
 			path = Buttons;
 			sourceTree = "<group>";
@@ -150,8 +160,10 @@
 				BAB5029B284CD8230046D988 /* prpjp.swift */,
 				BAB50299284CD7DD0046D988 /* AppDelegate.swift */,
 				BA48A6D22896D81A00E3C672 /* Picker */,
+				E3521C8E28AC003B006AAACF /* View */,
 				E325D6512894A79A007248B0 /* Manager */,
 				E325D64E2894A6D2007248B0 /* Model */,
+				E3521C8B28ABEEC9006AAACF /* Extension */,
 				BAAB51202850F60A00B5540F /* Info.plist */,
 				BAFC28302846466F00899F5A /* ContentView.swift */,
 				BAA44E41289D6251009B753B /* PlayerView.swift */,
@@ -193,6 +205,22 @@
 				BAD14F0B286B552800F0D8F5 /* UDPManager.swift */,
 			);
 			path = Manager;
+			sourceTree = "<group>";
+		};
+		E3521C8B28ABEEC9006AAACF /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				E3521C8C28ABEED5006AAACF /* Notification.Name+.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		E3521C8E28AC003B006AAACF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E3521C8F28AC0044006AAACF /* VideoView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -323,6 +351,8 @@
 				BAAB51222850F66D00B5540F /* Request.swift in Sources */,
 				BAFC283D28465DD200899F5A /* RadioButton.swift in Sources */,
 				BAFC28312846466F00899F5A /* ContentView.swift in Sources */,
+				BA26009328AAA93000F4275C /* Location.swift in Sources */,
+				E3521C9028AC0044006AAACF /* VideoView.swift in Sources */,
 				BAFC284728490BAC00899F5A /* CircleButton.swift in Sources */,
 				BA5E1B96284E4B31002AB742 /* SocketClientManager.swift in Sources */,
 				BA8242F4285DC449000F909A /* NetWorkPermission.swift in Sources */,
@@ -334,8 +364,10 @@
 				BAB5029C284CD8230046D988 /* prpjp.swift in Sources */,
 				BAD14F0A286B51CA00F0D8F5 /* Translate.swift in Sources */,
 				E38EADA3288EF443005A868C /* PHPVideoPicker.swift in Sources */,
+				E3521C8D28ABEED5006AAACF /* Notification.Name+.swift in Sources */,
 				BAA44E44289D626A009B753B /* LoopingPlayerUIView.swift in Sources */,
 				BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */,
+				BA26009528AAB33200F4275C /* Connected.swift in Sources */,
 				BA48A6D42896E3C000E3C672 /* SpeakButton.swift in Sources */,
 				BAFC28432846689B00899F5A /* TranslationButtonGroup.swift in Sources */,
 				BAD14F0C286B552800F0D8F5 /* UDPManager.swift in Sources */,
@@ -396,7 +428,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -450,7 +482,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -467,7 +499,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
@@ -484,12 +516,12 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = alsrl.prpjp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -505,7 +537,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 19;
+				CURRENT_PROJECT_VERSION = 23;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
@@ -522,12 +554,12 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.8;
+				MARKETING_VERSION = 1.0.9;
 				PRODUCT_BUNDLE_IDENTIFIER = alsrl.prpjp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

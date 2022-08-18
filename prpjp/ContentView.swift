@@ -21,6 +21,9 @@ struct translateResposne: Decodable {
 }
 
 struct ContentView: View {
+    
+    @State private var userDefault = UserDefaults.standard.object(forKey: "transfer") as? Data
+    
     @State private var resolution: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
     @State private var mirrorWidth: CGFloat =  DISPLAY_RESOLUTION.XS.width
     @State private var mirrorHeight: CGFloat =  DISPLAY_RESOLUTION.XS.height / 2
@@ -39,7 +42,7 @@ struct ContentView: View {
     @State private var STTLocale : Locale = Locale(identifier: "en-US")
     
     
-    @State private var background: PRP_COLOR = PRP_COLOR.BLUE
+    @State private var background: PRP_COLOR = PRP_COLOR.BLACK
     
     @State private var textColor: PRP_COLOR = PRP_COLOR.WHITE
     
@@ -53,14 +56,18 @@ struct ContentView: View {
     @State private var fontStyleBoldValue: Font.Weight = Font.Weight.bold
     @State private var fontStyle: String = "NONE"
     
-    
+    // server state
     @State private var IP: String = ""
+    @State private var connected : Bool = false
     
-    @State private var finalText: String = "Placeholder"
+    @State private var finalText: String = ""
     @StateObject var speechRecognizer = SpeechRecognizer(locale: "en_US");
     @State private var text: String = ""
     @State private var xLocation: CGFloat = DISPLAY_RESOLUTION.XS.xLocation
+    @State private var tmpX: CGFloat = DISPLAY_RESOLUTION.XS.xLocation
     @State private var yLocation: CGFloat = DISPLAY_RESOLUTION.XS.yLocation
+    @State private var tmpY: CGFloat = DISPLAY_RESOLUTION.XS.yLocation
+    
     
     @State private var isSpeakBtnDisabled: Bool = false
     @State private var isDisplayBtnDisabled: Bool = false
@@ -81,31 +88,14 @@ struct ContentView: View {
     @State var playerItem : AVPlayerItem?
     @State var videoURL: URL?
     @State var showVideoPicker: Bool = false
-    @State var player = AVPlayer()
+    @State var player: AVPlayer?
     
     // translate
     @StateObject var translate = Translate()
     
-    let resolutions: [DISPLAY_RESOLUTION] = DISPLAY_RESOLUTION.allCases.map{
-        $0
-    }
-    let speakLanguages: [String] = SPEAK_LANGUAGE.allCases.map{
-        $0.id
-    }
-    let translationLanguages: [String] = TRANSLATION_LANGUAGE.allCases.map {
-        $0.id
-    }
-    let fontSizes: [String] = FONT_SIZE.allCases.map{
-        $0.rawValue
-    }
-    let fontStyles: [String] = FONT_STYLE.allCases.map{
-        $0.rawValue
-    }
-    let colors: [PRP_COLOR] = PRP_COLOR.allCases.map{
-        $0
-    }
-    let color: String = PRP_COLOR.BLACK.rawValue
+    let tcpDidChangeConnectedPublisher = NotificationCenter.default.publisher(for: .tcpDidChangeConnectedState)
     
+    let color: String = PRP_COLOR.BLACK.rawValue
     
     func colorConverter (color: String) -> Color {
         switch color {
@@ -156,10 +146,13 @@ struct ContentView: View {
     
     
     var body: some View {
+        
+        
         GeometryReader{
             proxy in
             
             ZStack(alignment: .topTrailing){
+                
                 // toggle buttons
                 HStack(alignment: .top, spacing: 10){
                     
@@ -169,6 +162,7 @@ struct ContentView: View {
                             .foregroundColor(.white)
                     })
                     .toggleStyle(SwitchToggleStyle(tint: Color(hex:"#008577")))
+                    .disabled(isLock)
                     
                     Toggle(isOn: $isReverseMode, label: {
                         Text("Reverse Mode")
@@ -176,6 +170,8 @@ struct ContentView: View {
                             .foregroundColor(.white)
                     })
                     .toggleStyle(SwitchToggleStyle(tint: Color(hex:"#008577")))
+                    .disabled(isLock)
+                    
                     
                     Toggle(isOn: $isLock, label: {
                         Text("Lock")
@@ -192,63 +188,79 @@ struct ContentView: View {
                 ZStack(alignment: .topLeading){
                     // mirror state
                     
-                        VStack(alignment: .trailing){
-                            ZStack(alignment: .leading){
-                                image?
-                                    .resizable()
-                                    .frame(width: mirrorWidth/2, height: mirrorHeight)
-                                if videoURL != nil {
-                                    VideoPlayer(player: player)
-                                        .onAppear{
-                                          if player.currentItem == nil {
-                                                let item = AVPlayerItem(url: videoURL!)
-                                                player.replaceCurrentItem(with: item)
-                                            }
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                                                player.play()
-                                            })
-                                        }
-//                                    AVPlayerLooper(player: queuePlayer, templateItem:playerItem!)
-//                                    PlayerView(videoURL: $videoURL)
-//                                    VideoPlayer(player: AVPlayer(url: videoURL!))
-//                                        
-//                                        .frame(width: mirrorWidth/2, height: mirrorHeight)
-//                                        .scaledToFill()
-                                            
-                                }
-                                //                                VideoPlayer(player: player)
-                                //                                    .onAppear(){
-                                //                                        if player.currentItem == nil {
-                                //                                            let item = AVPlayerItem(url: videoURL!)
-                                //                                            player.replaceCurrentItem(with: item)
-                                //                                        }
-                                //                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                //                                            player.play()
-                                //                                        }
-                                //                                    }.frame(width: mirrorWidth, height: mirrorHeight)
-                                if fontStyleItalic == "ITALIC" {
-                                    Text(finalText)
-                                        .foregroundColor(textColor.color)
-                                        .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
-                                        .italic()
-                                }else {
-                                    Text(finalText)
-                                        .foregroundColor(textColor.color)
-                                        .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
-                                }
+                    VStack(alignment: .trailing){
+                        ZStack(alignment: .leading){
+                            image?
+                                .resizable()
+                                .frame(width: mirrorWidth/2, height: mirrorHeight)
+                            
+                            if let videoURL = self.videoURL {
+                                VideoView(url: videoURL)
+//                                VideoPlayer(player: player)
+//                                    .onAppear{
+//                                        if player.currentItem == nil {
+//                                            let item = AVPlayerItem(url: videoURL)
+//                                            player.replaceCurrentItem(with: item)
+//                                        }
+//                                        player.play()
+//                                    }
+                                
+                                //                                    AVPlayerLooper(player: queuePlayer, templateItem:playerItem!)
+                                //                                    PlayerView(videoURL: $videoURL)
+                                //                                    VideoPlayer(player: AVPlayer(url: videoURL!))
+                                //
+                                //                                        .frame(width: mirrorWidth/2, height: mirrorHeight)
+                                //                                        .scaledToFill()
                                 
                             }
+                            //                                VideoPlayer(player: player)
+                            //                                    .onAppear(){
+                            //                                        if player.currentItem == nil {
+                            //                                            let item = AVPlayerItem(url: videoURL!)
+                            //                                            player.replaceCurrentItem(with: item)
+                            //                                        }
+                            //                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            //                                            player.play()
+                            //                                        }
+                            //                                    }.frame(width: mirrorWidth, height: mirrorHeight)
+                            if fontStyleItalic == "ITALIC" {
+                                Text(finalText)
+                                    .foregroundColor(textColor.color)
+                                    .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
+                                    .italic()
+                                
+                            }else {
+                                Text(finalText)
+                                    .foregroundColor(textColor.color)
+                                    .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
+                            }
+                            
                         }
-                        .frame(width: mirrorWidth / 2, height: mirrorHeight )
-                        .background(background.color)
-                        .padding(EdgeInsets(top: yLocation / 4, leading: xLocation + 2, bottom: 0, trailing: 0))
+                    }
+                    .frame(width: mirrorWidth / 2, height: mirrorHeight )
+                    .rotationEffect(.degrees(isReverseMode ? 180 : 0))
+                    .background(background.color)
+                    .padding(EdgeInsets(top: yLocation / 4, leading: xLocation + 2, bottom: 0, trailing: 0))
+                    
                     
                     
                     // contents
                     HStack (alignment: .top){
                         ScrollView(.vertical){
                             VStack(alignment: .leading) {
+                                Connected(state: connected) { port in
+                                    let portNum = Int(port) ?? 8000
+                                    UDPManager.broadCastUDP(port:portNum)
+                                    SocketServerManager.shared.rerun(portNum)
+                                }
+                                .onReceive(tcpDidChangeConnectedPublisher, perform: { notification in
+                                    guard let userInfo = notification.userInfo,
+                                            let isEmpty = userInfo["isEmpty"] as? Bool else { return }
+                                    self.connected = !isEmpty
+                                })
+                                .disabled(isLock)
                                 RadioButtonGroup(items: resolutions, selectedId: resolution) { resol in
+                                    
                                     mirrorHeight = resol.height / 2
                                     mirrorWidth = resol.width
                                     xLocation = resol.xLocation
@@ -256,14 +268,29 @@ struct ContentView: View {
                                     display = resol.text
                                     
                                 }
-                                TextField("", text: $text)
-                                    .padding()
-                                    .foregroundColor(.white)
-                                    .frame(minWidth: 200, idealWidth: .infinity, maxWidth: .infinity
-                                    )
-                                    .overlay(VStack{
-                                        Divider().offset(x: 1, y: 12)
-                                    })
+                                .disabled(isLock)
+                                Location(xLocation: xLocation, yLocation : yLocation,
+                                         setF: { x, y in
+                                    xLocation = CGFloat(Int(x) ?? 0)
+                                    yLocation = CGFloat(Int(y) ?? 0)
+                                    print(x)
+                                    print(y)
+                                })
+                                .disabled(isLock)
+                                VStack(spacing: 1){
+                                    TextField("", text: $text)
+                                    
+                                        .foregroundColor(.white)
+                                        .frame(minWidth: 200, idealWidth: .infinity, maxWidth: .infinity
+                                        )
+                                        .padding(.trailing, 10)
+                                    
+                                    Rectangle()
+                                        .frame(height: 1)
+                                        .foregroundColor(.white)
+                                        .padding(.trailing, 10)
+                                }.disabled(isLock)
+                                
                                 RectangleButtonGroup(items: speakLanguages, title: "Speak language", selectedId: speakLanguage) { speakLanguage in
                                     switch speakLanguage {
                                     case "ENGLISH":
@@ -286,6 +313,7 @@ struct ContentView: View {
                                         print(speakLanguage)
                                     }
                                 }
+                                .disabled(isLock)
                                 RectangleButtonGroup(items: translationLanguages, title: "Translation language", selectedId: translationLanguage) { translation in
                                     switch translation {
                                     case "ENGLISH":
@@ -304,6 +332,7 @@ struct ContentView: View {
                                     
                                     
                                 }
+                                .disabled(isLock)
                                 HStack(alignment: .bottom, spacing: 20){
                                     CircleButtonGroup(items: colors, title: "Background", selectedId: background) { color in
                                         //                                        image = Image("placeholder")
@@ -312,7 +341,7 @@ struct ContentView: View {
                                         
                                         
                                     }
-                                    
+                                    .disabled(isLock)
                                     ZStack {
                                         
                                         VStack {
@@ -329,6 +358,7 @@ struct ContentView: View {
                                             }.foregroundColor(.white)
                                                 .frame(width: 60, height: 30)
                                                 .background(.gray)
+                                                .disabled(isLock)
                                         }
                                     }
                                     .sheet(isPresented: $isShowPicker) {
@@ -353,6 +383,7 @@ struct ContentView: View {
                                             }.foregroundColor(.white)
                                                 .frame(width: 60, height: 30)
                                                 .background(.gray)
+                                                .disabled(isLock)
                                         }
                                     }
                                     .sheet(isPresented: $showVideoPicker) {
@@ -366,7 +397,7 @@ struct ContentView: View {
                                     textColor = color
                                     
                                     
-                                }
+                                }.disabled(isLock)
                                 
                                 
                                 RectangleButtonGroup(items: fontSizes, title: "Font size", selectedId: fontSize) { fontSize in
@@ -383,7 +414,7 @@ struct ContentView: View {
                                     default :
                                         fontSizeValue = 8
                                     }
-                                }
+                                }.disabled(isLock)
                                 
                                 FontStyleGroup(title: "Font style", isBold: fontStyleBold, isItalic: fontStyleItalic) { id, isSelected in
                                     
@@ -433,7 +464,7 @@ struct ContentView: View {
                                             print("Something Wrong")
                                         }
                                     }
-                                }
+                                }.disabled(isLock)
                                 
                                 
                             }
@@ -444,24 +475,27 @@ struct ContentView: View {
                                 .swiftSpeechRecordOnHold(locale: STTLocale)
                                 .onRecognizeLatest { result in
                                     if(result.isFinal){
+                                        print(result.bestTranscription.formattedString)
+                                        
+                                        translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: result.bestTranscription.formattedString)
                                         
                                         
-                                    translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: result.bestTranscription.formattedString)
-                                        
-                                        
-                                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1) {
-                                            self.text = translate.trText
+                                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
+                                            
+                                            self.text = translate.trText.replacingOccurrences(of: "&#39;", with: "'")
                                         }
-//
+                                        //
                                     }
                                     
                                 } handleError: { error in
                                     print(error.localizedDescription)
                                 }
-
+                                .disabled(isLock)
+                            
                             
                             PressButton("DISPLAY", callback: { isDisplay in
                                 finalText = text
+                                startTTS()
                                 if(image != nil){
                                     SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
                                 }else{
@@ -472,7 +506,9 @@ struct ContentView: View {
                         }
                         
                     }
-                                        .padding(EdgeInsets(top: 80, leading: 00, bottom: 0, trailing: 5))
+                    .padding(EdgeInsets(top: 80, leading: 00, bottom: 0, trailing: 5))
+                    .disabled(isLock)
+                    
                     
                     
                     
@@ -480,15 +516,31 @@ struct ContentView: View {
             }.background(Color(hex: "#333333"))
                 .edgesIgnoringSafeArea([.top,.bottom])
                 .onAppear{
+                    // Get UserDefault Data
+                    if userDefault != nil {
+                        let decoder = JSONDecoder()
+                            if let loadedData = try? decoder.decode(TransferData.self, from: userDefault!) {
+                                self.text = loadedData.text
+                                self.finalText = loadedData.text
+                                
+                                print(loadedData)
+                            }
+                    }
+                    
+                    
+                    
+                    
+                    
+                    
                     // How to use
                     LocalNetworkPrivacy().checkAccessState { granted in
                         print(granted)
                     }
                     SwiftSpeech.requestSpeechRecognitionAuthorization()
                     
-                    UDPManager.broadCastUDP()
+                    UDPManager.broadCastUDP(port: 8000)
                     
-                    SocketServerManager.shared.run()
+                    SocketServerManager.shared.run()    
                 }
                 .zIndex(0)
             
