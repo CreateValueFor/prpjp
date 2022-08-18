@@ -57,7 +57,6 @@ final public class SocketServerManager {
         do {
             let jsonData = try JSONEncoder().encode(data)
             UserDefaults.standard.set(jsonData, forKey: "transfer")
-            print(jsonData)
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             self.server?.sendRequest(string: "2")
             

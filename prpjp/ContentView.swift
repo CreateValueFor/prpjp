@@ -13,6 +13,7 @@ import Alamofire
 import Network
 import AVKit
 import SwiftSpeech
+import MarqueeText
 
 
 struct translateResposne: Decodable {
@@ -74,6 +75,8 @@ struct ContentView: View {
     
     @State private var SpeakBtnPressed: Bool = false;
     @State private var DisplayBtnPressed: Bool = false;
+    
+    @State var scrollText = false
     
     
     //image
@@ -196,43 +199,54 @@ struct ContentView: View {
                             
                             if let videoURL = self.videoURL {
                                 VideoView(url: videoURL)
-//                                VideoPlayer(player: player)
-//                                    .onAppear{
-//                                        if player.currentItem == nil {
-//                                            let item = AVPlayerItem(url: videoURL)
-//                                            player.replaceCurrentItem(with: item)
-//                                        }
-//                                        player.play()
-//                                    }
-                                
-                                //                                    AVPlayerLooper(player: queuePlayer, templateItem:playerItem!)
-                                //                                    PlayerView(videoURL: $videoURL)
-                                //                                    VideoPlayer(player: AVPlayer(url: videoURL!))
-                                //
-                                //                                        .frame(width: mirrorWidth/2, height: mirrorHeight)
-                                //                                        .scaledToFill()
-                                
                             }
-                            //                                VideoPlayer(player: player)
-                            //                                    .onAppear(){
-                            //                                        if player.currentItem == nil {
-                            //                                            let item = AVPlayerItem(url: videoURL!)
-                            //                                            player.replaceCurrentItem(with: item)
-                            //                                        }
-                            //                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                            //                                            player.play()
-                            //                                        }
-                            //                                    }.frame(width: mirrorWidth, height: mirrorHeight)
                             if fontStyleItalic == "ITALIC" {
-                                Text(finalText)
+                                if fontStyleBoldValue == .bold {
+                                    MarqueeText(
+                                         text: finalText,
+                                         font: UIFont.italicSystemFont(ofSize: fontSizeValue).boldItlc,
+                                         leftFade: 16,
+                                         rightFade: 16,
+                                         startDelay: 0,
+                                         alignment: .leading
+                                         )
+                                    
                                     .foregroundColor(textColor.color)
-                                    .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
-                                    .italic()
-                                
+                                }else {
+                                    MarqueeText(
+                                         text: finalText,
+                                         font: UIFont.italicSystemFont(ofSize: fontSizeValue),
+                                         leftFade: 16,
+                                         rightFade: 16,
+                                         startDelay: 0,
+                                         alignment: .leading
+                                         )
+                                    
+                                    .foregroundColor(textColor.color)
+                                }
                             }else {
-                                Text(finalText)
+                                if fontStyleBoldValue == .bold{
+                                    MarqueeText(
+                                         text: finalText,
+                                         font: UIFont.systemFont(ofSize: fontSizeValue).bold,
+                                         leftFade: 16,
+                                         rightFade: 16,
+                                         startDelay: 0,
+                                         alignment: .leading
+                                         )
                                     .foregroundColor(textColor.color)
-                                    .font(.system(size: fontSizeValue,weight: fontStyleBoldValue) )
+                                }else {
+                                    MarqueeText(
+                                         text: finalText,
+                                         font: UIFont.systemFont(ofSize: fontSizeValue),
+                                         leftFade: 16,
+                                         rightFade: 16,
+                                         startDelay: 0,
+                                         alignment: .leading
+                                         )
+                                    .foregroundColor(textColor.color)
+                                }
+                                    
                             }
                             
                         }
@@ -255,7 +269,7 @@ struct ContentView: View {
                                 }
                                 .onReceive(tcpDidChangeConnectedPublisher, perform: { notification in
                                     guard let userInfo = notification.userInfo,
-                                            let isEmpty = userInfo["isEmpty"] as? Bool else { return }
+                                          let isEmpty = userInfo["isEmpty"] as? Bool else { return }
                                     self.connected = !isEmpty
                                 })
                                 .disabled(isLock)
@@ -273,8 +287,6 @@ struct ContentView: View {
                                          setF: { x, y in
                                     xLocation = CGFloat(Int(x) ?? 0)
                                     yLocation = CGFloat(Int(y) ?? 0)
-                                    print(x)
-                                    print(y)
                                 })
                                 .disabled(isLock)
                                 VStack(spacing: 1){
@@ -519,18 +531,77 @@ struct ContentView: View {
                     // Get UserDefault Data
                     if userDefault != nil {
                         let decoder = JSONDecoder()
-                            if let loadedData = try? decoder.decode(TransferData.self, from: userDefault!) {
-                                self.text = loadedData.text
-                                self.finalText = loadedData.text
+                        if let loadedData = try? decoder.decode(TransferData.self, from: userDefault!) {
+                            self.text = loadedData.text
+                            self.finalText = loadedData.text
+                            switch loadedData.fontSize {
+                            case "SMALL":
+                                self.fontSize = "SMALL"
+                                self.fontSizeValue = FONT_SIZE.SMALL.size
                                 
-                                print(loadedData)
+                            case "MEDIUM":
+                                self.fontSize = "MEDIUM"
+                                self.fontSizeValue = FONT_SIZE.MEDIUM.size
+                                
+                            case "LARGE":
+                                self.fontSize = "LARGE"
+                                self.fontSizeValue = FONT_SIZE.LARGE.size
+                            default :
+                                fontSizeValue = FONT_SIZE.SMALL.size
                             }
+                            
+                            switch loadedData.fontStyle {
+                            case "NONE":
+                                break
+                            case "BOLD":
+                                self.fontStyleBold = "BOLD"
+                                self.fontStyleBoldValue = Font.Weight.bold
+                            case "ITALIC":
+                                self.fontStyleItalic = "ITALIC"
+                            case "BOTH":
+                                self.fontStyleBoldValue = Font.Weight.bold
+                                self.fontStyleBold = "BOLD"
+                                self.fontStyleItalic = "ITALIC"
+                            default:
+                                break;
+                            }
+                            switch loadedData.background.colorType {
+                            case "BLACK":
+                                background = .BLACK
+                            case "WHITE":
+                                background = .WHITE
+                            case "RED":
+                                background = .RED
+                            case "BLUE":
+                                background = .BLUE
+                            case "GREEN":
+                                background = .GREEN
+                            case "YELLOW":
+                                background = .YELLOW
+                            default :
+                                break;
+                                
+                            }
+                            
+                            switch loadedData.textColor {
+                            case "BLACK":
+                                
+                                textColor = .BLACK
+                            case "WHITE":
+                                textColor = .WHITE
+                            case "RED":
+                                textColor = .RED
+                            case "BLUE":
+                                textColor = .BLUE
+                            case "GREEN":
+                                textColor = .GREEN
+                            case "YELLOW":
+                                textColor = .YELLOW
+                            default :
+                                break;
+                            }
+                        }
                     }
-                    
-                    
-                    
-                    
-                    
                     
                     // How to use
                     LocalNetworkPrivacy().checkAccessState { granted in
@@ -540,7 +611,7 @@ struct ContentView: View {
                     
                     UDPManager.broadCastUDP(port: 8000)
                     
-                    SocketServerManager.shared.run()    
+                    SocketServerManager.shared.run()
                 }
                 .zIndex(0)
             

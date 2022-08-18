@@ -23,6 +23,8 @@
 		BAAB51222850F66D00B5540F /* Request.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAAB51212850F66D00B5540F /* Request.swift */; };
 		BAB5029A284CD7DD0046D988 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB50299284CD7DD0046D988 /* AppDelegate.swift */; };
 		BAB5029C284CD8230046D988 /* prpjp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5029B284CD8230046D988 /* prpjp.swift */; };
+		BAC233F528AE8F2400D7A4EE /* MarqueeText in Frameworks */ = {isa = PBXBuildFile; productRef = BAC233F428AE8F2400D7A4EE /* MarqueeText */; };
+		BAC233F728AE921900D7A4EE /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC233F628AE921900D7A4EE /* UIFontExtension.swift */; };
 		BAD14F0A286B51CA00F0D8F5 /* Translate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD14F09286B51CA00F0D8F5 /* Translate.swift */; };
 		BAD14F0C286B552800F0D8F5 /* UDPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD14F0B286B552800F0D8F5 /* UDPManager.swift */; };
 		BAE3F0BC286F281500B0B0C8 /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE3F0BB286F281500B0B0C8 /* ToggleButton.swift */; };
@@ -60,6 +62,7 @@
 		BAAB51212850F66D00B5540F /* Request.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Request.swift; sourceTree = "<group>"; };
 		BAB50299284CD7DD0046D988 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BAB5029B284CD8230046D988 /* prpjp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prpjp.swift; sourceTree = "<group>"; };
+		BAC233F628AE921900D7A4EE /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
 		BAD14F09286B51CA00F0D8F5 /* Translate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Translate.swift; sourceTree = "<group>"; };
 		BAD14F0B286B552800F0D8F5 /* UDPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPManager.swift; sourceTree = "<group>"; };
 		BAE3F0BB286F281500B0B0C8 /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
@@ -85,6 +88,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BAC233F528AE8F2400D7A4EE /* MarqueeText in Frameworks */,
 				E325D64B28949F74007248B0 /* Socket in Frameworks */,
 				E325D64928949F74007248B0 /* BlueSocketTestCommonLibrary in Frameworks */,
 				7342F6400E1358D2C87A53A8 /* Pods_prpjp.framework in Frameworks */,
@@ -177,6 +181,7 @@
 				BAFC28442849007C00899F5A /* Constants.swift */,
 				BAAB51212850F66D00B5540F /* Request.swift */,
 				BA8242F3285DC449000F909A /* NetWorkPermission.swift */,
+				BAC233F628AE921900D7A4EE /* UIFontExtension.swift */,
 			);
 			path = prpjp;
 			sourceTree = "<group>";
@@ -244,6 +249,7 @@
 			packageProductDependencies = (
 				E325D64828949F74007248B0 /* BlueSocketTestCommonLibrary */,
 				E325D64A28949F74007248B0 /* Socket */,
+				BAC233F428AE8F2400D7A4EE /* MarqueeText */,
 			);
 			productName = prpjp;
 			productReference = BAFC282B2846466F00899F5A /* prpjp.app */;
@@ -275,6 +281,7 @@
 			mainGroup = BAFC28222846466F00899F5A;
 			packageReferences = (
 				E325D64728949F74007248B0 /* XCRemoteSwiftPackageReference "BlueSocket" */,
+				BAC233F328AE8F2400D7A4EE /* XCRemoteSwiftPackageReference "MarqueeText" */,
 			);
 			productRefGroup = BAFC282C2846466F00899F5A /* Products */;
 			projectDirPath = "";
@@ -361,6 +368,7 @@
 				BAE3F0BC286F281500B0B0C8 /* ToggleButton.swift in Sources */,
 				BAFC28412846633700899F5A /* RectangleButton.swift in Sources */,
 				BAFC28452849007C00899F5A /* Constants.swift in Sources */,
+				BAC233F728AE921900D7A4EE /* UIFontExtension.swift in Sources */,
 				BAB5029C284CD8230046D988 /* prpjp.swift in Sources */,
 				BAD14F0A286B51CA00F0D8F5 /* Translate.swift in Sources */,
 				E38EADA3288EF443005A868C /* PHPVideoPicker.swift in Sources */,
@@ -592,6 +600,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		BAC233F328AE8F2400D7A4EE /* XCRemoteSwiftPackageReference "MarqueeText" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/joekndy/MarqueeText";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		E325D64728949F74007248B0 /* XCRemoteSwiftPackageReference "BlueSocket" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Kitura/BlueSocket";
@@ -603,6 +619,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		BAC233F428AE8F2400D7A4EE /* MarqueeText */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BAC233F328AE8F2400D7A4EE /* XCRemoteSwiftPackageReference "MarqueeText" */;
+			productName = MarqueeText;
+		};
 		E325D64828949F74007248B0 /* BlueSocketTestCommonLibrary */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = E325D64728949F74007248B0 /* XCRemoteSwiftPackageReference "BlueSocket" */;

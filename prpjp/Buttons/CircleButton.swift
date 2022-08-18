@@ -13,7 +13,7 @@ struct CircleButton: View {
 
     let item: PRP_COLOR
     let callback: (PRP_COLOR)->()
-    let selectedID : PRP_COLOR
+    @State var selectedID : PRP_COLOR
     let size: CGFloat
     let textSize: CGFloat
 
