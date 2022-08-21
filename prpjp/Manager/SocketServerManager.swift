@@ -62,7 +62,7 @@ final public class SocketServerManager {
             
             self.server?.sendRequest(string: jsonString)
             
-
+            
             
         }catch{
             print(error)
@@ -73,7 +73,9 @@ final public class SocketServerManager {
         
         print(">>> send function started")
         guard let imageArray = background.jpegData(compressionQuality: 0.6) else { return }
-//        guard let imageArray = background.pngData() else { return }
+        
+        
+        //        guard let imageArray = background.pngData() else { return }
         
         
         
@@ -83,13 +85,13 @@ final public class SocketServerManager {
         let locationData = location
         
         let data = TransferImageData(text: text,
-                                background: backgroundData,
-                                textColor: color,
-                                fontSize: fontSize,
-                                fontStyle: fontStyleBold,
-                                displaySize: resolution,
-                                location: locationData,
-                                isReverse: false)
+                                     background: backgroundData,
+                                     textColor: color,
+                                     fontSize: fontSize,
+                                     fontStyle: fontStyleBold,
+                                     displaySize: resolution,
+                                     location: locationData,
+                                     isReverse: false)
         
         
         
@@ -103,13 +105,13 @@ final public class SocketServerManager {
             
             
             sleep(1)
-                self.server?.sendRequest(string: jsonString)
+            self.server?.sendRequest(string: jsonString)
             
             
             sleep(1)
             
             
-                self.server?.sendRequest(data: imageArray)
+            self.server?.sendRequest(data: imageArray)
             
             sleep(1)
             self.server?.sendRequest(string: "finish")
@@ -134,16 +136,41 @@ class EchoServer {
     }
     
     func sendRequest(data: Data) {
-        print(connectedSockets)
+        
+        print("writing data \(data.count)" )
+        
         let sockets = connectedSockets.enumerated().map { $1.value }
         sockets.forEach {
-            _ = try? $0.write(from: data)
+            let length = data.count
+            let chunkSize = 1024 * 1024
+            
+            var offset = 0
+            
+            repeat {
+                // get the length of the chunk
+                let thisChunkSize = ((length - offset) > chunkSize) ? chunkSize : (length - offset);
+                
+                // get the chunk
+                let chunk = data.subdata(in: offset..<offset + thisChunkSize )
+                _ = try? $0.write(from: data)
+                
+                // -----------------------------------------------
+                // do something with that chunk of data...
+                // -----------------------------------------------
+                
+                // update the offset
+                offset += thisChunkSize;
+                
+            } while (offset < length);
+            
+            
+            
         }
     }
     
     static let quitCommand: String = "QUIT"
     static let shutdownCommand: String = "SHUTDOWN"
-    static let bufferSize = 4096 * 1024
+    static let bufferSize = 1024 * 1024
     
     var port: Int
     var listenSocket: Socket? = nil
@@ -169,7 +196,7 @@ class EchoServer {
             }
         }
     }
-
+    
     init(port: Int) {
         self.port = port
     }
@@ -249,7 +276,7 @@ class EchoServer {
             do {
                 // Write the welcome string...
                 try socket.write(from: "1")
-//                try socket.write(from: "Hello, type 'QUIT' to end session\nor 'SHUTDOWN' to stop server.\n")
+                //                try socket.write(from: "Hello, type 'QUIT' to end session\nor 'SHUTDOWN' to stop server.\n")
                 
                 repeat {
                     let bytesRead = try socket.read(into: &readData)
@@ -295,7 +322,7 @@ class EchoServer {
                     readData.count = 0
                     
                 } while shouldKeepRunning
-
+                
                 self.socketLockQueue.sync { [unowned self, socket] in
                     let value = self.connectedSockets.removeValue(forKey: socket.socketfd)
                     print("remove value: \(String(describing: value))")
@@ -318,7 +345,7 @@ class EchoServer {
     
     func shutdownServer() {
         print("\nShutdown in progress...")
-
+        
         self.continueRunning = false
         
         // Close all open sockets...
