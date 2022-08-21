@@ -8,6 +8,7 @@
 import Foundation
 import SwiftUI
 
+let INIT_DISPLAY_POSITION : DisplayPosition = DisplayPosition(XS: DISPLAY_RESOLUTION.XS.locationData, SM: DISPLAY_RESOLUTION.SM.locationData, MD: DISPLAY_RESOLUTION.MD.locationData, LG: DISPLAY_RESOLUTION.LG.locationData, XL: DISPLAY_RESOLUTION.XL.locationData, SXL: DISPLAY_RESOLUTION.SXL.locationData)
 
 
 enum DISPLAY_RESOLUTION :CaseIterable{
@@ -32,6 +33,23 @@ enum DISPLAY_RESOLUTION :CaseIterable{
             return "D384X128"
         case .SXL:
             return "D360X28"
+        }
+    }
+    
+    var isMultiLine : Bool {
+        switch self {
+        case .XS:
+            return false
+        case .SM :
+            return false
+        case .MD:
+            return true
+        case .LG:
+            return false
+        case .XL:
+            return true
+        case .SXL:
+            return false
         }
     }
     
@@ -100,6 +118,23 @@ enum DISPLAY_RESOLUTION :CaseIterable{
             return 0
         case .SXL:
             return 0
+        }
+    }
+    
+    var locationData : LocationData {
+        switch self {
+        case .XS:
+            return LocationData(first: 0, second: 151)
+        case .SM :
+            return LocationData(first: 3, second: 0)
+        case .MD:
+            return LocationData(first: 3, second: 0)
+        case .LG:
+            return LocationData(first: 3, second: 0)
+        case .XL:
+            return LocationData(first: 3, second: 0)
+        case .SXL:
+            return LocationData(first: 0, second: 0)
         }
     }
     

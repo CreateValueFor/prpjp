@@ -13,7 +13,6 @@ import Alamofire
 import Network
 import AVKit
 import SwiftSpeech
-import MarqueeText
 
 
 struct translateResposne: Decodable {
@@ -25,10 +24,14 @@ struct ContentView: View {
     
     @State private var userDefault = UserDefaults.standard.object(forKey: "transfer") as? Data
     
+    @State private var displayDefault = UserDefaults.standard.object(forKey: "displayPosition") as? Data
+    @State private var displayPosition : DisplayPosition  = INIT_DISPLAY_POSITION
+     
     @State private var resolution: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
     @State private var mirrorWidth: CGFloat =  DISPLAY_RESOLUTION.XS.width
     @State private var mirrorHeight: CGFloat =  DISPLAY_RESOLUTION.XS.height / 2
     @State private var display: String = "D192X32"
+    @State private var isMultiLine : Bool = false
     
     
     // button info
@@ -126,20 +129,22 @@ struct ContentView: View {
         let utterance = AVSpeechUtterance(string: text)
         
         var speechText : String?
+        print(translateLangCode)
         switch translateLangCode {
-        case "ENGLISH":
+        case "en":
             speechText = "en_US"
-        case "FRENCH":
+        case "fr":
             speechText = "fr_FR"
-        case "SPANISH":
+        case "es":
             speechText = "es"
-        case "日本語":
+        case "ja":
             speechText = "ja_JP"
-        case "한국어":
+        case "ko":
             speechText = "ko_KR"
         default:
             print(speechText ?? "")
         }
+        print( "speech Text is \(speechText)")
         utterance.voice = AVSpeechSynthesisVoice(language: speechText)
         
         utterance.rate = 0.4
@@ -200,54 +205,24 @@ struct ContentView: View {
                             if let videoURL = self.videoURL {
                                 VideoView(url: videoURL)
                             }
-                            if fontStyleItalic == "ITALIC" {
-                                if fontStyleBoldValue == .bold {
-                                    MarqueeText(
-                                         text: finalText,
-                                         font: UIFont.italicSystemFont(ofSize: fontSizeValue).boldItlc,
-                                         leftFade: 16,
-                                         rightFade: 16,
-                                         startDelay: 0,
-                                         alignment: .leading
-                                         )
-                                    
+                            if isMultiLine {
+                                Text(finalText)
+                                    .lineLimit(2)
+                                    .font(Font(uiFont: UIFont.systemFont(ofSize: fontSizeValue).styleType(font: fontStyle)))
                                     .foregroundColor(textColor.color)
-                                }else {
-                                    MarqueeText(
-                                         text: finalText,
-                                         font: UIFont.italicSystemFont(ofSize: fontSizeValue),
-                                         leftFade: 16,
-                                         rightFade: 16,
-                                         startDelay: 0,
-                                         alignment: .leading
-                                         )
                                     
-                                    .foregroundColor(textColor.color)
-                                }
                             }else {
-                                if fontStyleBoldValue == .bold{
-                                    MarqueeText(
-                                         text: finalText,
-                                         font: UIFont.systemFont(ofSize: fontSizeValue).bold,
-                                         leftFade: 16,
-                                         rightFade: 16,
-                                         startDelay: 0,
-                                         alignment: .leading
-                                         )
-                                    .foregroundColor(textColor.color)
-                                }else {
-                                    MarqueeText(
-                                         text: finalText,
-                                         font: UIFont.systemFont(ofSize: fontSizeValue),
-                                         leftFade: 16,
-                                         rightFade: 16,
-                                         startDelay: 0,
-                                         alignment: .leading
-                                         )
-                                    .foregroundColor(textColor.color)
-                                }
-                                    
+                                MarqueeText(
+                                    text: finalText,
+                                    font: UIFont.systemFont(ofSize: fontSizeValue).styleType(font: fontStyle),
+                                    leftFade: 0,
+                                    rightFade: 16,
+                                    startDelay: 0,
+                                    alignment: .leading
+                                )
+                                .foregroundColor(textColor.color)
                             }
+                            
                             
                         }
                     }
@@ -277,16 +252,70 @@ struct ContentView: View {
                                     
                                     mirrorHeight = resol.height / 2
                                     mirrorWidth = resol.width
-                                    xLocation = resol.xLocation
-                                    yLocation = resol.yLocation
+                                    
+                                    
                                     display = resol.text
+                                    isMultiLine = resol.isMultiLine
+                                    
+                                    print(resol.text)
+                                    
+                                    switch resol.text {
+                                    case "D192X32":
+                                        xLocation =  CGFloat(displayPosition.XS.first)
+                                        yLocation =  CGFloat(displayPosition.XS.second)
+                                    case "D192X64":
+                                        xLocation =  CGFloat(displayPosition.SM.first)
+                                        yLocation =  CGFloat(displayPosition.SM.second)
+                                    case "D192X128":
+                                        xLocation =  CGFloat(displayPosition.MD.first)
+                                        yLocation =  CGFloat(displayPosition.MD.second)
+                                    case "D384X64":
+                                        xLocation =  CGFloat(displayPosition.LG.first)
+                                        yLocation =  CGFloat(displayPosition.LG.second)
+                                    case "D384X128":
+                                        xLocation =  CGFloat(displayPosition.XL.first)
+                                        yLocation =  CGFloat(displayPosition.XL.second)
+                                    case "D360X28":
+                                        xLocation =  CGFloat(displayPosition.SXL.first)
+                                        yLocation =  CGFloat(displayPosition.SXL.second)
+                                    default :
+                                        xLocation =  CGFloat(displayPosition.XS.first)
+                                        yLocation =  CGFloat(displayPosition.XS.second)
+                                    }
+                                    
+//                                    xLocation = resol.xLocation
+//                                    yLocation = resol.yLocation
                                     
                                 }
                                 .disabled(isLock)
                                 Location(xLocation: xLocation, yLocation : yLocation,
                                          setF: { x, y in
+                                    var tmpLocation : LocationData = LocationData(first: Int(x) ?? 0, second: Int(y) ?? 0)
+                                    switch display {
+                                    case "D192X32":
+                                        displayPosition.XS = tmpLocation
+                                    case "D192X64":
+                                        displayPosition.SM = tmpLocation
+                                    case "D192X128":
+                                        displayPosition.MD = tmpLocation
+                                    case "D384X64":
+                                        displayPosition.LG = tmpLocation
+                                    case "D384X128":
+                                        displayPosition.XL = tmpLocation
+                                    case "D360X28":
+                                        displayPosition.SXL = tmpLocation
+                                    default :
+                                        print("error occured on location setting")
+                                    }
+                                    do {
+                                        let jsonData = try  JSONEncoder().encode(displayPosition)
+                                        UserDefaults.standard.set(jsonData, forKey: "displayPosition")
+                                    }catch{
+                                        print(error)
+                                    }
                                     xLocation = CGFloat(Int(x) ?? 0)
                                     yLocation = CGFloat(Int(y) ?? 0)
+                                    
                                 })
                                 .disabled(isLock)
                                 VStack(spacing: 1){
@@ -509,9 +538,9 @@ struct ContentView: View {
                                 finalText = text
                                 startTTS()
                                 if(image != nil){
-                                    SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
+                                    SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)))
                                 }else{
-                                    SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display)
+                                    SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location: LocationData(first: Int(xLocation), second: Int(yLocation)))
                                 }
                                 
                             }, isPressed: DisplayBtnPressed, disabled: isDisplayBtnDisabled)
@@ -529,11 +558,25 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea([.top,.bottom])
                 .onAppear{
                     // Get UserDefault Data
+                    if displayDefault != nil {
+                        let decoder = JSONDecoder()
+                        if let loadedPosition = try? decoder.decode(DisplayPosition.self, from: displayDefault!){
+                            self.displayPosition = loadedPosition
+                            print(loadedPosition)
+                        }
+                        
+                    }
+                    
                     if userDefault != nil {
                         let decoder = JSONDecoder()
                         if let loadedData = try? decoder.decode(TransferData.self, from: userDefault!) {
                             self.text = loadedData.text
                             self.finalText = loadedData.text
+                            
+                            self.xLocation = CGFloat(loadedData.location.first)
+                            self.yLocation = CGFloat(loadedData.location.second)
+                            
+                            
                             switch loadedData.fontSize {
                             case "SMALL":
                                 self.fontSize = "SMALL"

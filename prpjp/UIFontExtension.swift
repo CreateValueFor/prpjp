@@ -6,6 +6,7 @@
 //
 import Foundation
 import UIKit
+import SwiftUI
 
 public extension UIFont {
     
@@ -13,6 +14,19 @@ public extension UIFont {
         let descriptor = self.fontDescriptor
             .withSymbolicTraits(UIFontDescriptor.SymbolicTraits(traits))
         return UIFont(descriptor: descriptor!, size: 0)
+    }
+    
+    public func styleType(font: String )-> UIFont {
+        switch font {
+        case "BOTH":
+            return boldItlc
+        case "ITALIC":
+            return italic
+        case "BOLD":
+            return bold
+        default :
+            return noneFont
+        }
     }
         
     public var italic : UIFont {
@@ -26,4 +40,13 @@ public extension UIFont {
     public var boldItlc : UIFont {
         return withTraits(.traitBold, .traitItalic)
     }
+    public var noneFont : UIFont{
+        return withTraits()
+    }
+}
+
+public extension Font {
+  init(uiFont: UIFont) {
+    self = Font(uiFont as CTFont)
+  }
 }

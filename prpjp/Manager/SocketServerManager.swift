@@ -36,12 +36,12 @@ final public class SocketServerManager {
         server.run()
     }
     
-    func send(text: String, background: String, color :  String, fontSize: String, fontStyleBold : String, resolution : String) {
+    func send(text: String, background: String, color :  String, fontSize: String, fontStyleBold : String, resolution : String, location : LocationData) {
         
         print(">>> send function started")
         let backgroundData = BackgroundData(type: "com.example.flexibledisplaypanel.socket.data.Background.Color",
                                             colorType: background)
-        let locationData = LocationData(first: 0, second: 0)
+        let locationData = location
         
         let data = TransferData(text: text,
                                 background: backgroundData,
@@ -69,7 +69,7 @@ final public class SocketServerManager {
         }
     }
     
-    func send(text: String, background: UIImage, backgroundPath : String, color :  String, fontSize: String, fontStyleBold : String, resolution : String) {
+    func send(text: String, background: UIImage, backgroundPath : String, color :  String, fontSize: String, fontStyleBold : String, resolution : String, location : LocationData) {
         
         print(">>> send function started")
         guard let imageArray = background.jpegData(compressionQuality: 0.6) else { return }
@@ -80,7 +80,7 @@ final public class SocketServerManager {
         
         let backgroundData = BackgroundImageData(type: "com.example.flexibledisplaypanel.socket.data.Background.Image",
                                                  uriPath: backgroundPath, name : backgroundPath)
-        let locationData = LocationData(first: 0, second: 0)
+        let locationData = location
         
         let data = TransferImageData(text: text,
                                 background: backgroundData,

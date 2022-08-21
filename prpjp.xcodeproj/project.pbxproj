@@ -25,6 +25,8 @@
 		BAB5029C284CD8230046D988 /* prpjp.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB5029B284CD8230046D988 /* prpjp.swift */; };
 		BAC233F528AE8F2400D7A4EE /* MarqueeText in Frameworks */ = {isa = PBXBuildFile; productRef = BAC233F428AE8F2400D7A4EE /* MarqueeText */; };
 		BAC233F728AE921900D7A4EE /* UIFontExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC233F628AE921900D7A4EE /* UIFontExtension.swift */; };
+		BAC233F928B23B0800D7A4EE /* MarqueeeCustom.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC233F828B23B0800D7A4EE /* MarqueeeCustom.swift */; };
+		BAC233FB28B2467800D7A4EE /* DisplayPosition.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAC233FA28B2467800D7A4EE /* DisplayPosition.swift */; };
 		BAD14F0A286B51CA00F0D8F5 /* Translate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD14F09286B51CA00F0D8F5 /* Translate.swift */; };
 		BAD14F0C286B552800F0D8F5 /* UDPManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAD14F0B286B552800F0D8F5 /* UDPManager.swift */; };
 		BAE3F0BC286F281500B0B0C8 /* ToggleButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAE3F0BB286F281500B0B0C8 /* ToggleButton.swift */; };
@@ -63,6 +65,8 @@
 		BAB50299284CD7DD0046D988 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BAB5029B284CD8230046D988 /* prpjp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = prpjp.swift; sourceTree = "<group>"; };
 		BAC233F628AE921900D7A4EE /* UIFontExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtension.swift; sourceTree = "<group>"; };
+		BAC233F828B23B0800D7A4EE /* MarqueeeCustom.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MarqueeeCustom.swift; sourceTree = "<group>"; };
+		BAC233FA28B2467800D7A4EE /* DisplayPosition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DisplayPosition.swift; sourceTree = "<group>"; };
 		BAD14F09286B51CA00F0D8F5 /* Translate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Translate.swift; sourceTree = "<group>"; };
 		BAD14F0B286B552800F0D8F5 /* UDPManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UDPManager.swift; sourceTree = "<group>"; };
 		BAE3F0BB286F281500B0B0C8 /* ToggleButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToggleButton.swift; sourceTree = "<group>"; };
@@ -175,7 +179,6 @@
 				BAD14F09286B51CA00F0D8F5 /* Translate.swift */,
 				BA9743A12871EAB800125995 /* Assets.xcassets */,
 				BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */,
-				BA5E1B8F284E2821002AB742 /* ColorExtension.swift */,
 				BA5E1B8E284E233E002AB742 /* Buttons */,
 				BAFC28342846467100899F5A /* Preview Content */,
 				BAFC28442849007C00899F5A /* Constants.swift */,
@@ -198,6 +201,7 @@
 			isa = PBXGroup;
 			children = (
 				E325D64F2894A6DC007248B0 /* TransferData.swift */,
+				BAC233FA28B2467800D7A4EE /* DisplayPosition.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -215,6 +219,7 @@
 		E3521C8B28ABEEC9006AAACF /* Extension */ = {
 			isa = PBXGroup;
 			children = (
+				BA5E1B8F284E2821002AB742 /* ColorExtension.swift */,
 				E3521C8C28ABEED5006AAACF /* Notification.Name+.swift */,
 			);
 			path = Extension;
@@ -224,6 +229,7 @@
 			isa = PBXGroup;
 			children = (
 				E3521C8F28AC0044006AAACF /* VideoView.swift */,
+				BAC233F828B23B0800D7A4EE /* MarqueeeCustom.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -359,6 +365,7 @@
 				BAFC283D28465DD200899F5A /* RadioButton.swift in Sources */,
 				BAFC28312846466F00899F5A /* ContentView.swift in Sources */,
 				BA26009328AAA93000F4275C /* Location.swift in Sources */,
+				BAC233FB28B2467800D7A4EE /* DisplayPosition.swift in Sources */,
 				E3521C9028AC0044006AAACF /* VideoView.swift in Sources */,
 				BAFC284728490BAC00899F5A /* CircleButton.swift in Sources */,
 				BA5E1B96284E4B31002AB742 /* SocketClientManager.swift in Sources */,
@@ -376,6 +383,7 @@
 				BAA44E44289D626A009B753B /* LoopingPlayerUIView.swift in Sources */,
 				BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */,
 				BA26009528AAB33200F4275C /* Connected.swift in Sources */,
+				BAC233F928B23B0800D7A4EE /* MarqueeeCustom.swift in Sources */,
 				BA48A6D42896E3C000E3C672 /* SpeakButton.swift in Sources */,
 				BAFC28432846689B00899F5A /* TranslationButtonGroup.swift in Sources */,
 				BAD14F0C286B552800F0D8F5 /* UDPManager.swift in Sources */,
@@ -507,7 +515,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
@@ -545,7 +553,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 23;
+				CURRENT_PROJECT_VERSION = 26;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
