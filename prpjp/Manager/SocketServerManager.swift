@@ -57,6 +57,8 @@ final public class SocketServerManager {
         do {
             let jsonData = try JSONEncoder().encode(data)
             UserDefaults.standard.set(jsonData, forKey: "transfer")
+            UserDefaults.standard.set(nil, forKey: "video")
+            UserDefaults.standard.set(nil, forKey: "image")
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             self.server?.sendRequest(string: "2")
             
@@ -73,6 +75,9 @@ final public class SocketServerManager {
         
         print(">>> send function started")
         guard let imageArray = background.jpegData(compressionQuality: 0.6) else { return }
+        let encoded = try! PropertyListEncoder().encode(imageArray)
+        UserDefaults.standard.set(imageArray, forKey: "image")
+        UserDefaults.standard.set(nil, forKey: "video")
         
         
         //        guard let imageArray = background.pngData() else { return }
@@ -81,7 +86,7 @@ final public class SocketServerManager {
         
         
         let backgroundData = BackgroundImageData(type: "com.example.flexibledisplaypanel.socket.data.Background.Image",
-                                                 uriPath: backgroundPath, name : backgroundPath)
+                                                 uriPath: backgroundPath, name : UUID().description)
         let locationData = location
         
         let data = TransferImageData(text: text,
@@ -108,10 +113,75 @@ final public class SocketServerManager {
             self.server?.sendRequest(string: jsonString)
             
             
-            sleep(1)
+            sleep(2)
+            
+            self.server?.sendRequest(string: String(imageArray.count))
+            
+            sleep(2)
             
             
             self.server?.sendRequest(data: imageArray)
+            
+            sleep(1)
+            self.server?.sendRequest(string: "finish")
+            
+            
+        }catch{
+            print(error)
+        }
+    }
+    
+    func send(text: String, video: URL, color :  String, fontSize: String, fontStyleBold : String, resolution : String, location : LocationData) {
+        
+        print(">>> send function started")
+        UserDefaults.standard.set(video, forKey: "video")
+        UserDefaults.standard.set(nil, forKey: "image")
+        
+        guard let videoAray = NSData(contentsOf: video) else {return}
+        
+        
+        
+        //        guard let imageArray = background.pngData() else { return }
+        
+        
+        
+        
+        let backgroundData = BackgroundImageData(type: "com.example.flexibledisplaypanel.socket.data.Background.Image",
+                                                 uriPath: video.description, name : UUID().description)
+        let locationData = location
+        
+        let data = TransferImageData(text: text,
+                                     background: backgroundData,
+                                     textColor: color,
+                                     fontSize: fontSize,
+                                     fontStyle: fontStyleBold,
+                                     displaySize: resolution,
+                                     location: locationData,
+                                     isReverse: false)
+        
+        
+        
+        do {
+            let jsonData = try JSONEncoder().encode(data)
+            UserDefaults.standard.set(jsonData, forKey: "transfer")
+            guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
+            self.server?.sendRequest(string: "3")
+            
+            
+            
+            
+            sleep(1)
+            self.server?.sendRequest(string: jsonString)
+            
+            
+            sleep(2)
+            
+            self.server?.sendRequest(string: String(videoAray.count))
+            
+            sleep(2)
+            
+            
+            self.server?.sendRequest(data: videoAray as Data)
             
             sleep(1)
             self.server?.sendRequest(string: "finish")
@@ -139,28 +209,30 @@ class EchoServer {
         
         print("writing data \(data.count)" )
         
+        
         let sockets = connectedSockets.enumerated().map { $1.value }
         sockets.forEach {
+
             let length = data.count
             let chunkSize = 1024 * 1024
-            
+
             var offset = 0
-            
+
             repeat {
                 // get the length of the chunk
                 let thisChunkSize = ((length - offset) > chunkSize) ? chunkSize : (length - offset);
-                
+
                 // get the chunk
                 let chunk = data.subdata(in: offset..<offset + thisChunkSize )
                 _ = try? $0.write(from: data)
-                
+
                 // -----------------------------------------------
                 // do something with that chunk of data...
                 // -----------------------------------------------
-                
+
                 // update the offset
                 offset += thisChunkSize;
-                
+
             } while (offset < length);
             
             

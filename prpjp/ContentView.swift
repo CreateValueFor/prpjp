@@ -25,6 +25,10 @@ struct ContentView: View {
     @State private var userDefault = UserDefaults.standard.object(forKey: "transfer") as? Data
     
     @State private var displayDefault = UserDefaults.standard.object(forKey: "displayPosition") as? Data
+    @State private var imageDefault = UserDefaults.standard.data(forKey: "image")
+    @State private var videoDefault = UserDefaults.standard.string(forKey: "video")
+    
+    
     @State private var displayPosition : DisplayPosition  = INIT_DISPLAY_POSITION
      
     @State private var resolution: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
@@ -87,6 +91,8 @@ struct ContentView: View {
     @State var image: Image? = nil
     @State var imageUrl : String? = ""
     @State var uiImageVal : UIImage? = UIImage()
+    
+    
     
     // video
     @State var playerLooper: AVPlayerLooper! // should be defined in class
@@ -204,6 +210,7 @@ struct ContentView: View {
                             
                             if let videoURL = self.videoURL {
                                 VideoView(url: videoURL)
+                                
                             }
                             if isMultiLine {
                                 Text(finalText)
@@ -283,8 +290,6 @@ struct ContentView: View {
                                         yLocation =  CGFloat(displayPosition.XS.second)
                                     }
                                     
-//                                    xLocation = resol.xLocation
-//                                    yLocation = resol.yLocation
                                     
                                 }
                                 .disabled(isLock)
@@ -377,6 +382,7 @@ struct ContentView: View {
                                 HStack(alignment: .bottom, spacing: 20){
                                     CircleButtonGroup(items: colors, title: "Background", selectedId: background) { color in
                                         //                                        image = Image("placeholder")
+                                        videoURL = nil
                                         image = nil
                                         background = color
                                         
@@ -538,7 +544,10 @@ struct ContentView: View {
                                 finalText = text
                                 startTTS()
                                 if(image != nil){
+                                    print("send image started")
                                     SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)))
+                                }else if (videoURL != nil){
+                                    SocketServerManager.shared.send(text: self.text, video: videoURL!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)))
                                 }else{
                                     SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location: LocationData(first: Int(xLocation), second: Int(yLocation)))
                                 }
@@ -557,6 +566,25 @@ struct ContentView: View {
             }.background(Color(hex: "#333333"))
                 .edgesIgnoringSafeArea([.top,.bottom])
                 .onAppear{
+                    
+                    if imageDefault != nil {
+                        
+                        
+                        guard let data =  imageDefault else {return}
+                        let image = UIImage(data: data)
+                        
+                        
+                        
+                        self.image = Image(uiImage: image!)
+                        
+                    }
+                    
+                    if videoDefault != nil {
+                        print(videoDefault)
+                        guard let url = videoDefault else {return}
+                        self.videoURL = URL(string: url)
+                    }
+                    
                     // Get UserDefault Data
                     if displayDefault != nil {
                         let decoder = JSONDecoder()
@@ -575,6 +603,32 @@ struct ContentView: View {
                             
                             self.xLocation = CGFloat(loadedData.location.first)
                             self.yLocation = CGFloat(loadedData.location.second)
+                            
+                            switch loadedData.displaySize {
+                                
+                                case "D192X32":
+                                mirrorWidth =  DISPLAY_RESOLUTION.XS.width
+                                    mirrorHeight =  DISPLAY_RESOLUTION.XS.height
+                                case "D192X64":
+                                mirrorWidth =  DISPLAY_RESOLUTION.SM.width
+                                mirrorHeight =  DISPLAY_RESOLUTION.SM.height
+                                case "D192X128":
+                                mirrorWidth =  DISPLAY_RESOLUTION.MD.width
+                                mirrorHeight =  DISPLAY_RESOLUTION.MD.height
+                                case "D384X64":
+                                mirrorWidth =  DISPLAY_RESOLUTION.LG.width
+                                mirrorHeight =  DISPLAY_RESOLUTION.LG.height
+                                case "D384X128":
+                                mirrorWidth =  DISPLAY_RESOLUTION.XL.width
+                                mirrorHeight =  DISPLAY_RESOLUTION.XL.height
+                                case "D360X28":
+                                mirrorWidth =  DISPLAY_RESOLUTION.SXL.width
+                                mirrorHeight =  DISPLAY_RESOLUTION.SXL.height
+                                default :
+                                mirrorWidth =  CGFloat(displayPosition.XS.first)
+                                mirrorHeight =  CGFloat(displayPosition.XS.second)
+                                
+                            }
                             
                             
                             switch loadedData.fontSize {

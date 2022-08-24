@@ -84,7 +84,7 @@ class UDPManager :ObservableObject {
         }
         
         self.udpConnection?.start(queue: .global())
-        self.sendUDP("Hyuns:8000")
+        self.sendUDP("Hyuns:\(port)")
 //        self.startAction()
         
     }
