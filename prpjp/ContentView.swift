@@ -101,6 +101,7 @@ struct ContentView: View {
     @State var videoURL: URL?
     @State var showVideoPicker: Bool = false
     @State var player: AVPlayer?
+    @State var showVideo : Bool = false
     
     // translate
     @StateObject var translate = Translate()
@@ -209,8 +210,7 @@ struct ContentView: View {
                                 .frame(width: mirrorWidth/2, height: mirrorHeight)
                             
                             if let videoURL = self.videoURL {
-                                VideoView(url: videoURL)
-                                
+                                VideoView(url: videoURL,show: showVideo)
                             }
                             if isMultiLine {
                                 Text(finalText)
@@ -384,6 +384,7 @@ struct ContentView: View {
                                         //                                        image = Image("placeholder")
                                         videoURL = nil
                                         image = nil
+                                        self.showVideo = false
                                         background = color
                                         
                                         
@@ -395,6 +396,7 @@ struct ContentView: View {
                                             
                                             Button(action: {
                                                 videoURL = nil
+                                                self.showVideo = false
                                                 withAnimation {
                                                     self.isShowPicker.toggle()
                                                 }
@@ -418,6 +420,7 @@ struct ContentView: View {
                                             Button(action: {
                                                 image = nil
                                                 videoURL = nil
+                                                self.showVideo = true
                                                 
                                                 withAnimation {
                                                     
@@ -434,6 +437,7 @@ struct ContentView: View {
                                         }
                                     }
                                     .sheet(isPresented: $showVideoPicker) {
+                                        
                                         
                                         PHPVideoPicker(isShown: $showVideoPicker, videoURL: $videoURL, playerItem: $playerItem)
                                     }
@@ -607,24 +611,31 @@ struct ContentView: View {
                             switch loadedData.displaySize {
                                 
                                 case "D192X32":
+                                resolution = DISPLAY_RESOLUTION.XS
                                 mirrorWidth =  DISPLAY_RESOLUTION.XS.width
                                     mirrorHeight =  DISPLAY_RESOLUTION.XS.height
                                 case "D192X64":
+                                resolution = DISPLAY_RESOLUTION.SM
                                 mirrorWidth =  DISPLAY_RESOLUTION.SM.width
                                 mirrorHeight =  DISPLAY_RESOLUTION.SM.height
                                 case "D192X128":
+                                resolution = DISPLAY_RESOLUTION.MD
                                 mirrorWidth =  DISPLAY_RESOLUTION.MD.width
                                 mirrorHeight =  DISPLAY_RESOLUTION.MD.height
                                 case "D384X64":
+                                resolution = DISPLAY_RESOLUTION.LG
                                 mirrorWidth =  DISPLAY_RESOLUTION.LG.width
                                 mirrorHeight =  DISPLAY_RESOLUTION.LG.height
                                 case "D384X128":
+                                resolution = DISPLAY_RESOLUTION.XL
                                 mirrorWidth =  DISPLAY_RESOLUTION.XL.width
                                 mirrorHeight =  DISPLAY_RESOLUTION.XL.height
                                 case "D360X28":
+                                resolution = DISPLAY_RESOLUTION.SXL
                                 mirrorWidth =  DISPLAY_RESOLUTION.SXL.width
                                 mirrorHeight =  DISPLAY_RESOLUTION.SXL.height
                                 default :
+                                resolution = DISPLAY_RESOLUTION.XS
                                 mirrorWidth =  CGFloat(displayPosition.XS.first)
                                 mirrorHeight =  CGFloat(displayPosition.XS.second)
                                 

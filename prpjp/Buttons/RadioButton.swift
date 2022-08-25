@@ -29,7 +29,7 @@ struct RadioButton: View {
 
     let item: DISPLAY_RESOLUTION
     let callback: (DISPLAY_RESOLUTION)->()
-    let selectedID : DISPLAY_RESOLUTION
+    @Published var selectedID : DISPLAY_RESOLUTION 
     let size: CGFloat
     let color: Color
     let textSize: CGFloat
