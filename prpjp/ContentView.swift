@@ -244,6 +244,7 @@ struct ContentView: View {
                     HStack (alignment: .top){
                         ScrollView(.vertical){
                             VStack(alignment: .leading) {
+                                
                                 Connected(state: connected) { port in
                                     let portNum = Int(port) ?? 8000
                                     UDPManager.broadCastUDP(port:portNum)
@@ -358,6 +359,8 @@ struct ContentView: View {
                                     default:
                                         print(speakLanguage)
                                     }
+                                    print(speakLanguage)
+                                    print(speakLangCode)
                                 }
                                 .disabled(isLock)
                                 RectangleButtonGroup(items: translationLanguages, title: "Translation language", selectedId: translationLanguage) { translation in
@@ -549,11 +552,11 @@ struct ContentView: View {
                                 startTTS()
                                 if(image != nil){
                                     print("send image started")
-                                    SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)))
+                                    SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)),language: translateLangCode)
                                 }else if (videoURL != nil){
-                                    SocketServerManager.shared.send(text: self.text, video: videoURL!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)))
+                                    SocketServerManager.shared.send(text: self.text, video: videoURL!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)),language: translateLangCode)
                                 }else{
-                                    SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location: LocationData(first: Int(xLocation), second: Int(yLocation)))
+                                    SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location: LocationData(first: Int(xLocation), second: Int(yLocation)),language: translateLangCode)
                                 }
                                 
                             }, isPressed: DisplayBtnPressed, disabled: isDisplayBtnDisabled)
@@ -613,27 +616,27 @@ struct ContentView: View {
                                 case "D192X32":
                                 resolution = DISPLAY_RESOLUTION.XS
                                 mirrorWidth =  DISPLAY_RESOLUTION.XS.width
-                                    mirrorHeight =  DISPLAY_RESOLUTION.XS.height
+                                    mirrorHeight =  DISPLAY_RESOLUTION.XS.height / 2
                                 case "D192X64":
                                 resolution = DISPLAY_RESOLUTION.SM
                                 mirrorWidth =  DISPLAY_RESOLUTION.SM.width
-                                mirrorHeight =  DISPLAY_RESOLUTION.SM.height
+                                mirrorHeight =  DISPLAY_RESOLUTION.SM.height / 2
                                 case "D192X128":
                                 resolution = DISPLAY_RESOLUTION.MD
                                 mirrorWidth =  DISPLAY_RESOLUTION.MD.width
-                                mirrorHeight =  DISPLAY_RESOLUTION.MD.height
+                                mirrorHeight =  DISPLAY_RESOLUTION.MD.height / 2
                                 case "D384X64":
                                 resolution = DISPLAY_RESOLUTION.LG
                                 mirrorWidth =  DISPLAY_RESOLUTION.LG.width
-                                mirrorHeight =  DISPLAY_RESOLUTION.LG.height
+                                mirrorHeight =  DISPLAY_RESOLUTION.LG.height / 2
                                 case "D384X128":
                                 resolution = DISPLAY_RESOLUTION.XL
                                 mirrorWidth =  DISPLAY_RESOLUTION.XL.width
-                                mirrorHeight =  DISPLAY_RESOLUTION.XL.height
+                                mirrorHeight =  DISPLAY_RESOLUTION.XL.height / 2
                                 case "D360X28":
                                 resolution = DISPLAY_RESOLUTION.SXL
                                 mirrorWidth =  DISPLAY_RESOLUTION.SXL.width
-                                mirrorHeight =  DISPLAY_RESOLUTION.SXL.height
+                                mirrorHeight =  DISPLAY_RESOLUTION.SXL.height/2
                                 default :
                                 resolution = DISPLAY_RESOLUTION.XS
                                 mirrorWidth =  CGFloat(displayPosition.XS.first)

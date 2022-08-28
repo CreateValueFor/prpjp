@@ -16,6 +16,7 @@ struct TransferData: Codable {
     var displaySize: String
     var location: LocationData
     var isReverse: Bool
+    var langCode : String
 }
 
 struct TransferImageData: Codable {
@@ -27,6 +28,7 @@ struct TransferImageData: Codable {
     var displaySize: String
     var location: LocationData
     var isReverse: Bool
+    var langCode : String
 }
 
 struct BackgroundData: Codable {

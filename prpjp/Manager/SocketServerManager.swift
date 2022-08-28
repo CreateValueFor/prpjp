@@ -36,7 +36,7 @@ final public class SocketServerManager {
         server.run()
     }
     
-    func send(text: String, background: String, color :  String, fontSize: String, fontStyleBold : String, resolution : String, location : LocationData) {
+    func send(text: String, background: String, color :  String, fontSize: String, fontStyleBold : String, resolution : String, location : LocationData, language : String) {
         
         print(">>> send function started")
         let backgroundData = BackgroundData(type: "com.example.flexibledisplaypanel.socket.data.Background.Color",
@@ -50,7 +50,8 @@ final public class SocketServerManager {
                                 fontStyle: fontStyleBold,
                                 displaySize: resolution,
                                 location: locationData,
-                                isReverse: false)
+                                isReverse: false,
+                                langCode: language)
         
         
         
@@ -62,6 +63,8 @@ final public class SocketServerManager {
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             self.server?.sendRequest(string: "2")
             
+            
+            
             self.server?.sendRequest(string: jsonString)
             
             
@@ -71,19 +74,13 @@ final public class SocketServerManager {
         }
     }
     
-    func send(text: String, background: UIImage, backgroundPath : String, color :  String, fontSize: String, fontStyleBold : String, resolution : String, location : LocationData) {
+    func send(text: String, background: UIImage, backgroundPath : String, color :  String, fontSize: String, fontStyleBold : String, resolution : String, location : LocationData, language : String) {
         
         print(">>> send function started")
         guard let imageArray = background.jpegData(compressionQuality: 0.6) else { return }
         let encoded = try! PropertyListEncoder().encode(imageArray)
         UserDefaults.standard.set(imageArray, forKey: "image")
         UserDefaults.standard.set(nil, forKey: "video")
-        
-        
-        //        guard let imageArray = background.pngData() else { return }
-        
-        
-        
         
         let backgroundData = BackgroundImageData(type: "com.example.flexibledisplaypanel.socket.data.Background.Image",
                                                  uriPath: backgroundPath, name : UUID().description)
@@ -96,7 +93,8 @@ final public class SocketServerManager {
                                      fontStyle: fontStyleBold,
                                      displaySize: resolution,
                                      location: locationData,
-                                     isReverse: false)
+                                     isReverse: false,
+                                     langCode: language)
         
         
         
@@ -105,9 +103,6 @@ final public class SocketServerManager {
             UserDefaults.standard.set(jsonData, forKey: "transfer")
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             self.server?.sendRequest(string: "3")
-            
-            
-            
             
             sleep(1)
             self.server?.sendRequest(string: jsonString)
@@ -131,7 +126,7 @@ final public class SocketServerManager {
         }
     }
     
-    func send(text: String, video: URL, color :  String, fontSize: String, fontStyleBold : String, resolution : String, location : LocationData) {
+    func send(text: String, video: URL, color :  String, fontSize: String, fontStyleBold : String, resolution : String, location : LocationData, language : String) {
         
         print(">>> send function started")
         UserDefaults.standard.set(video, forKey: "video")
@@ -139,14 +134,7 @@ final public class SocketServerManager {
         
         guard let videoAray = NSData(contentsOf: video) else {return}
         
-        
-        
-        //        guard let imageArray = background.pngData() else { return }
-        
-        
-        
-        
-        let backgroundData = BackgroundImageData(type: "com.example.flexibledisplaypanel.socket.data.Background.Image",
+        let backgroundData = BackgroundImageData(type: "com.example.flexibledisplaypanel.socket.data.Background.Video",
                                                  uriPath: video.description, name : UUID().description)
         let locationData = location
         
@@ -157,7 +145,8 @@ final public class SocketServerManager {
                                      fontStyle: fontStyleBold,
                                      displaySize: resolution,
                                      location: locationData,
-                                     isReverse: false)
+                                     isReverse: false,
+                                     langCode: language)
         
         
         
@@ -166,6 +155,7 @@ final public class SocketServerManager {
             UserDefaults.standard.set(jsonData, forKey: "transfer")
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             self.server?.sendRequest(string: "3")
+            
             
             
             
@@ -232,11 +222,10 @@ class EchoServer {
 
                 // update the offset
                 offset += thisChunkSize;
+                print("in progress \(offset) / \(data.count)")
 
             } while (offset < length);
-            
-            
-            
+            print("writing data finished" )
         }
     }
     
