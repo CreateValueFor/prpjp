@@ -63,12 +63,7 @@ final public class SocketServerManager {
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             self.server?.sendRequest(string: "2")
             
-            
-            
             self.server?.sendRequest(string: jsonString)
-            
-            
-            
         }catch{
             print(error)
         }
@@ -132,7 +127,7 @@ final public class SocketServerManager {
         UserDefaults.standard.set(video, forKey: "video")
         UserDefaults.standard.set(nil, forKey: "image")
         
-        guard let videoAray = NSData(contentsOf: video) else {return}
+        guard let videoAray = NSData(contentsOf: video) else { return }
         
         let backgroundData = BackgroundImageData(type: "com.example.flexibledisplaypanel.socket.data.Background.Video",
                                                  uriPath: video.description, name : UUID().description)
@@ -155,11 +150,7 @@ final public class SocketServerManager {
             UserDefaults.standard.set(jsonData, forKey: "transfer")
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             self.server?.sendRequest(string: "3")
-            
-            
-            
-            
-            
+
             sleep(1)
             self.server?.sendRequest(string: jsonString)
             

@@ -11,7 +11,7 @@ import SwiftUI
 let INIT_DISPLAY_POSITION : DisplayPosition = DisplayPosition(XS: DISPLAY_RESOLUTION.XS.locationData, SM: DISPLAY_RESOLUTION.SM.locationData, MD: DISPLAY_RESOLUTION.MD.locationData, LG: DISPLAY_RESOLUTION.LG.locationData, XL: DISPLAY_RESOLUTION.XL.locationData, SXL: DISPLAY_RESOLUTION.SXL.locationData)
 
 
-enum DISPLAY_RESOLUTION :CaseIterable{
+enum DISPLAY_RESOLUTION :CaseIterable {
     case XS
     case SM
     case MD

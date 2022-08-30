@@ -65,7 +65,7 @@ struct CircleButtonGroup: View {
                 Text(title)
                     .foregroundColor(.white)
                 HStack {
-                    ForEach(0..<items.count) { index in
+                    ForEach(0..<items.count, id:\.self) { index in
                         CircleButton(self.items[index], callback: self.radioGroupCallback, selectedID: self.selectedId )
                     }
                 }

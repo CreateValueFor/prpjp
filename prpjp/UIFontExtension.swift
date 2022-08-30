@@ -10,13 +10,13 @@ import SwiftUI
 
 public extension UIFont {
     
-    public func withTraits(_ traits: UIFontDescriptor.SymbolicTraits...) -> UIFont {
+    func withTraits(_ traits: UIFontDescriptor.SymbolicTraits...) -> UIFont {
         let descriptor = self.fontDescriptor
             .withSymbolicTraits(UIFontDescriptor.SymbolicTraits(traits))
         return UIFont(descriptor: descriptor!, size: 0)
     }
     
-    public func styleType(font: String )-> UIFont {
+    func styleType(font: String )-> UIFont {
         switch font {
         case "BOTH":
             return boldItlc
@@ -29,18 +29,18 @@ public extension UIFont {
         }
     }
         
-    public var italic : UIFont {
+    var italic : UIFont {
         return withTraits(.traitItalic)
     }
         
-    public var bold : UIFont {
+    var bold : UIFont {
         return withTraits(.traitBold)
     }
     
-    public var boldItlc : UIFont {
+    var boldItlc : UIFont {
         return withTraits(.traitBold, .traitItalic)
     }
-    public var noneFont : UIFont{
+    var noneFont : UIFont{
         return withTraits()
     }
 }

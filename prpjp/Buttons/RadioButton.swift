@@ -75,36 +75,38 @@ struct RadioButtonGroup: View {
 
     let items : [DISPLAY_RESOLUTION]
 
-    @State var selectedId: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
-    @State var selectedItem: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
+    @Binding var selectedId: DISPLAY_RESOLUTION {
+        didSet {
+            print("selectedId = \(selectedId)")
+        }
+    }
 
     let callback: (DISPLAY_RESOLUTION) -> ()
 
     var body: some View {
         ScrollView(.horizontal){
             HStack {
-                ForEach(0..<items.count) { index in
-                    RadioButton(self.items[index], callback: self.radioGroupCallback, selectedID: self.selectedItem)
+                ForEach(0..<items.count, id: \.self) { index in
+                    RadioButton(self.items[index], callback: self.radioGroupCallback, selectedID: self.selectedId)
                 }
             }
-            
-            
         }
-        
     }
 
     func radioGroupCallback(id: DISPLAY_RESOLUTION) {
-        
-        selectedItem = id
+        selectedId = id
         callback(id)
     }
 }
 
 struct RadioGroup: View {
+    
+    @State private var selectedId: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
+    
     var body: some View {
         HStack {
             
-            RadioButtonGroup(items: [DISPLAY_RESOLUTION.XS, DISPLAY_RESOLUTION.LG, DISPLAY_RESOLUTION.MD, DISPLAY_RESOLUTION.SM, DISPLAY_RESOLUTION.XL], selectedId: DISPLAY_RESOLUTION.XL) { selected in
+            RadioButtonGroup(items: [DISPLAY_RESOLUTION.XS, DISPLAY_RESOLUTION.LG, DISPLAY_RESOLUTION.MD, DISPLAY_RESOLUTION.SM, DISPLAY_RESOLUTION.XL], selectedId: $selectedId) { selected in
             }
         }
     }

@@ -22,16 +22,21 @@ struct translateResposne: Decodable {
 
 struct ContentView: View {
     
-    @State private var userDefault = UserDefaults.standard.object(forKey: "transfer") as? Data
+    @State private var transferDefault = UserDefaults.standard.object(forKey: "transfer") as? Data
     
     @State private var displayDefault = UserDefaults.standard.object(forKey: "displayPosition") as? Data
     @State private var imageDefault = UserDefaults.standard.data(forKey: "image")
-    @State private var videoDefault = UserDefaults.standard.string(forKey: "video")
+    @State private var videoDefault = UserDefaults.standard.url(forKey: "video")
     
+    @StateObject var playerManager = PlayerManager()
     
     @State private var displayPosition : DisplayPosition  = INIT_DISPLAY_POSITION
      
-    @State private var resolution: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS
+    @State private var resolution: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS {
+        didSet {
+            print("resolution = \(resolution)")
+        }
+    }
     @State private var mirrorWidth: CGFloat =  DISPLAY_RESOLUTION.XS.width
     @State private var mirrorHeight: CGFloat =  DISPLAY_RESOLUTION.XS.height / 2
     @State private var display: String = "D192X32"
@@ -151,7 +156,7 @@ struct ContentView: View {
         default:
             print(speechText ?? "")
         }
-        print( "speech Text is \(speechText)")
+        print("speech Text is \(String(describing: speechText))")
         utterance.voice = AVSpeechSynthesisVoice(language: speechText)
         
         utterance.rate = 0.4
@@ -210,7 +215,7 @@ struct ContentView: View {
                                 .frame(width: mirrorWidth/2, height: mirrorHeight)
                             
                             if let videoURL = self.videoURL {
-                                VideoView(url: videoURL,show: showVideo)
+                                VideoPlayer(url: videoURL, player: playerManager.player, show: showVideo)
                             }
                             if isMultiLine {
                                 Text(finalText)
@@ -256,7 +261,7 @@ struct ContentView: View {
                                     self.connected = !isEmpty
                                 })
                                 .disabled(isLock)
-                                RadioButtonGroup(items: resolutions, selectedId: resolution) { resol in
+                                RadioButtonGroup(items: resolutions, selectedId: $resolution) { resol in
                                     
                                     mirrorHeight = resol.height / 2
                                     mirrorWidth = resol.width
@@ -296,7 +301,7 @@ struct ContentView: View {
                                 .disabled(isLock)
                                 Location(xLocation: xLocation, yLocation : yLocation,
                                          setF: { x, y in
-                                    var tmpLocation : LocationData = LocationData(first: Int(x) ?? 0, second: Int(y) ?? 0)
+                                    let tmpLocation : LocationData = LocationData(first: Int(x) ?? 0, second: Int(y) ?? 0)
                                     switch display {
                                     case "D192X32":
                                         displayPosition.XS = tmpLocation
@@ -386,6 +391,7 @@ struct ContentView: View {
                                     CircleButtonGroup(items: colors, title: "Background", selectedId: background) { color in
                                         //                                        image = Image("placeholder")
                                         videoURL = nil
+                                        playerManager.pause()
                                         image = nil
                                         self.showVideo = false
                                         background = color
@@ -399,6 +405,7 @@ struct ContentView: View {
                                             
                                             Button(action: {
                                                 videoURL = nil
+                                                playerManager.pause()
                                                 self.showVideo = false
                                                 withAnimation {
                                                     self.isShowPicker.toggle()
@@ -423,6 +430,7 @@ struct ContentView: View {
                                             Button(action: {
                                                 image = nil
                                                 videoURL = nil
+                                                playerManager.pause()
                                                 self.showVideo = true
                                                 
                                                 withAnimation {
@@ -574,37 +582,29 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea([.top,.bottom])
                 .onAppear{
                     
-                    if imageDefault != nil {
-                        
-                        
-                        guard let data =  imageDefault else {return}
-                        let image = UIImage(data: data)
-                        
-                        
-                        
-                        self.image = Image(uiImage: image!)
+                    if let data = self.imageDefault, let image = UIImage(data: data) {
+                        self.image = Image(uiImage: image)
                         
                     }
                     
-                    if videoDefault != nil {
-                        print(videoDefault)
-                        guard let url = videoDefault else {return}
-                        self.videoURL = URL(string: url)
+                    if let url = self.videoDefault {
+                        print(url)
+                        self.showVideo = true
+                        self.videoURL = url
                     }
                     
                     // Get UserDefault Data
-                    if displayDefault != nil {
+                    if let displayDefault = self.displayDefault {
                         let decoder = JSONDecoder()
-                        if let loadedPosition = try? decoder.decode(DisplayPosition.self, from: displayDefault!){
+                        if let loadedPosition = try? decoder.decode(DisplayPosition.self, from: displayDefault){
                             self.displayPosition = loadedPosition
                             print(loadedPosition)
                         }
-                        
                     }
                     
-                    if userDefault != nil {
+                    if let transferDefault = self.transferDefault {
                         let decoder = JSONDecoder()
-                        if let loadedData = try? decoder.decode(TransferData.self, from: userDefault!) {
+                        if let loadedData = try? decoder.decode(TransferData.self, from: transferDefault) {
                             self.text = loadedData.text
                             self.finalText = loadedData.text
                             

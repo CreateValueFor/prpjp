@@ -10,59 +10,35 @@ import Foundation
 import AVKit
 import AVFoundation
 
-struct VideoView: View {
-    
-    // MARK: - STATE
-    
-    @State var player = AVPlayer()
-    @State var isplaying = true
-    @State var showcontrols = true
-    
-    // MARK: - PROPERTIES
-    
-    var allowsPictureInPicturePlayback : Bool = true
-    var url: URL
-    var show : Bool
-    
-    // MARK: - BODY
-    
-    var body: some View {
-        VideoPlayer(url: url, player: player, keepLoop: show)
-            .edgesIgnoringSafeArea(.all)
-            .onAppear {
-                if show {
-                    player.replaceCurrentItem(with: AVPlayerItem(url: url))
-                    player.play()
-                }
-                
-            }
-    }
-}
 
 // MARK: - VIDEO CONTROLLER
 
 struct VideoPlayer : UIViewControllerRepresentable {
-    
+
     var playerObserver: Any?
+    var player: AVPlayer?
     var url: URL
-    var player : AVPlayer
-    var keepLoop : Bool
-    
-    init(url: URL, player: AVPlayer, keepLoop : Bool) {
+    var show : Bool
+
+    init(url: URL, player: AVPlayer, show : Bool) {
         self.url = url
         self.player = player
-        self.keepLoop = keepLoop
-        if !self.keepLoop {
+        self.show = show
+        if !self.show {
             return
         }
+        
+        player.replaceCurrentItem(with: AVPlayerItem(url: url))
+        player.play()
+        
         self.playerObserver = NotificationCenter.default.addObserver(forName: NSNotification.Name.AVPlayerItemDidPlayToEndTime,
                                                                      object: nil,
-                                                                     queue: nil) { [self] _ in
-            self.player.seek(to: CMTime.zero)
-            self.player.play()
+                                                                     queue: nil) { _ in
+            player.seek(to: CMTime.zero)
+            player.play()
         }
     }
-    
+
     func makeUIViewController(context: Context) ->  UIViewController {
 
         let controller = AVPlayerViewController()
@@ -70,12 +46,36 @@ struct VideoPlayer : UIViewControllerRepresentable {
         controller.showsPlaybackControls = true
         controller.exitsFullScreenWhenPlaybackEnds = true
         controller.allowsPictureInPicturePlayback = true
-        
+
         return controller
     }
-    
+
     func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
-        
-        
+
+
+    }
+}
+
+class PlayerManager : ObservableObject {
+    let player = AVPlayer()
+    @Published private var playing = false
+
+    func play() {
+        player.play()
+        playing = true
+    }
+    
+    func pause() {
+        player.pause()
+        playing = false
+    }
+    
+    func playPause() {
+        if playing {
+            player.pause()
+        } else {
+            player.play()
+        }
+        playing.toggle()
     }
 }
