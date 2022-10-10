@@ -31,7 +31,7 @@ struct ContentView: View {
     @StateObject var playerManager = PlayerManager()
     
     @State private var displayPosition : DisplayPosition  = INIT_DISPLAY_POSITION
-     
+    
     @State private var resolution: DISPLAY_RESOLUTION = DISPLAY_RESOLUTION.XS {
         didSet {
             print("resolution = \(resolution)")
@@ -108,6 +108,9 @@ struct ContentView: View {
     @State var player: AVPlayer?
     @State var showVideo : Bool = false
     
+    @State var isVideoSending : Bool = false
+    @State var progress : Double = 0
+    
     // translate
     @StateObject var translate = Translate()
     
@@ -137,6 +140,14 @@ struct ContentView: View {
     
     // TTS Logic
     func startTTS(){
+        let audioSession = AVAudioSession.sharedInstance()
+            do {
+                try audioSession.setCategory(AVAudioSession.Category.playback)
+                try audioSession.setActive(false, options: .notifyOthersOnDeactivation)
+            } catch {
+                // handle errors
+            }
+        
         let synthesizeer = AVSpeechSynthesizer()
         let utterance = AVSpeechUtterance(string: text)
         
@@ -170,8 +181,17 @@ struct ContentView: View {
         
         GeometryReader{
             proxy in
+
             
             ZStack(alignment: .topTrailing){
+                
+                CustomProgressView(title: "sending video...", isShown: self.$isVideoSending,
+                                   value: self.$progress)
+                .position(x: proxy.size.width / 2 , y: proxy.size.height / 2)
+//                .frame(width: 500, height: 500)
+                .zIndex(100)
+                
+                    
                 
                 // toggle buttons
                 HStack(alignment: .top, spacing: 10){
@@ -222,7 +242,7 @@ struct ContentView: View {
                                     .lineLimit(2)
                                     .font(Font(uiFont: UIFont.systemFont(ofSize: fontSizeValue).styleType(font: fontStyle)))
                                     .foregroundColor(textColor.color)
-                                    
+                                
                             }else {
                                 MarqueeText(
                                     text: finalText,
@@ -301,6 +321,7 @@ struct ContentView: View {
                                 .disabled(isLock)
                                 Location(xLocation: xLocation, yLocation : yLocation,
                                          setF: { x, y in
+                                    print("x = \(x) y = \(y)")
                                     let tmpLocation : LocationData = LocationData(first: Int(x) ?? 0, second: Int(y) ?? 0)
                                     switch display {
                                     case "D192X32":
@@ -556,16 +577,73 @@ struct ContentView: View {
                             
                             
                             PressButton("DISPLAY", callback: { isDisplay in
-                                finalText = text
-                                startTTS()
-                                if(image != nil){
-                                    print("send image started")
-                                    SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)),language: translateLangCode)
-                                }else if (videoURL != nil){
-                                    SocketServerManager.shared.send(text: self.text, video: videoURL!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)),language: translateLangCode)
-                                }else{
-                                    SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location: LocationData(first: Int(xLocation), second: Int(yLocation)),language: translateLangCode)
+                                
+                                if speakLangCode != translateLangCode {
+                                    print("번역 시작")
+                                    translate.translate(speakLangCode: speakLangCode, translateLangCode: translateLangCode, text: text)
+                                    
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1.5) {
+                                        self.speakLanguage = self.translationLanguage
+                                        self.speakLangCode = self.translateLangCode
+                                        self.text = translate.trText.replacingOccurrences(of: "&#39;", with: "'")
+                                        finalText = text
+                                        startTTS()
+                                        if(image != nil){
+                                            print("send image started")
+                                            SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)),language: translateLangCode)
+                                        }else if (videoURL != nil){
+                                            print("main")
+                                            self.isVideoSending.toggle()
+                                            print(self.isVideoSending)
+                                            DispatchQueue.global().async{
+                                                
+                                                SocketServerManager.shared.send(text: self.text, video: videoURL!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)),language: translateLangCode) {
+
+                                                }
+                                                
+                                                print("main ended")
+                                                self.isVideoSending.toggle()
+                                                print(self.isVideoSending)
+                                            }
+                                            
+                                            
+                                        }else{
+                                            print("번역 시작")
+                                            SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location: LocationData(first: Int(xLocation), second: Int(yLocation)),language: translateLangCode)
+                                        }
+                                    }
+                                    print("번역 끝")
+                                }else {
+                                    finalText = text
+                                    startTTS()
+                                    if(image != nil){
+                                        print("send image started")
+                                        SocketServerManager.shared.send(text: self.text, background: uiImageVal!, backgroundPath: imageUrl!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)),language: translateLangCode)
+                                    }else if (videoURL != nil){
+                                        print("main")
+                                        self.isVideoSending.toggle()
+                                        print(self.isVideoSending)
+                                        DispatchQueue.global().async{
+                                            
+                                            SocketServerManager.shared.send(text: self.text, video: videoURL!, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location:  LocationData(first: Int(xLocation), second: Int(yLocation)),language: translateLangCode) {
+
+                                            }
+                                            
+                                            print("main ended")
+                                            self.isVideoSending.toggle()
+                                            print(self.isVideoSending)
+                                        }
+                                        
+                                        
+                                    }else{
+                                        print("번역 시작")
+                                        SocketServerManager.shared.send(text: self.text, background: background.rawValue, color: textColor.rawValue, fontSize: fontSize, fontStyleBold: fontStyle, resolution: display, location: LocationData(first: Int(xLocation), second: Int(yLocation)),language: translateLangCode)
+                                    }
                                 }
+                                
+                                
+                                
                                 
                             }, isPressed: DisplayBtnPressed, disabled: isDisplayBtnDisabled)
                         }
@@ -578,66 +656,139 @@ struct ContentView: View {
                     
                     
                 }
+                
+                
             }.background(Color(hex: "#333333"))
                 .edgesIgnoringSafeArea([.top,.bottom])
                 .onAppear{
                     
-                    if let data = self.imageDefault, let image = UIImage(data: data) {
-                        self.image = Image(uiImage: image)
-                        
-                    }
                     
-                    if let url = self.videoDefault {
-                        print(url)
-                        self.showVideo = true
-                        self.videoURL = url
-                    }
+                    
                     
                     // Get UserDefault Data
                     if let displayDefault = self.displayDefault {
                         let decoder = JSONDecoder()
                         if let loadedPosition = try? decoder.decode(DisplayPosition.self, from: displayDefault){
                             self.displayPosition = loadedPosition
-                            print(loadedPosition)
+                            print("loaded Position \(loadedPosition)")
                         }
                     }
                     
                     if let transferDefault = self.transferDefault {
                         let decoder = JSONDecoder()
+                        if let loadedData = try? decoder.decode(TransferImageData.self, from: transferDefault){
+                            
+                            print(loadedData)
+                            self.xLocation = CGFloat(loadedData.location.first)
+                            self.yLocation = CGFloat(loadedData.location.second)
+                            
+                            self.text = loadedData.text
+                            self.finalText = loadedData.text
+                            
+                            switch loadedData.fontSize {
+                            case "SMALL":
+                                self.fontSize = "SMALL"
+                                self.fontSizeValue = FONT_SIZE.SMALL.size
+                                
+                            case "MEDIUM":
+                                self.fontSize = "MEDIUM"
+                                self.fontSizeValue = FONT_SIZE.MEDIUM.size
+                                
+                            case "LARGE":
+                                self.fontSize = "LARGE"
+                                self.fontSizeValue = FONT_SIZE.LARGE.size
+                            default :
+                                fontSizeValue = FONT_SIZE.SMALL.size
+                            }
+                            
+                            switch loadedData.fontStyle {
+                            case "NONE":
+                                break
+                            case "BOLD":
+                                self.fontStyleBold = "BOLD"
+                                self.fontStyleBoldValue = Font.Weight.bold
+                            case "ITALIC":
+                                self.fontStyleItalic = "ITALIC"
+                            case "BOTH":
+                                self.fontStyleBoldValue = Font.Weight.bold
+                                self.fontStyleBold = "BOLD"
+                                self.fontStyleItalic = "ITALIC"
+                            default:
+                                break;
+                            }
+                            display = loadedData.displaySize
+                            switch loadedData.displaySize {
+                                
+                            case "D192X32":
+                                
+                                resolution = DISPLAY_RESOLUTION.XS
+                                mirrorWidth =  DISPLAY_RESOLUTION.XS.width
+                                mirrorHeight =  DISPLAY_RESOLUTION.XS.height / 2
+                            case "D192X64":
+                                resolution = DISPLAY_RESOLUTION.SM
+                                mirrorWidth =  DISPLAY_RESOLUTION.SM.width
+                                mirrorHeight =  DISPLAY_RESOLUTION.SM.height / 2
+                            case "D192X128":
+                                resolution = DISPLAY_RESOLUTION.MD
+                                mirrorWidth =  DISPLAY_RESOLUTION.MD.width
+                                mirrorHeight =  DISPLAY_RESOLUTION.MD.height / 2
+                            case "D384X64":
+                                resolution = DISPLAY_RESOLUTION.LG
+                                mirrorWidth =  DISPLAY_RESOLUTION.LG.width
+                                mirrorHeight =  DISPLAY_RESOLUTION.LG.height / 2
+                            case "D384X128":
+                                resolution = DISPLAY_RESOLUTION.XL
+                                mirrorWidth =  DISPLAY_RESOLUTION.XL.width
+                                mirrorHeight =  DISPLAY_RESOLUTION.XL.height / 2
+                            case "D360X28":
+                                resolution = DISPLAY_RESOLUTION.SXL
+                                mirrorWidth =  DISPLAY_RESOLUTION.SXL.width
+                                mirrorHeight =  DISPLAY_RESOLUTION.SXL.height/2
+                            default :
+                                resolution = DISPLAY_RESOLUTION.XS
+                                mirrorWidth =  CGFloat(displayPosition.XS.first)
+                                mirrorHeight =  CGFloat(displayPosition.XS.second)
+                                
+                            }
+                        }
+                        
+                        
                         if let loadedData = try? decoder.decode(TransferData.self, from: transferDefault) {
                             self.text = loadedData.text
                             self.finalText = loadedData.text
                             
                             self.xLocation = CGFloat(loadedData.location.first)
                             self.yLocation = CGFloat(loadedData.location.second)
+                            display = loadedData.displaySize
                             
                             switch loadedData.displaySize {
                                 
-                                case "D192X32":
+                            case "D192X32":
                                 resolution = DISPLAY_RESOLUTION.XS
                                 mirrorWidth =  DISPLAY_RESOLUTION.XS.width
-                                    mirrorHeight =  DISPLAY_RESOLUTION.XS.height / 2
-                                case "D192X64":
+                                mirrorHeight =  DISPLAY_RESOLUTION.XS.height / 2
+                                
+                            case "D192X64":
                                 resolution = DISPLAY_RESOLUTION.SM
                                 mirrorWidth =  DISPLAY_RESOLUTION.SM.width
                                 mirrorHeight =  DISPLAY_RESOLUTION.SM.height / 2
-                                case "D192X128":
+                            case "D192X128":
                                 resolution = DISPLAY_RESOLUTION.MD
                                 mirrorWidth =  DISPLAY_RESOLUTION.MD.width
                                 mirrorHeight =  DISPLAY_RESOLUTION.MD.height / 2
-                                case "D384X64":
+                            case "D384X64":
                                 resolution = DISPLAY_RESOLUTION.LG
                                 mirrorWidth =  DISPLAY_RESOLUTION.LG.width
                                 mirrorHeight =  DISPLAY_RESOLUTION.LG.height / 2
-                                case "D384X128":
+                            case "D384X128":
                                 resolution = DISPLAY_RESOLUTION.XL
                                 mirrorWidth =  DISPLAY_RESOLUTION.XL.width
                                 mirrorHeight =  DISPLAY_RESOLUTION.XL.height / 2
-                                case "D360X28":
+                            case "D360X28":
                                 resolution = DISPLAY_RESOLUTION.SXL
                                 mirrorWidth =  DISPLAY_RESOLUTION.SXL.width
                                 mirrorHeight =  DISPLAY_RESOLUTION.SXL.height/2
-                                default :
+                            default :
                                 resolution = DISPLAY_RESOLUTION.XS
                                 mirrorWidth =  CGFloat(displayPosition.XS.first)
                                 mirrorHeight =  CGFloat(displayPosition.XS.second)
@@ -713,6 +864,16 @@ struct ContentView: View {
                             }
                         }
                     }
+                    if let data = self.imageDefault, let image = UIImage(data: data) {
+                        self.image = Image(uiImage: image)
+                        
+                    }
+                    
+                    if let url = self.videoDefault {
+                        print(url)
+                        self.showVideo = true
+                        self.videoURL = url
+                    }
                     
                     // How to use
                     LocalNetworkPrivacy().checkAccessState { granted in
@@ -736,6 +897,16 @@ struct ContentView_Previews: PreviewProvider {
         Group {
             ContentView()
                 .previewInterfaceOrientation(.landscapeRight)
+        }
+    }
+}
+
+extension View {
+    @ViewBuilder func isHidden(_ isHidden: Bool) -> some View {
+        if isHidden {
+            self.hidden()
+        } else {
+            self
         }
     }
 }

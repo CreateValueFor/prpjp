@@ -10,6 +10,7 @@
 		7342F6400E1358D2C87A53A8 /* Pods_prpjp.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FD6325AC2FCB0AB4C0B89B5 /* Pods_prpjp.framework */; };
 		BA26009328AAA93000F4275C /* Location.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA26009228AAA93000F4275C /* Location.swift */; };
 		BA26009528AAB33200F4275C /* Connected.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA26009428AAB33200F4275C /* Connected.swift */; };
+		BA421A6528C3A6320086A5C7 /* Loading.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA421A6428C3A6320086A5C7 /* Loading.swift */; };
 		BA48A6D42896E3C000E3C672 /* SpeakButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA48A6D32896E3C000E3C672 /* SpeakButton.swift */; };
 		BA54A4FF2868C6A400F0D354 /* SpeechRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */; };
 		BA54A5012868CD5F00F0D354 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = BA54A5002868CD5F00F0D354 /* ImagePicker.swift */; };
@@ -50,6 +51,7 @@
 		6FD6325AC2FCB0AB4C0B89B5 /* Pods_prpjp.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_prpjp.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BA26009228AAA93000F4275C /* Location.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Location.swift; sourceTree = "<group>"; };
 		BA26009428AAB33200F4275C /* Connected.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Connected.swift; sourceTree = "<group>"; };
+		BA421A6428C3A6320086A5C7 /* Loading.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Loading.swift; sourceTree = "<group>"; };
 		BA48A6D32896E3C000E3C672 /* SpeakButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeakButton.swift; sourceTree = "<group>"; };
 		BA54A4FE2868C6A400F0D354 /* SpeechRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpeechRecognizer.swift; sourceTree = "<group>"; };
 		BA54A5002868CD5F00F0D354 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				E3521C8B28ABEEC9006AAACF /* Extension */,
 				BAAB51202850F60A00B5540F /* Info.plist */,
 				BAFC28302846466F00899F5A /* ContentView.swift */,
+				BA421A6428C3A6320086A5C7 /* Loading.swift */,
 				BAA44E41289D6251009B753B /* PlayerView.swift */,
 				BAA44E43289D626A009B753B /* LoopingPlayerUIView.swift */,
 				BAD14F09286B51CA00F0D8F5 /* Translate.swift */,
@@ -375,6 +378,7 @@
 				BAE3F0BC286F281500B0B0C8 /* ToggleButton.swift in Sources */,
 				BAFC28412846633700899F5A /* RectangleButton.swift in Sources */,
 				BAFC28452849007C00899F5A /* Constants.swift in Sources */,
+				BA421A6528C3A6320086A5C7 /* Loading.swift in Sources */,
 				BAC233F728AE921900D7A4EE /* UIFontExtension.swift in Sources */,
 				BAB5029C284CD8230046D988 /* prpjp.swift in Sources */,
 				BAD14F0A286B51CA00F0D8F5 /* Translate.swift in Sources */,
@@ -515,7 +519,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
@@ -537,7 +541,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = alsrl.prpjp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -553,7 +557,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 33;
+				CURRENT_PROJECT_VERSION = 40;
 				DEVELOPMENT_ASSET_PATHS = "\"prpjp/Preview Content\"";
 				DEVELOPMENT_TEAM = DDN2CH67GY;
 				ENABLE_PREVIEWS = YES;
@@ -575,7 +579,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.1;
+				MARKETING_VERSION = 1.1.2;
 				PRODUCT_BUNDLE_IDENTIFIER = alsrl.prpjp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

@@ -72,8 +72,10 @@ final public class SocketServerManager {
     func send(text: String, background: UIImage, backgroundPath : String, color :  String, fontSize: String, fontStyleBold : String, resolution : String, location : LocationData, language : String) {
         
         print(">>> send function started")
+        print(resolution)
         guard let imageArray = background.jpegData(compressionQuality: 0.6) else { return }
         let encoded = try! PropertyListEncoder().encode(imageArray)
+        
         UserDefaults.standard.set(imageArray, forKey: "image")
         UserDefaults.standard.set(nil, forKey: "video")
         
@@ -96,6 +98,7 @@ final public class SocketServerManager {
         do {
             let jsonData = try JSONEncoder().encode(data)
             UserDefaults.standard.set(jsonData, forKey: "transfer")
+            print(data.displaySize)
             guard let jsonString = String(data: jsonData, encoding: .utf8) else { return }
             self.server?.sendRequest(string: "3")
             
@@ -121,11 +124,13 @@ final public class SocketServerManager {
         }
     }
     
-    func send(text: String, video: URL, color :  String, fontSize: String, fontStyleBold : String, resolution : String, location : LocationData, language : String) {
-        
+    func send(text: String, video: URL, color :  String, fontSize: String, fontStyleBold : String, resolution : String, location : LocationData, language : String, endfunc : ()->Void) {
+        print(resolution)
         print(">>> send function started")
         UserDefaults.standard.set(video, forKey: "video")
         UserDefaults.standard.set(nil, forKey: "image")
+        
+        
         
         guard let videoAray = NSData(contentsOf: video) else { return }
         
@@ -166,7 +171,7 @@ final public class SocketServerManager {
             
             sleep(1)
             self.server?.sendRequest(string: "finish")
-            
+            endfunc()
             
         }catch{
             print(error)
